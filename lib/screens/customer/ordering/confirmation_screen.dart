@@ -65,7 +65,8 @@ class ConfirmationScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             InfoRow(label: 'Payment Method', value: method),
                             const SizedBox(height: 10),
-                            InfoRow(label: 'Payment Status', value: paymentStatus),
+                            InfoRow(
+                                label: 'Payment Status', value: paymentStatus),
                             const SizedBox(height: 10),
                             InfoRow(
                                 label: 'Order Date',

@@ -215,8 +215,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           style: AppTextStyles.q(14,
                               color: AppColors.textSecondary)),
                       Text(
-                        'x ${item['boxSize'] ?? 6}'
-                        '${(item['quantity'] as int) > 1 ? '  (${item['quantity']} boxes)' : ''}',
+                        'Box of ${item['boxSize'] ?? 6}'
+                        ' · Qty ${item['quantity']}',
                         style:
                             AppTextStyles.q(14, color: AppColors.textSecondary),
                       ),
