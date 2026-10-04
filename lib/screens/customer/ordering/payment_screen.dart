@@ -5,6 +5,7 @@ import '../../../providers/cart_provider.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/notification_provider.dart';
 import '../../../providers/order_provider.dart';
+import '../../../services/payment_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../utils/formatters.dart';
@@ -27,20 +28,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
   ];
 
   String _selected = 'GCash';
+  bool _isReviewing = false;
+  bool _isPaying = false;
 
   Future<void> _confirm(double total) async {
     final cart = context.read<CartProvider>();
-    if (cart.isEmpty) return;
+    if (cart.isEmpty || _isReviewing || _isPaying) return;
+    setState(() => _isReviewing = true);
     final items = cart.items;
-    final shouldPlace = await showDialog<bool>(
+    final shouldPay = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Review before placing your order'),
+        title: const Text('Confirm payment'),
         content: Text(
           '${items.length} item${items.length == 1 ? '' : 's'} in your order\n'
           'Total: ${AppFormatters.peso(total)}\n'
           'Payment method: $_selected\n\n'
-          'Place this order? Payment will show as pending until a payment provider is connected.',
+          'Continue to pay now? This app simulates the $_selected payment for this demo. No money will be charged.',
         ),
         actions: [
           TextButton(
@@ -49,12 +53,37 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
           FilledButton(
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: const Text('Place order'),
+            child: const Text('Pay now'),
           ),
         ],
       ),
     );
-    if (shouldPlace != true || !mounted) return;
+    if (!mounted) return;
+    if (shouldPay != true) {
+      setState(() => _isReviewing = false);
+      return;
+    }
+    setState(() {
+      _isReviewing = false;
+      _isPaying = true;
+    });
+    var paymentSucceeded = false;
+    try {
+      paymentSucceeded =
+          await PaymentService().processPayment(total, _selected);
+    } catch (_) {
+      paymentSucceeded = false;
+    }
+    if (!mounted) return;
+    if (!paymentSucceeded) {
+      setState(() => _isPaying = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Payment could not be completed. Your cart is unchanged.')),
+      );
+      return;
+    }
     final now = DateTime.now();
     final auth = context.read<AuthProvider>();
     final order = context.read<OrderProvider>().createOrder(
@@ -63,6 +92,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           items: items,
           total: total,
           paymentMethod: _selected,
+          paymentStatus: 'Paid (demo)',
         );
     context.read<NotificationProvider>().add(
           title: 'Order placed',
@@ -172,8 +202,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: AppButton(
                   label: items.isEmpty
                       ? 'Your cart is empty'
-                      : 'Review & Place Order',
-                  onPressed: items.isEmpty ? null : () => _confirm(total),
+                      : _isPaying
+                          ? 'Processing payment…'
+                          : _isReviewing
+                              ? 'Reviewing payment…'
+                              : 'Pay & Place Order',
+                  onPressed: items.isEmpty || _isPaying || _isReviewing
+                      ? null
+                      : () => _confirm(total),
                 ),
               ),
             ],

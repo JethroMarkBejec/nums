@@ -21,7 +21,7 @@ class AppScreenScaffold extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(title, style: AppTextStyles.display1(28)),
+          title: Text(title, style: AppTextStyles.display1(24)),
           actions: actions,
         ),
         body: SafeArea(top: false, child: body),

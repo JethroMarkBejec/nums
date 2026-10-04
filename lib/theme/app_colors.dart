@@ -5,8 +5,7 @@ class AppColors {
   static const Color primary = Color(0xFF263B4F); // navy (buttons, dark cards)
   static const Color primaryDark = Color(0xFF1F3D4F);
   static const Color accent = Color(0xFF00BFFF); // progress bar
-  static const Color accentSoft =
-      Color(0xFFCBEAFB); // pressed / "+" cell / info banner
+  static const Color accentSoft = Color(0xFFCBEAFB);
 
   // Backgrounds
   static const Color background = Color(0xFFDDEEF4);
@@ -14,7 +13,7 @@ class AppColors {
   static const Color gradientBottom = Color(0xFFFCFEFF);
   static const Color surface = Color(0xFFEAF3F5);
   static const Color surfaceAlt = Color(0xFFF4F9FD);
-  static const Color card = Color(0x66FFFFFF); // translucent white card fill
+  static const Color card = Color(0x66FFFFFF);
   static const Color cardBorder = Color(0xFFA9D9E8);
 
   // Text
@@ -30,4 +29,15 @@ class AppColors {
   static const Color success = Color(0xFF263B4F);
   static const Color error = Color(0xFFD32F2F);
   static const Color warning = Color(0xFFF9A825);
+
+  static const BoxShadow cardShadow = BoxShadow(
+    color: Color(0x17263B4F),
+    blurRadius: 18,
+    offset: Offset(0, 7),
+  );
+  static const BoxShadow heroShadow = BoxShadow(
+    color: Color(0x33263B4F),
+    blurRadius: 16,
+    offset: Offset(0, 7),
+  );
 }

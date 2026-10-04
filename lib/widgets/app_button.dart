@@ -15,8 +15,8 @@ class AppButton extends StatelessWidget {
     required this.label,
     this.onPressed,
     this.isPrimary = true,
-    this.height = 56,
-    this.fontSize = 20,
+    this.height = 52,
+    this.fontSize = 16,
   });
 
   @override
@@ -27,26 +27,40 @@ class AppButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: isPrimary ? AppColors.primary : Colors.transparent,
+          backgroundColor: isPrimary
+              ? AppColors.primary
+              : Colors.white.withValues(alpha: 0.86),
           foregroundColor: isPrimary ? Colors.white : AppColors.primary,
           disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
           disabledForegroundColor: Colors.white70,
-          elevation: 0,
-          shadowColor: Colors.transparent,
+          elevation: isPrimary ? 3 : 1,
+          shadowColor: AppColors.primary.withValues(alpha: 0.28),
+          surfaceTintColor: Colors.white,
+          animationDuration: const Duration(milliseconds: 180),
+          overlayColor: Colors.white.withValues(alpha: 0.12),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: isPrimary ? Colors.transparent : AppColors.inputBorder,
-              width: 1.5,
+              color: isPrimary ? Colors.transparent : AppColors.cardBorder,
+              width: 1,
             ),
           ),
         ),
-        child: Text(
-          label,
-          style: AppTextStyles.q(
-            fontSize,
-            weight: FontWeight.w600,
-            color: isPrimary ? Colors.white : AppColors.textSecondary,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          transitionBuilder: (child, animation) => FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(scale: animation, child: child),
+          ),
+          child: Text(
+            label,
+            key: ValueKey(label),
+            style: AppTextStyles.q(
+              fontSize,
+              weight: FontWeight.w700,
+              color: isPrimary ? Colors.white : AppColors.textSecondary,
+            ),
           ),
         ),
       ),

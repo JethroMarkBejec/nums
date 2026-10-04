@@ -112,8 +112,6 @@ class _LoginScreenState extends State<LoginScreen>
                                 labelText: 'Email',
                                 keyboardType: TextInputType.emailAddress,
                                 validator: AppValidators.validateEmail,
-                                fontSize: 12,
-                                verticalPadding: 12,
                               ),
                               const SizedBox(height: 10),
                               AppTextField(
@@ -121,8 +119,6 @@ class _LoginScreenState extends State<LoginScreen>
                                 labelText: 'Password',
                                 obscureText: true,
                                 validator: AppValidators.validatePassword,
-                                fontSize: 12,
-                                verticalPadding: 12,
                               ),
                               const SizedBox(height: 4),
                               Row(
@@ -152,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen>
                               const SizedBox(height: 8),
                               AppButton(
                                 label: _isSubmitting ? 'Signing in…' : 'Log In',
-                                height: 44,
+                                height: 48,
                                 fontSize: 14,
                                 onPressed: _isSubmitting ? null : _logIn,
                               ),
@@ -186,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen>
                               AppButton(
                                 label: 'Create a New Account',
                                 isPrimary: false,
-                                height: 44,
+                                height: 48,
                                 fontSize: 14,
                                 onPressed: () =>
                                     Navigator.pushNamed(context, '/signup'),

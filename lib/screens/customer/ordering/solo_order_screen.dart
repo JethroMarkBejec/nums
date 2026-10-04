@@ -16,12 +16,6 @@ class SoloOrderScreen extends StatefulWidget {
 }
 
 class _SoloOrderScreenState extends State<SoloOrderScreen> {
-  static const _boxes = [
-    (size: 3, price: 110),
-    (size: 6, price: 220),
-    (size: 12, price: 440),
-  ];
-
   int _quantity = 1;
   int _selectedBox = 0;
   final _notes = TextEditingController();
@@ -40,7 +34,13 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
     final productName = args['name'] as String? ?? 'Oatmeal Chocolate Chip';
     final description = args['description'] as String? ??
         'Soft, chewy, and packed with\nchocolate chips and oats';
-    final box = _boxes[_selectedBox];
+    final basePrice = (args['price'] as num?)?.toInt() ?? 220;
+    final boxes = [
+      (size: 3, price: (basePrice / 2).round()),
+      (size: 6, price: basePrice),
+      (size: 12, price: basePrice * 2),
+    ];
+    final box = boxes[_selectedBox];
     final total = box.price * _quantity;
 
     return GradientBackground(
@@ -111,9 +111,9 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          for (var i = 0; i < _boxes.length; i++) ...[
+                          for (var i = 0; i < boxes.length; i++) ...[
                             if (i > 0) const SizedBox(width: 12),
-                            Expanded(child: _boxOption(i)),
+                            Expanded(child: _boxOption(i, boxes[i])),
                           ],
                         ],
                       ),
@@ -208,14 +208,23 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
-                      elevation: 0,
+                      elevation: 3,
+                      shadowColor: AppColors.primary.withValues(alpha: 0.3),
+                      animationDuration: const Duration(milliseconds: 180),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40)),
+                          borderRadius: BorderRadius.circular(20)),
                     ),
-                    child: Text(
-                      'Add to Cart  |  ${AppFormatters.peso(total)}',
-                      style: AppTextStyles.q(20,
-                          weight: FontWeight.w600, color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.add_shopping_cart_rounded, size: 20),
+                        const SizedBox(width: 9),
+                        Text(
+                          'Add to Cart  ·  ${AppFormatters.peso(total)}',
+                          style: AppTextStyles.q(18,
+                              weight: FontWeight.w700, color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -246,40 +255,53 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
     Navigator.pop(context);
   }
 
-  Widget _boxOption(int index) {
-    final b = _boxes[index];
+  Widget _boxOption(int index, ({int size, int price}) b) {
     final selected = _selectedBox == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedBox = index),
-      child: Container(
-        height: 150,
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: selected
-              ? Colors.white.withValues(alpha: 0.45)
-              : Colors.white.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => setState(() => _selectedBox = index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          height: 150,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
             color: selected
-                ? AppColors.primary
-                : AppColors.cardBorder.withValues(alpha: 0.7),
-            width: selected ? 2 : 1,
+                ? Colors.white.withValues(alpha: 0.45)
+                : Colors.white.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected
+                  ? AppColors.primary
+                  : AppColors.cardBorder.withValues(alpha: 0.7),
+              width: selected ? 2 : 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    AppColors.primary.withValues(alpha: selected ? 0.18 : 0.06),
+                blurRadius: selected ? 14 : 7,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-                child: Image.asset('assets/images/box_cookies.png',
-                    fit: BoxFit.contain)),
-            Text('Box of ${b.size}',
-                style: AppTextStyles.q(15,
-                    weight: selected ? FontWeight.w700 : FontWeight.w500)),
-            Text(AppFormatters.peso(b.price),
-                style: AppTextStyles.q(15,
-                    weight: selected ? FontWeight.w700 : FontWeight.w500)),
-            const SizedBox(height: 6),
-            _radio(selected),
-          ],
+          child: Column(
+            children: [
+              Expanded(
+                  child: Image.asset('assets/images/box_cookies.png',
+                      fit: BoxFit.contain)),
+              Text('Box of ${b.size}',
+                  style: AppTextStyles.q(15,
+                      weight: selected ? FontWeight.w700 : FontWeight.w500)),
+              Text(AppFormatters.peso(b.price),
+                  style: AppTextStyles.q(15,
+                      weight: selected ? FontWeight.w700 : FontWeight.w500)),
+              const SizedBox(height: 6),
+              _radio(selected),
+            ],
+          ),
         ),
       ),
     );

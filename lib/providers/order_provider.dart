@@ -17,12 +17,22 @@ class OrderProvider with ChangeNotifier {
   List<Map<String, dynamic>> ordersFor(String email) =>
       orders.where((order) => order['email'] == email).toList(growable: false);
 
+  Map<String, dynamic>? orderById(String id) {
+    for (final order in _orders) {
+      if (order['id'] == id) {
+        return Map<String, dynamic>.unmodifiable(order);
+      }
+    }
+    return null;
+  }
+
   Map<String, dynamic> createOrder({
     required String email,
     required String customerName,
     required List<Map<String, dynamic>> items,
     required double total,
     required String paymentMethod,
+    required String paymentStatus,
   }) {
     final now = DateTime.now();
     final order = <String, dynamic>{
@@ -32,7 +42,7 @@ class OrderProvider with ChangeNotifier {
       'items': items.map((item) => Map<String, dynamic>.from(item)).toList(),
       'total': total,
       'paymentMethod': paymentMethod,
-      'paymentStatus': 'Pending',
+      'paymentStatus': paymentStatus,
       'createdAt': now,
       'deliveryDate': DateTime(now.year, now.month, now.day + 1),
       'status': statuses.first,

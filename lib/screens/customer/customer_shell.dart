@@ -32,6 +32,7 @@ class _CustomerShellState extends State<CustomerShell> {
   @override
   Widget build(BuildContext context) {
     final cartCount = context.watch<CartProvider>().itemCount;
+    final navVerticalOffset = MediaQuery.of(context).viewPadding.bottom / 2;
     final screens = [
       const HomeScreen(),
       const MenuScreen(),
@@ -46,73 +47,97 @@ class _CustomerShellState extends State<CustomerShell> {
         body: screens[_selectedIndex],
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.55),
+            color: Colors.white.withValues(alpha: 0.88),
             border: Border(
               top: BorderSide(
                   color: AppColors.cardBorder.withValues(alpha: 0.8)),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.08),
+                blurRadius: 14,
+                offset: const Offset(0, -5),
+              ),
+            ],
           ),
           child: SafeArea(
             top: false,
             child: SizedBox(
               height: 68,
-              child: Row(
-                children: [
-                  for (var i = 0; i < _tabs.length; i++)
-                    Expanded(
-                      child: InkWell(
-                        onTap: () => setState(() => _selectedIndex = i),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Icon(
-                                  i == _selectedIndex
-                                      ? _tabs[i].$2
-                                      : _tabs[i].$1,
-                                  size: 26,
+              child: Transform.translate(
+                offset: Offset(0, navVerticalOffset),
+                child: Row(
+                  children: [
+                    for (var i = 0; i < _tabs.length; i++)
+                      Expanded(
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(18),
+                          splashColor: AppColors.accent.withValues(alpha: 0.18),
+                          onTap: () => setState(() => _selectedIndex = i),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                curve: Curves.easeOut,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: i == _selectedIndex
+                                      ? AppColors.accentSoft
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Icon(
+                                      i == _selectedIndex
+                                          ? _tabs[i].$2
+                                          : _tabs[i].$1,
+                                      size: 24,
+                                      color: i == _selectedIndex
+                                          ? AppColors.primary
+                                          : AppColors.navInactive,
+                                    ),
+                                    if (i == 2 && cartCount > 0)
+                                      Positioned(
+                                        right: -10,
+                                        top: -6,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 2),
+                                          decoration: const BoxDecoration(
+                                              color: AppColors.error,
+                                              shape: BoxShape.circle),
+                                          child: Text('$cartCount',
+                                              style: AppTextStyles.q(9,
+                                                  weight: FontWeight.w700,
+                                                  color: Colors.white)),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _tabs[i].$3,
+                                style: AppTextStyles.q(
+                                  13,
+                                  weight: i == _selectedIndex
+                                      ? FontWeight.w700
+                                      : FontWeight.w600,
                                   color: i == _selectedIndex
                                       ? AppColors.primary
                                       : AppColors.navInactive,
                                 ),
-                                if (i == 2 && cartCount > 0)
-                                  Positioned(
-                                    right: -10,
-                                    top: -6,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 2),
-                                      decoration: const BoxDecoration(
-                                          color: AppColors.error,
-                                          shape: BoxShape.circle),
-                                      child: Text('$cartCount',
-                                          style: AppTextStyles.q(9,
-                                              weight: FontWeight.w700,
-                                              color: Colors.white)),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _tabs[i].$3,
-                              style: AppTextStyles.q(
-                                13,
-                                weight: i == _selectedIndex
-                                    ? FontWeight.w700
-                                    : FontWeight.w600,
-                                color: i == _selectedIndex
-                                    ? AppColors.primary
-                                    : AppColors.navInactive,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

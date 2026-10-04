@@ -5,7 +5,7 @@ import 'app_colors.dart';
 /// Quicksand is used throughout for a consistent, polished typographic system.
 class AppTextStyles {
   static const String body = 'Quicksand';
-  static const double scaleFactor = 0.9;
+  static const double scaleFactor = 0.95;
 
   static TextStyle q(
     double size, {
@@ -17,7 +17,7 @@ class AppTextStyles {
   }) {
     return TextStyle(
       fontFamily: body,
-      fontSize: size * scaleFactor,
+      fontSize: size * scaleFactor < 10.5 ? 10.5 : size * scaleFactor,
       fontWeight: weight,
       fontVariations: [FontVariation('wght', weight.value.toDouble())],
       color: color,

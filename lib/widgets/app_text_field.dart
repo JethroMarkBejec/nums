@@ -23,13 +23,13 @@ class AppTextField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.fontSize = 16,
-    this.verticalPadding = 20,
+    this.verticalPadding = 16,
   });
 
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: BorderRadius.circular(20),
       borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
     );
     return TextFormField(
@@ -44,7 +44,7 @@ class AppTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.25),
         contentPadding: EdgeInsets.symmetric(
-          horizontal: 32,
+          horizontal: 20,
           vertical: verticalPadding,
         ),
         border: border,

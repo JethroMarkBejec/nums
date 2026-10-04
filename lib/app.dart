@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:device_preview/device_preview.dart';
 
 import 'providers/auth_provider.dart';
+import 'providers/batch_provider.dart';
 import 'providers/cart_provider.dart';
+import 'providers/inventory_provider.dart';
 import 'providers/notification_provider.dart';
 import 'providers/order_provider.dart';
 import 'routes/app_routes.dart';
@@ -17,10 +20,14 @@ class NumSApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => InventoryProvider()),
+        ChangeNotifierProvider(create: (_) => BatchProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         title: 'nums',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../providers/order_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../utils/formatters.dart';
@@ -15,14 +16,26 @@ class ConfirmationScreen extends StatelessWidget {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
             {};
-    final now = DateTime.now();
-    final orderNumber = args['orderNumber'] as String? ?? 'NUMS-1026';
-    final total = (args['total'] as num?) ?? 220;
-    final method = args['method'] as String? ?? 'GCash';
-    final paymentStatus = args['paymentStatus'] as String? ?? 'Pending';
-    final orderedAt = args['orderedAt'] as DateTime? ?? now;
-    final delivery =
-        args['deliveryDate'] as DateTime? ?? AppFormatters.tomorrow(orderedAt);
+    final statusValue = args['status'];
+    if (args['orderNumber'] is! String ||
+        args['total'] is! num ||
+        args['method'] is! String ||
+        args['paymentStatus'] is! String ||
+        args['orderedAt'] is! DateTime ||
+        args['deliveryDate'] is! DateTime ||
+        statusValue is! String ||
+        !OrderProvider.statuses.contains(statusValue)) {
+      return _missingOrder(context);
+    }
+    final status = statusValue;
+
+    final orderNumber = args['orderNumber'] as String;
+    final total = args['total'] as num;
+    final method = args['method'] as String;
+    final paymentStatus = args['paymentStatus'] as String;
+    final statusIndex = OrderProvider.statuses.indexOf(status);
+    final orderedAt = args['orderedAt'] as DateTime;
+    final delivery = args['deliveryDate'] as DateTime;
 
     return GradientBackground(
       child: Scaffold(
@@ -92,21 +105,21 @@ class ConfirmationScreen extends StatelessWidget {
                           children: [
                             const AppCardHeader(title: 'Order Status'),
                             const SizedBox(height: 18),
-                            _Step(
-                              title: 'Order Placed',
-                              subtitle:
-                                  '${AppFormatters.longDate(orderedAt)} - ${AppFormatters.time12(orderedAt)}',
-                              done: true,
-                            ),
-                            const _Step(
-                                title: 'Baking', subtitle: 'In progress'),
-                            const _Step(
-                                title: 'Out for Delivery',
-                                subtitle: 'Tomorrow'),
-                            const _Step(
-                                title: 'Delivered',
-                                subtitle: 'Tomorrow',
-                                last: true),
+                            for (var i = 0;
+                                i < OrderProvider.statuses.length;
+                                i++)
+                              _Step(
+                                title: OrderProvider.statuses[i],
+                                subtitle: i == 0
+                                    ? '${AppFormatters.longDate(orderedAt)} - ${AppFormatters.time12(orderedAt)}'
+                                    : i < statusIndex
+                                        ? 'Complete'
+                                        : i == statusIndex
+                                            ? 'In progress'
+                                            : 'Waiting',
+                                done: statusIndex >= i,
+                                last: i == OrderProvider.statuses.length - 1,
+                              ),
                           ],
                         ),
                       ),
@@ -147,6 +160,43 @@ class ConfirmationScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _missingOrder(BuildContext context) => GradientBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.receipt_long_outlined,
+                        color: AppColors.primary, size: 56),
+                    const SizedBox(height: 16),
+                    Text('No confirmed order found',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.display1(26)),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Complete checkout to see your order confirmation here.',
+                      textAlign: TextAlign.center,
+                      style:
+                          AppTextStyles.q(15, color: AppColors.textSecondary),
+                    ),
+                    const SizedBox(height: 20),
+                    AppButton(
+                      label: 'Back to Home',
+                      onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                          context, '/customer-shell', (route) => false),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
 }
 
 /// One row of the vertical status timeline.

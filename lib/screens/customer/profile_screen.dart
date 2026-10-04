@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../providers/cart_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/app_card.dart';
@@ -63,6 +65,44 @@ class ProfileScreen extends StatelessWidget {
                     value: 'Customer'),
               ],
             ),
+          ),
+          if (kDebugMode) ...[
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.manage_accounts_outlined),
+              label: const Text('Open demo staff dashboard'),
+              onPressed: () => Navigator.pushNamed(context, '/admin-dashboard'),
+            ),
+          ],
+          const SizedBox(height: 20),
+          OutlinedButton.icon(
+            onPressed: () async {
+              final shouldSignOut = await showDialog<bool>(
+                context: context,
+                builder: (dialogContext) => AlertDialog(
+                  title: const Text('Sign out?'),
+                  content:
+                      const Text('Your cart will be cleared on this device.'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(dialogContext, false),
+                      child: const Text('Cancel'),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(dialogContext, true),
+                      child: const Text('Sign out'),
+                    ),
+                  ],
+                ),
+              );
+              if (shouldSignOut != true || !context.mounted) return;
+              context.read<CartProvider>().clear();
+              context.read<AuthProvider>().logout();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/welcome', (route) => false);
+            },
+            icon: const Icon(Icons.logout_rounded),
+            label: const Text('Sign out'),
           ),
         ],
       ),

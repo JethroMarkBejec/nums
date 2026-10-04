@@ -61,61 +61,52 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Hi $username,', style: AppTextStyles.display1(28)),
-                      Text('Good things are baking!',
-                          style: AppTextStyles.q(16)),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Hi $username,',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.display1(28)),
+                        Text('Good things are baking!',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.q(16)),
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text('Marisol',
-                              style:
-                                  AppTextStyles.q(13, weight: FontWeight.w600)),
-                          Text('Angeles City, Pampanga',
-                              style: AppTextStyles.q(10)),
-                        ],
-                      ),
-                      const SizedBox(width: 4),
-                      IconButton(
-                        tooltip: 'Notifications',
-                        visualDensity: VisualDensity.compact,
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/notifications'),
-                        icon: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            const Icon(Icons.notifications_none_rounded,
-                                color: AppColors.primary, size: 27),
-                            if (unreadCount > 0)
-                              Positioned(
-                                right: -4,
-                                top: -4,
-                                child: Container(
-                                  padding: const EdgeInsets.all(3),
-                                  constraints: const BoxConstraints(
-                                      minWidth: 16, minHeight: 16),
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.error,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text('$unreadCount',
-                                      textAlign: TextAlign.center,
-                                      style: AppTextStyles.q(9,
-                                          weight: FontWeight.w700,
-                                          color: Colors.white)),
-                                ),
+                  IconButton(
+                    tooltip: 'Notifications',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/notifications'),
+                    icon: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        const Icon(Icons.notifications_none_rounded,
+                            color: AppColors.primary, size: 27),
+                        if (unreadCount > 0)
+                          Positioned(
+                            right: -4,
+                            top: -4,
+                            child: Container(
+                              padding: const EdgeInsets.all(3),
+                              constraints: const BoxConstraints(
+                                  minWidth: 16, minHeight: 16),
+                              decoration: const BoxDecoration(
+                                color: AppColors.error,
+                                shape: BoxShape.circle,
                               ),
-                          ],
-                        ),
-                      ),
-                    ],
+                              child: Text('$unreadCount',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.q(9,
+                                      weight: FontWeight.w700,
+                                      color: Colors.white)),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -125,7 +116,7 @@ class HomeScreen extends StatelessWidget {
               height: 138,
               child: Row(
                 children: [
-                  Expanded(flex: 8, child: _batchCard()),
+                  Expanded(flex: 8, child: _batchCard(context)),
                   const SizedBox(width: 12),
                   Expanded(flex: 5, child: _preorderCard(context)),
                 ],
@@ -161,47 +152,61 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _batchCard() {
+  Widget _batchCard(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+      padding: const EdgeInsets.fromLTRB(14, 11, 14, 8),
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(24),
+        boxShadow: const [AppColors.heroShadow],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Today\u2019s Batch',
-              style: AppTextStyles.display1(20, color: Colors.white)),
-          const SizedBox(height: 2),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text('$_cookiesLeft',
-                  style: AppTextStyles.q(36,
-                      weight: FontWeight.w700, color: Colors.white)),
-              const SizedBox(width: 6),
-              Text('cookies left',
-                  style: AppTextStyles.q(20,
-                      weight: FontWeight.w700, color: Colors.white)),
-            ],
+              style: AppTextStyles.display1(18, color: Colors.white)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text('$_cookiesLeft',
+                    style: AppTextStyles.q(32,
+                        weight: FontWeight.w700, color: Colors.white)),
+                const SizedBox(width: 5),
+                Text('cookies left',
+                    style: AppTextStyles.q(17,
+                        weight: FontWeight.w700, color: Colors.white)),
+              ],
+            ),
           ),
           Text('$_claimed / $_dailyLimit claimed',
-              style: AppTextStyles.q(12, color: Colors.white)),
-          const SizedBox(height: 6),
+              style: AppTextStyles.q(11, color: Colors.white)),
+          const SizedBox(height: 4),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
               value: _claimed / _dailyLimit,
-              minHeight: 8,
+              minHeight: 6,
               backgroundColor: Colors.white,
               valueColor: const AlwaysStoppedAnimation(AppColors.accent),
             ),
           ),
           const Spacer(),
-          Text('Orders still Open  >',
-              style: AppTextStyles.q(16, color: Colors.white)),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () => Navigator.pushNamed(context, '/orders'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text('Orders still open  >',
+                    style: AppTextStyles.q(12, color: Colors.white)),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -213,15 +218,16 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(24),
+        boxShadow: const [AppColors.heroShadow],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Tomorrow\u2019s Preorder',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.display1(15, color: Colors.white)),
-          const SizedBox(height: 6),
+          Text('Tomorrow\u2019s preorder',
+              maxLines: 2,
+              overflow: TextOverflow.clip,
+              style: AppTextStyles.display1(14, color: Colors.white)),
+          const SizedBox(height: 5),
           Text('Pick up / Delivery',
               style: AppTextStyles.q(10, color: Colors.white)),
           Text(AppFormatters.longDate(AppFormatters.tomorrow()),
@@ -234,14 +240,16 @@ class HomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               onTap: () => Navigator.pushNamed(context, '/solo-order'),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text('Pre-order for\nTomorrow',
-                          style: AppTextStyles.q(11,
-                              color: AppColors.textSecondary, height: 1.2)),
+                      child: Text('Pre-order',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.q(12,
+                              weight: FontWeight.w700,
+                              color: AppColors.textSecondary)),
                     ),
                     const Icon(Icons.arrow_right_alt_rounded,
                         color: AppColors.primary),
@@ -263,6 +271,7 @@ class HomeScreen extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.cardBorder.withValues(alpha: 0.7)),
+        boxShadow: const [AppColors.cardShadow],
       ),
       child: Row(
         children: [
@@ -290,7 +299,8 @@ class HomeScreen extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: const [AppColors.cardShadow],
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -315,7 +325,7 @@ class HomeScreen extends StatelessWidget {
                           BorderRadius.vertical(top: Radius.circular(8)),
                     ),
                     child: Text('In Stock',
-                        style: AppTextStyles.q(8,
+                        style: AppTextStyles.q(9,
                             weight: FontWeight.w600, color: Colors.white)),
                   ),
                 ),
@@ -327,31 +337,33 @@ class HomeScreen extends StatelessWidget {
             child: Text(name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.q(11, weight: FontWeight.w600)),
+                style: AppTextStyles.q(12, weight: FontWeight.w700)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text('Box of 6',
-                style: AppTextStyles.q(9, color: AppColors.textSecondary)),
+                style: AppTextStyles.q(10, color: AppColors.textSecondary)),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
             child: SizedBox(
               width: double.infinity,
-              height: 30,
+              height: 34,
               child: ElevatedButton(
                 onPressed: () => _addBox(context, name, price),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.zero,
-                  elevation: 0,
+                  elevation: 2,
+                  shadowColor: AppColors.primary.withValues(alpha: 0.25),
+                  animationDuration: const Duration(milliseconds: 160),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                 ),
                 child: FittedBox(
-                  child: Text('Add Box to Cart',
-                      style: AppTextStyles.q(11,
+                  child: Text('Add to cart',
+                      style: AppTextStyles.q(12,
                           weight: FontWeight.w600, color: Colors.white)),
                 ),
               ),
@@ -369,6 +381,7 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(24),
+        boxShadow: const [AppColors.heroShadow],
       ),
       child: Stack(
         children: [
@@ -426,22 +439,56 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _infoBar() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFB9C6D6),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Boxes: 3, 6, or 12 cookies',
-              style: AppTextStyles.q(13, color: AppColors.textSecondary)),
-          Container(width: 1, height: 14, color: AppColors.textSecondary),
-          Text('Daily preorder limit: $_dailyLimit cookies',
-              style: AppTextStyles.q(13, color: AppColors.textSecondary)),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 380;
+        final textStyle = AppTextStyles.q(13, color: AppColors.textSecondary);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xFFB9C6D6),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: AnimatedSize(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            child: compact
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Boxes: 3, 6, or 12 cookies', style: textStyle),
+                      const SizedBox(height: 4),
+                      Text('Daily preorder limit: $_dailyLimit cookies',
+                          style: textStyle),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: Text('Boxes: 3, 6, or 12 cookies',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle),
+                      ),
+                      Container(
+                        width: 1,
+                        height: 14,
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        color: AppColors.textSecondary,
+                      ),
+                      Expanded(
+                        child: Text(
+                            'Daily preorder limit: $_dailyLimit cookies',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle),
+                      ),
+                    ],
+                  ),
+          ),
+        );
+      },
     );
   }
 }

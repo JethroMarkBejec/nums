@@ -38,20 +38,29 @@ class _OrdersScreenState extends State<OrdersScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Your bakes, in progress',
+                Text(_showHistory ? 'Order history' : 'Your bakes, in progress',
                     style: AppTextStyles.display1(28)),
                 const SizedBox(height: 5),
-                Text('Follow each order from oven to doorstep.',
+                Text(
+                    _showHistory
+                        ? 'Your delivered orders, all in one place.'
+                        : 'Follow each order from oven to doorstep.',
                     style: AppTextStyles.q(14, color: AppColors.textSecondary)),
                 const SizedBox(height: 14),
-                SegmentedButton<bool>(
-                  segments: const [
-                    ButtonSegment(value: false, label: Text('In progress')),
-                    ButtonSegment(value: true, label: Text('History')),
-                  ],
-                  selected: {_showHistory},
-                  onSelectionChanged: (selection) =>
-                      setState(() => _showHistory = selection.first),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.55),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                        color: AppColors.cardBorder.withValues(alpha: 0.8)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: _filterButton('In progress', false)),
+                      Expanded(child: _filterButton('History', true)),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -88,6 +97,29 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
     );
   }
+
+  Widget _filterButton(String label, bool history) {
+    final selected = _showHistory == history;
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: () => setState(() => _showHistory = history),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOut,
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primary : Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: selected ? const [AppColors.cardShadow] : null,
+        ),
+        child: Text(label,
+            style: AppTextStyles.q(14,
+                weight: FontWeight.w700,
+                color: selected ? Colors.white : AppColors.textSecondary)),
+      ),
+    );
+  }
 }
 
 class _OrderCard extends StatelessWidget {
@@ -100,6 +132,14 @@ class _OrderCard extends StatelessWidget {
     final statusIndex = OrderProvider.statuses.indexOf(status);
     final createdAt = order['createdAt'] as DateTime;
     final items = order['items'] as List;
+    final productNames = items.map((item) => item['name'] as String).join(', ');
+    final boxCount = items.fold<int>(
+      0,
+      (sum, item) => sum + ((item['quantity'] as int?) ?? 1),
+    );
+    final progress = statusIndex < 0
+        ? 0.0
+        : ((statusIndex + 1) / OrderProvider.statuses.length).clamp(0.0, 1.0);
     return AppCard(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -123,8 +163,7 @@ class _OrderCard extends StatelessWidget {
                   children: [
                     Text(order['id'] as String,
                         style: AppTextStyles.q(17, weight: FontWeight.w700)),
-                    Text(
-                        '${items.length} product${items.length == 1 ? '' : 's'} · ${AppFormatters.longDate(createdAt)}',
+                    Text(AppFormatters.longDate(createdAt),
                         style: AppTextStyles.q(12,
                             color: AppColors.textSecondary)),
                   ],
@@ -138,69 +177,63 @@ class _OrderCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
-          Row(
-            children: [
-              for (var i = 0; i < OrderProvider.statuses.length; i++) ...[
-                _OrderStep(
-                  label: OrderProvider.statuses[i],
-                  complete: statusIndex >= i,
-                  last: i == OrderProvider.statuses.length - 1,
-                ),
+          const SizedBox(height: 14),
+          Text(productNames.isEmpty ? 'Cookie order' : productNames,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.q(15, weight: FontWeight.w700)),
+          const SizedBox(height: 3),
+          Text(
+              '$boxCount box${boxCount == 1 ? '' : 'es'} · ${items.length} product${items.length == 1 ? '' : 's'}',
+              style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+          if (status != 'Delivered') ...[
+            const SizedBox(height: 14),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Order progress',
+                    style: AppTextStyles.q(12,
+                        weight: FontWeight.w700,
+                        color: AppColors.textSecondary)),
+                Text(
+                    'Step ${statusIndex + 1} of ${OrderProvider.statuses.length}',
+                    style: AppTextStyles.q(12,
+                        weight: FontWeight.w700,
+                        color: AppColors.textSecondary)),
               ],
-            ],
-          ),
+            ),
+            const SizedBox(height: 7),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 7,
+                backgroundColor: AppColors.cardBorder.withValues(alpha: 0.55),
+                valueColor: const AlwaysStoppedAnimation(AppColors.primary),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text('Currently: $status',
+                style: AppTextStyles.q(13,
+                    weight: FontWeight.w600, color: AppColors.primary)),
+          ],
           const SizedBox(height: 14),
           const Divider(height: 1, color: AppColors.divider),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Payment · ${order['paymentStatus']}',
-                  style: AppTextStyles.q(13, color: AppColors.textSecondary)),
+              Flexible(
+                child: Text('Payment · ${order['paymentStatus']}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+              ),
+              const SizedBox(width: 12),
               Text(AppFormatters.peso(order['total'] as num),
                   style: AppTextStyles.q(17, weight: FontWeight.w700)),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _OrderStep extends StatelessWidget {
-  const _OrderStep(
-      {required this.label, required this.complete, required this.last});
-  final String label;
-  final bool complete;
-  final bool last;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Icon(complete ? Icons.check_circle_rounded : Icons.circle_outlined,
-              size: 16,
-              color: complete ? AppColors.primary : AppColors.textMuted),
-          const SizedBox(width: 3),
-          Flexible(
-            child: Text(label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.q(9,
-                    color: complete
-                        ? AppColors.textPrimary
-                        : AppColors.textMuted)),
-          ),
-          if (!last)
-            Expanded(
-              child: Container(
-                height: 2,
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                color: complete ? AppColors.primary : AppColors.divider,
-              ),
-            ),
         ],
       ),
     );

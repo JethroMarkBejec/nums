@@ -53,76 +53,99 @@ class OrdersManagementScreen extends StatelessWidget {
                   Center(child: Text('New customer orders will appear here.')),
             ),
           for (final order in orders) ...[
-            AppCard(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.shopping_bag_outlined,
-                          color: AppColors.primary),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(order['id'] as String,
-                                style: AppTextStyles.q(16,
-                                    weight: FontWeight.w700)),
-                            Text(order['customerName'] as String,
-                                style: AppTextStyles.q(12,
-                                    color: AppColors.textSecondary)),
-                          ],
+            Builder(builder: (context) {
+              final id = order['id'] as String;
+              final status = order['status'] as String;
+              final statusIndex = OrderProvider.statuses.indexOf(status);
+              final canAdvance = statusIndex >= 0 &&
+                  statusIndex < OrderProvider.statuses.length - 1;
+              final next =
+                  canAdvance ? OrderProvider.statuses[statusIndex + 1] : null;
+              return AppCard(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.shopping_bag_outlined,
+                            color: AppColors.primary),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              '/admin-order-details',
+                              arguments: id,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(id,
+                                      style: AppTextStyles.q(16,
+                                          weight: FontWeight.w700)),
+                                  Text(order['customerName'] as String,
+                                      style: AppTextStyles.q(12,
+                                          color: AppColors.textSecondary)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        StatusBadge(
+                            text: status,
+                            color: status == 'Delivered'
+                                ? AppColors.success
+                                : AppColors.warning),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                              '${order['paymentMethod']} · ${order['paymentStatus']}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.q(12,
+                                  color: AppColors.textSecondary)),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(AppFormatters.peso(order['total'] as num),
+                            style:
+                                AppTextStyles.q(16, weight: FontWeight.w700)),
+                      ],
+                    ),
+                    if (canAdvance && next != null) ...[
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            final advanced =
+                                context.read<OrderProvider>().advanceStatus(id);
+                            if (!advanced) return;
+                            context.read<NotificationProvider>().add(
+                                  title: 'Order update',
+                                  message: 'Order $id is now $next.',
+                                  email: order['email'] as String,
+                                  orderId: id,
+                                );
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('$id updated to $next')));
+                          },
+                          icon: const Icon(Icons.arrow_forward_rounded),
+                          label: Text('Advance to $next'),
                         ),
                       ),
-                      StatusBadge(
-                          text: order['status'] as String,
-                          color: AppColors.warning),
                     ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          '${order['paymentMethod']} · ${order['paymentStatus']}',
-                          style: AppTextStyles.q(12,
-                              color: AppColors.textSecondary)),
-                      Text(AppFormatters.peso(order['total'] as num),
-                          style: AppTextStyles.q(16, weight: FontWeight.w700)),
-                    ],
-                  ),
-                  if (order['status'] != 'Delivered') ...[
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                        onPressed: () {
-                          final id = order['id'] as String;
-                          final next = OrderProvider.statuses[OrderProvider
-                                  .statuses
-                                  .indexOf(order['status'] as String) +
-                              1];
-                          context.read<OrderProvider>().advanceStatus(id);
-                          context.read<NotificationProvider>().add(
-                                title: 'Order update',
-                                message: 'Order $id is now $next.',
-                                email: order['email'] as String,
-                                orderId: id,
-                              );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('$id updated to $next')));
-                        },
-                        icon: const Icon(Icons.arrow_forward_rounded),
-                        label: Text(
-                            'Advance to ${OrderProvider.statuses[OrderProvider.statuses.indexOf(order['status'] as String) + 1]}'),
-                      ),
-                    ),
                   ],
-                ],
-              ),
-            ),
+                ),
+              );
+            }),
             const SizedBox(height: 10),
           ],
         ],
