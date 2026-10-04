@@ -12,6 +12,7 @@ import '../screens/customer/customer_shell.dart';
 import '../screens/customer/menu_screen.dart';
 import '../screens/customer/cart_screen.dart';
 import '../screens/customer/orders_screen.dart';
+import '../screens/customer/play_screen.dart';
 import '../screens/customer/history_screen.dart';
 import '../screens/customer/notifications_screen.dart';
 import '../screens/customer/profile_screen.dart';
@@ -39,6 +40,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String menu = '/menu';
   static const String cart = '/cart';
+  static const String play = '/play';
   static const String orders = '/orders';
   static const String history = '/history';
   static const String notifications = '/notifications';
@@ -68,6 +70,7 @@ class AppRoutes {
         home: (context) => const CustomerShell(),
         menu: (context) => const MenuScreen(),
         cart: (context) => const CartScreen(),
+        play: (context) => const PlayScreen(),
         orders: (context) => const OrdersScreen(),
         history: (context) => const HistoryScreen(),
         notifications: (context) => const NotificationsScreen(),

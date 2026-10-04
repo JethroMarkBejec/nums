@@ -8,6 +8,8 @@ import 'providers/cart_provider.dart';
 import 'providers/inventory_provider.dart';
 import 'providers/notification_provider.dart';
 import 'providers/order_provider.dart';
+import 'providers/play_provider.dart';
+import 'repositories/points_repository.dart';
 import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
 
@@ -23,6 +25,8 @@ class NumSApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => InventoryProvider()),
         ChangeNotifierProvider(create: (_) => BatchProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
+        ChangeNotifierProvider(create: (_) => PlayProvider()),
+        Provider(create: (_) => PointsRepository()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(

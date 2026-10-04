@@ -9,6 +9,7 @@ import 'cart_screen.dart';
 import 'home_screen.dart';
 import 'menu_screen.dart';
 import 'orders_screen.dart';
+import 'play_screen.dart';
 import 'profile_screen.dart';
 
 class CustomerShell extends StatefulWidget {
@@ -25,6 +26,7 @@ class _CustomerShellState extends State<CustomerShell> {
     (Icons.home_outlined, Icons.home_rounded, 'Home'),
     (Icons.fact_check_outlined, Icons.fact_check_rounded, 'Menu'),
     (Icons.shopping_cart_outlined, Icons.shopping_cart_rounded, 'Cart'),
+    (Icons.sports_esports_outlined, Icons.sports_esports_rounded, 'Play'),
     (Icons.checklist_rounded, Icons.checklist_rounded, 'Orders'),
     (Icons.person_outline_rounded, Icons.person_rounded, 'Profile'),
   ];
@@ -37,6 +39,7 @@ class _CustomerShellState extends State<CustomerShell> {
       const HomeScreen(),
       const MenuScreen(),
       const CartScreen(),
+      const PlayScreen(),
       const OrdersScreen(),
       const ProfileScreen(),
     ];
@@ -90,7 +93,7 @@ class _CustomerShellState extends State<CustomerShell> {
                                 duration: const Duration(milliseconds: 180),
                                 curve: Curves.easeOut,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
+                                    horizontal: 7, vertical: 5),
                                 decoration: BoxDecoration(
                                   color: i == _selectedIndex
                                       ? AppColors.accentSoft
@@ -132,7 +135,7 @@ class _CustomerShellState extends State<CustomerShell> {
                               Text(
                                 _tabs[i].$3,
                                 style: AppTextStyles.q(
-                                  13,
+                                  11,
                                   weight: i == _selectedIndex
                                       ? FontWeight.w700
                                       : FontWeight.w600,
