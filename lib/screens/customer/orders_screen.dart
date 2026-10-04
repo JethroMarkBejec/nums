@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 import '../../providers/order_provider.dart';
+import '../../providers/reviews_provider.dart';
+import '../../repositories/points_repository.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../utils/formatters.dart';
@@ -133,7 +137,10 @@ class _OrderCard extends StatelessWidget {
     final statusIndex = OrderProvider.statuses.indexOf(status);
     final createdAt = order['createdAt'] as DateTime;
     final items = order['items'] as List;
-    final productNames = items.map((item) => item['name'] as String).join(', ');
+    final productNames = items
+        .map((item) =>
+            (item['items_summary'] as String?) ?? item['name'] as String)
+        .join(', ');
     final boxCount = items.fold<int>(
       0,
       (sum, item) => sum + ((item['quantity'] as int?) ?? 1),
@@ -171,8 +178,9 @@ class _OrderCard extends StatelessWidget {
                 ),
               ),
               StatusBadge(
-                text: status == OrderProvider.finalStatus ? 'Ready' : status,
-                color: status == OrderProvider.finalStatus
+                text: status == OrderProvider.readyStatus ? 'Ready' : status,
+                color: status == OrderProvider.readyStatus ||
+                        status == OrderProvider.finalStatus
                     ? AppColors.success
                     : AppColors.warning,
               ),
@@ -235,8 +243,139 @@ class _OrderCard extends StatelessWidget {
                   style: AppTextStyles.q(17, weight: FontWeight.w700)),
             ],
           ),
+          if (order['paymentStatus'] == 'Pending' &&
+              status != 'Pending admin review' &&
+              status != 'Declined') ...[
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: FilledButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/payment',
+                      arguments: {'orderId': order['id']}),
+                  icon: const Icon(Icons.lock_open_rounded),
+                  label: const Text('Pay approved order')),
+            ),
+          ],
+          if (status == 'Declined')
+            Text(
+                'Staff message: ${order['adminMessage'] ?? 'This order was declined.'}',
+                style: AppTextStyles.q(13, color: AppColors.error)),
+          if (status == OrderProvider.finalStatus && order['feedback'] == null)
+            _FeedbackForm(order: order),
+          if (status == OrderProvider.finalStatus && order['feedback'] != null)
+            Text('Thanks for your ${order['feedback']['rating']}-star rating.',
+                style: AppTextStyles.q(13, weight: FontWeight.w700)),
         ],
       ),
     );
   }
+}
+
+class _FeedbackForm extends StatefulWidget {
+  final Map<String, dynamic> order;
+  const _FeedbackForm({required this.order});
+  @override
+  State<_FeedbackForm> createState() => _FeedbackFormState();
+}
+
+class _FeedbackFormState extends State<_FeedbackForm> {
+  int _rating = 5;
+  final _comment = TextEditingController();
+  XFile? _photo;
+  Uint8List? _photoBytes;
+  bool _pickingPhoto = false;
+  @override
+  void dispose() {
+    _comment.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickPhoto() async {
+    setState(() => _pickingPhoto = true);
+    try {
+      final file = await ImagePicker()
+          .pickImage(source: ImageSource.gallery, imageQuality: 75);
+      if (file == null || !mounted) return;
+      final bytes = await file.readAsBytes();
+      if (!mounted) return;
+      setState(() {
+        _photo = file;
+        _photoBytes = bytes;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Photo picker is unavailable here. You can still send your rating and comment.')));
+    } finally {
+      if (mounted) setState(() => _pickingPhoto = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const SizedBox(height: 10),
+        Text('How was your order?',
+            style: AppTextStyles.q(15, weight: FontWeight.w700)),
+        Row(
+            children: List.generate(
+                5,
+                (index) => IconButton(
+                    tooltip: '${index + 1} stars',
+                    onPressed: () => setState(() => _rating = index + 1),
+                    icon: Icon(
+                        index < _rating
+                            ? Icons.star_rounded
+                            : Icons.star_outline_rounded,
+                        color: AppColors.warning)))),
+        TextField(
+            controller: _comment,
+            maxLength: 240,
+            decoration: const InputDecoration(labelText: 'Leave feedback')),
+        OutlinedButton.icon(
+          onPressed: _pickingPhoto ? null : _pickPhoto,
+          icon: const Icon(Icons.photo_library_outlined),
+          label: Text(_pickingPhoto
+              ? 'Opening photos…'
+              : (_photo == null ? 'Add optional photo' : 'Change photo')),
+        ),
+        if (_photoBytes != null) ...[
+          ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child:
+                  Image.memory(_photoBytes!, height: 140, fit: BoxFit.cover)),
+          Text(_photo!.name,
+              style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+        ],
+        Align(
+            alignment: Alignment.centerRight,
+            child: FilledButton(
+                onPressed: () {
+                  final id = widget.order['id'] as String;
+                  final email = widget.order['email'] as String;
+                  if (!context.read<OrderProvider>().saveFeedback(id,
+                      rating: _rating,
+                      comment: _comment.text,
+                      photoName: _photo?.name,
+                      photoBytes: _photoBytes)) return;
+                  context.read<ReviewsProvider>().add(
+                      orderId: id,
+                      email: email,
+                      rating: _rating,
+                      comment: _comment.text,
+                      photoName: _photo?.name,
+                      photoBytes: _photoBytes,
+                      flavors: ((widget.order['items'] as List?) ?? const [])
+                          .map((item) => item['name'] as String? ?? '')
+                          .where((name) => name.isNotEmpty)
+                          .toSet()
+                          .toList());
+                  context.read<PointsRepository>().awardFeedback(
+                      context.read<AuthProvider>(),
+                      email: email,
+                      feedbackId: id);
+                },
+                child: const Text('Send feedback'))),
+      ]);
 }

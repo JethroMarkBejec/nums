@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/batch_provider.dart';
 import '../../providers/inventory_provider.dart';
 import '../../providers/order_provider.dart';
+import '../../providers/requests_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/app_card.dart';
@@ -17,14 +18,20 @@ class AdminDashboardScreen extends StatelessWidget {
     final orders = context.watch<OrderProvider>().orders;
     final inventory = context.watch<InventoryProvider>().inventory;
     final batches = context.watch<BatchProvider>().batches;
-    final activeOrders =
-        orders.where((order) => order['status'] != OrderProvider.finalStatus).length;
+    final activeOrders = orders
+        .where((order) => order['status'] != OrderProvider.finalStatus)
+        .length;
     final boxesInStock = inventory.fold<int>(
       0,
       (sum, item) => sum + (item['quantity'] as int),
     );
     final activeBatches =
         batches.where((batch) => batch['status'] != 'Complete').length;
+    final requestCount = context
+        .watch<RequestsProvider>()
+        .requests
+        .where((request) => request['status'] == 'Open')
+        .length;
 
     return AppScreenScaffold(
       title: 'Dashboard',
@@ -70,6 +77,13 @@ class AdminDashboardScreen extends StatelessWidget {
               title: 'Orders',
               detail: 'Review incoming orders and update their status.',
               route: '/admin-orders'),
+          const SizedBox(height: 10),
+          _DashboardTile(
+              icon: Icons.chat_bubble_outline_rounded,
+              title: 'Customer requests',
+              detail:
+                  '$requestCount open · Reply to customers who asked for staff help.',
+              route: '/admin-requests'),
           const SizedBox(height: 10),
           const _DashboardTile(
               icon: Icons.inventory_2_outlined,

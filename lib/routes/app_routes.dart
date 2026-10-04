@@ -13,6 +13,8 @@ import '../screens/customer/menu_screen.dart';
 import '../screens/customer/cart_screen.dart';
 import '../screens/customer/orders_screen.dart';
 import '../screens/customer/play_screen.dart';
+import '../screens/customer/flavor_ideas_screen.dart';
+import '../screens/customer/custom_request_screen.dart';
 import '../screens/customer/history_screen.dart';
 import '../screens/customer/notifications_screen.dart';
 import '../screens/customer/profile_screen.dart';
@@ -22,12 +24,14 @@ import '../screens/customer/ordering/customization_screen.dart';
 import '../screens/customer/ordering/order_summary_screen.dart';
 import '../screens/customer/ordering/payment_screen.dart';
 import '../screens/customer/ordering/confirmation_screen.dart';
+import '../screens/customer/ordering/build_box_screen.dart';
 import '../screens/admin/admin_dashboard_screen.dart';
 import '../screens/admin/orders_management_screen.dart';
 import '../screens/admin/order_details_screen.dart';
 import '../screens/admin/inventory_screen.dart';
 import '../screens/admin/batch_management_screen.dart';
 import '../screens/admin/admin_profile_screen.dart';
+import '../screens/admin/requests_screen.dart';
 
 class AppRoutes {
   static const String loading = '/loading';
@@ -46,6 +50,9 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String profile = '/profile';
   static const String soloOrder = '/solo-order';
+  static const String buildBox = '/build-box';
+  static const String flavorIdeas = '/flavor-ideas';
+  static const String customRequest = '/custom-request';
   static const String assistant = '/assistant';
   static const String customization = '/customization';
   static const String orderSummary = '/order-summary';
@@ -57,6 +64,7 @@ class AppRoutes {
   static const String adminInventory = '/admin-inventory';
   static const String adminBatch = '/admin-batch';
   static const String adminProfile = '/admin-profile';
+  static const String adminRequests = '/admin-requests';
 
   static Map<String, WidgetBuilder> get routes => {
         loading: (context) => const LoadingScreen(),
@@ -76,6 +84,9 @@ class AppRoutes {
         notifications: (context) => const NotificationsScreen(),
         profile: (context) => const ProfileScreen(),
         soloOrder: (context) => const SoloOrderScreen(),
+        buildBox: (context) => const BuildBoxScreen(),
+        flavorIdeas: (context) => const FlavorIdeasScreen(),
+        customRequest: (context) => const CustomRequestScreen(),
         assistant: (context) => const AssistantScreen(),
         customization: (context) => const CustomizationScreen(),
         orderSummary: (context) => const OrderSummaryScreen(),
@@ -99,6 +110,8 @@ class AppRoutes {
         adminProfile: (context) => _AdminRouteGate(
               child: const AdminProfileScreen(),
             ),
+        adminRequests: (context) =>
+            _AdminRouteGate(child: const RequestsScreen()),
       };
 }
 

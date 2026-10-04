@@ -68,7 +68,8 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
         timer.cancel();
         return;
       }
-      final advanced = context.read<OrderProvider>().advanceStatus(widget.orderId);
+      final advanced =
+          context.read<OrderProvider>().advanceStatus(widget.orderId);
       if (!advanced) {
         timer.cancel();
         setState(() => _isRunning = false);
@@ -125,8 +126,7 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
               ),
               Text('${index + 1} / ${OrderProvider.statuses.length}',
                   style: AppTextStyles.q(12,
-                      weight: FontWeight.w700,
-                      color: AppColors.textSecondary)),
+                      weight: FontWeight.w700, color: AppColors.textSecondary)),
             ],
           ),
           const SizedBox(height: 12),
@@ -209,7 +209,8 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
         2 => 'Your cookies are baking in the oven.',
         3 => 'The fresh batch is cooling.',
         4 => 'Your cookies are being packed with care.',
-        _ => 'Your order is ready for pickup or delivery.',
+        5 => 'Your order is ready for pickup or delivery.',
+        _ => 'Your order has been received. Enjoy your cookies!',
       };
 }
 
@@ -302,8 +303,8 @@ class _BakeStagePainter extends CustomPainter {
           final lift = reduceMotion ? 3.0 : 3 + ((t + i * 0.22) % 1) * 8;
           final steam = Path()
             ..moveTo(x, center.dy - 1)
-            ..cubicTo(x - 5, center.dy - lift, x + 5,
-                center.dy - lift - 5, x, center.dy - lift - 12);
+            ..cubicTo(x - 5, center.dy - lift, x + 5, center.dy - lift - 5, x,
+                center.dy - lift - 12);
           canvas.drawPath(steam, ink);
         }
         break;
@@ -331,24 +332,22 @@ class _BakeStagePainter extends CustomPainter {
         final dx = reduceMotion ? 0.0 : math.sin(t * math.pi * 2) * 7;
         canvas.drawCircle(center.translate(-17 + dx, 15), 8, ink);
         canvas.drawCircle(center.translate(18 + dx, 15), 8, ink);
-        canvas.drawLine(center.translate(-17 + dx, 15),
-            center.translate(-5 + dx, -2), ink);
-        canvas.drawLine(center.translate(-5 + dx, -2),
-            center.translate(4 + dx, 15), ink);
-        canvas.drawLine(center.translate(4 + dx, 15),
-            center.translate(-17 + dx, 15), ink);
-        canvas.drawLine(center.translate(-5 + dx, -2),
-            center.translate(18 + dx, 15), ink);
+        canvas.drawLine(
+            center.translate(-17 + dx, 15), center.translate(-5 + dx, -2), ink);
+        canvas.drawLine(
+            center.translate(-5 + dx, -2), center.translate(4 + dx, 15), ink);
+        canvas.drawLine(
+            center.translate(4 + dx, 15), center.translate(-17 + dx, 15), ink);
+        canvas.drawLine(
+            center.translate(-5 + dx, -2), center.translate(18 + dx, 15), ink);
         final bag = Rect.fromCenter(
-            center: center.translate(8 + dx, -8),
-            width: 21,
-            height: 19);
+            center: center.translate(8 + dx, -8), width: 21, height: 19);
         canvas.drawRRect(
             RRect.fromRectAndRadius(bag, const Radius.circular(4)), fill);
         canvas.drawRRect(
             RRect.fromRectAndRadius(bag, const Radius.circular(4)), ink);
-        canvas.drawLine(center.translate(4 + dx, -19),
-            center.translate(13 + dx, -19), ink);
+        canvas.drawLine(
+            center.translate(4 + dx, -19), center.translate(13 + dx, -19), ink);
     }
   }
 

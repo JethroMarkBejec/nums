@@ -8,6 +8,7 @@ import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/app_screen_scaffold.dart';
+import 'profile_preferences_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -16,7 +17,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final username = auth.username ?? 'Customer';
-    final roleLabel = auth.role == 'admin' ? 'Admin account' : 'Customer account';
+    final roleLabel =
+        auth.role == 'admin' ? 'Admin account' : 'Customer account';
 
     return AppScreenScaffold(
       title: 'My Profile',
@@ -42,6 +44,8 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 12),
+          const ProfilePreferencesCard(),
           const SizedBox(height: 24),
           AppCard(
             child: Column(

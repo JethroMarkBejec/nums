@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/cart_provider.dart';
+import '../../../providers/auth_provider.dart';
+import '../../../providers/allergy_profile_provider.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
 import '../../../utils/formatters.dart';
@@ -42,6 +44,9 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
     ];
     final box = boxes[_selectedBox];
     final total = box.price * _quantity;
+    final allergies = context
+        .watch<AllergyProfileProvider>()
+        .forEmail(context.watch<AuthProvider>().email ?? '');
 
     return GradientBackground(
       child: Scaffold(
@@ -76,6 +81,14 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (allergies.isNotEmpty)
+                        Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Text(
+                                'Saved allergy profile (${allergies.join(', ')}). Ingredients and cross-contact are unverified; check with staff before ordering.',
+                                style: AppTextStyles.q(13,
+                                    weight: FontWeight.w700,
+                                    color: AppColors.error))),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/cart_provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/allergy_profile_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../utils/formatters.dart';
@@ -21,6 +23,9 @@ class _CartScreenState extends State<CartScreen> {
     final cart = context.watch<CartProvider>();
     final items = cart.items;
     final total = cart.total;
+    final allergyProfile = context
+        .watch<AllergyProfileProvider>()
+        .forEmail(context.watch<AuthProvider>().email ?? '');
 
     return AppScreenScaffold(
       title: 'Your Cart',
@@ -58,6 +63,14 @@ class _CartScreenState extends State<CartScreen> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: Column(
                 children: [
+                  if (allergyProfile.isNotEmpty)
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 9),
+                        child: Text(
+                            'Allergy profile on file (${allergyProfile.join(', ')}). Confirm ingredients and cross-contact with bakery staff before paying.',
+                            style: AppTextStyles.q(12,
+                                weight: FontWeight.w700,
+                                color: AppColors.error))),
                   Expanded(
                     child: ListView.separated(
                       itemCount: items.length,
@@ -86,9 +99,17 @@ class _CartScreenState extends State<CartScreen> {
                                             weight: FontWeight.w700)),
                                     const SizedBox(height: 4),
                                     Text(
-                                        'Box of ${item['boxSize'] ?? 6}  ·  Qty ${item['quantity']}',
+                                        '${item['items_summary'] ?? 'Box of ${item['boxSize'] ?? 6}'}  ·  Qty ${item['quantity']}${(item['gift_note'] as String?)?.isNotEmpty == true ? ' · Gift: ${item['gift_note']}' : ''}',
                                         style: AppTextStyles.q(13,
                                             color: AppColors.textSecondary)),
+                                    if ((item['exclusions'] as List?)
+                                            ?.isNotEmpty ==
+                                        true)
+                                      Text(
+                                          'Staff review: ${(item['exclusions'] as List).join(', ')}',
+                                          style: AppTextStyles.q(12,
+                                              weight: FontWeight.w700,
+                                              color: AppColors.error)),
                                   ],
                                 ),
                               ),

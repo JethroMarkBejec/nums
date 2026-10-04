@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/daily_batch_provider.dart';
+import '../../providers/requests_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
@@ -11,11 +13,6 @@ import '../../utils/formatters.dart';
 /// Home tab. Background gradient + bottom nav come from [CustomerShell].
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  // Static demo data (swap for InventoryProvider / BatchService later).
-  static const int _dailyLimit = 500;
-  static const int _claimed = 300;
-  static const int _cookiesLeft = 191;
 
   static const _specials = [
     ('Oatmeal Chocolate Chip', 220),
@@ -42,6 +39,7 @@ class HomeScreen extends StatelessWidget {
     final username = auth.username ?? 'Customer';
     final unreadCount =
         context.watch<NotificationProvider>().unreadCountFor(auth.email ?? '');
+    final flavorOfTheMonth = context.watch<RequestsProvider>().flavorOfTheMonth;
 
     return SafeArea(
       bottom: false,
@@ -125,10 +123,30 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 12),
             _deliveryBanner(),
             const SizedBox(height: 16),
+            if (flavorOfTheMonth != null) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: .7),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [AppColors.cardShadow]),
+                child: Text('Flavor of the Month · $flavorOfTheMonth',
+                    style: AppTextStyles.q(15, weight: FontWeight.w700)),
+              ),
+              const SizedBox(height: 10),
+            ],
             Padding(
               padding: const EdgeInsets.only(left: 4),
-              child: Text('Today\u2019s Specials',
-                  style: AppTextStyles.display1(24)),
+              child: Row(children: [
+                Expanded(
+                    child: Text('Today\u2019s Specials',
+                        style: AppTextStyles.display1(24))),
+                TextButton(
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/flavor-ideas'),
+                    child: const Text('Suggest a flavor')),
+              ]),
             ),
             const SizedBox(height: 10),
             Row(
@@ -145,7 +163,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 14),
             _bulkCard(context),
             const SizedBox(height: 10),
-            _infoBar(),
+            _infoBar(context),
           ],
         ),
       ),
@@ -153,6 +171,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _batchCard(BuildContext context) {
+    final batch = context.watch<DailyBatchProvider>();
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 11, 14, 8),
       decoration: BoxDecoration(
@@ -172,7 +191,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                Text('$_cookiesLeft',
+                Text('${batch.remaining}',
                     style: AppTextStyles.q(32,
                         weight: FontWeight.w700, color: Colors.white)),
                 const SizedBox(width: 5),
@@ -182,13 +201,13 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          Text('$_claimed / $_dailyLimit claimed',
+          Text('${batch.claimed} / ${batch.dailyLimit} claimed',
               style: AppTextStyles.q(11, color: Colors.white)),
           const SizedBox(height: 4),
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
-              value: _claimed / _dailyLimit,
+              value: batch.claimed / batch.dailyLimit,
               minHeight: 6,
               backgroundColor: Colors.white,
               valueColor: const AlwaysStoppedAnimation(AppColors.accent),
@@ -413,9 +432,7 @@ class HomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               child: InkWell(
                 borderRadius: BorderRadius.circular(18),
-                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Bulk orders coming soon.')),
-                ),
+                onTap: () => Navigator.pushNamed(context, '/build-box'),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
@@ -438,10 +455,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoBar() {
+  Widget _infoBar(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 380;
+        final dailyLimit = context.watch<DailyBatchProvider>().dailyLimit;
         final textStyle = AppTextStyles.q(13, color: AppColors.textSecondary);
         return Container(
           width: double.infinity,
@@ -459,7 +477,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text('Boxes: 3, 6, or 12 cookies', style: textStyle),
                       const SizedBox(height: 4),
-                      Text('Daily preorder limit: $_dailyLimit cookies',
+                      Text('Daily preorder limit: $dailyLimit cookies',
                           style: textStyle),
                     ],
                   )
@@ -478,8 +496,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.textSecondary,
                       ),
                       Expanded(
-                        child: Text(
-                            'Daily preorder limit: $_dailyLimit cookies',
+                        child: Text('Daily preorder limit: $dailyLimit cookies',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: textStyle),

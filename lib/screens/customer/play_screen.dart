@@ -21,8 +21,7 @@ class PlayScreen extends StatefulWidget {
   State<PlayScreen> createState() => _PlayScreenState();
 }
 
-class _PlayScreenState extends State<PlayScreen>
-    with TickerProviderStateMixin {
+class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   static const _goldenStart = 0.45;
   static const _goldenEnd = 0.55;
   static const _goodStart = 0.29;
@@ -190,8 +189,7 @@ class _PlayScreenState extends State<PlayScreen>
   }
 
   KeyEventResult _onKeyEvent(FocusNode node, KeyEvent event) {
-    if (event is KeyDownEvent &&
-        event.logicalKey == LogicalKeyboardKey.space) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.space) {
       _handlePrimaryAction();
       return KeyEventResult.handled;
     }
@@ -251,8 +249,7 @@ class _PlayScreenState extends State<PlayScreen>
             Row(
               children: [
                 Expanded(
-                  child: _infoTile(
-                      'ROUND', '$_round / $_roundsPerGame'),
+                  child: _infoTile('ROUND', '$_round / $_roundsPerGame'),
                 ),
                 const SizedBox(width: 9),
                 Expanded(
@@ -334,7 +331,8 @@ class _PlayScreenState extends State<PlayScreen>
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
-                  disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.35),
+                  disabledBackgroundColor:
+                      AppColors.primary.withValues(alpha: 0.35),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
                   ),
@@ -387,9 +385,8 @@ class _PlayScreenState extends State<PlayScreen>
 
   Widget _pointsBadge(int points) => AnimatedScale(
         scale: !_reduceMotion && _pointPop ? 1.12 : 1,
-        duration: _reduceMotion
-            ? Duration.zero
-            : const Duration(milliseconds: 160),
+        duration:
+            _reduceMotion ? Duration.zero : const Duration(milliseconds: 160),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
           decoration: BoxDecoration(
@@ -423,8 +420,7 @@ class _PlayScreenState extends State<PlayScreen>
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.q(9,
-                    weight: FontWeight.w700,
-                    color: AppColors.textSecondary)),
+                    weight: FontWeight.w700, color: AppColors.textSecondary)),
             const SizedBox(height: 3),
             FittedBox(
               fit: BoxFit.scaleDown,
@@ -508,8 +504,8 @@ class _PerfectBakePainter extends CustomPainter {
       Offset(0.4, 0.25),
     ]) {
       canvas.drawCircle(
-        cookieCenter + Offset(chip.dx * size.width * 0.1,
-            chip.dy * size.width * 0.1),
+        cookieCenter +
+            Offset(chip.dx * size.width * 0.1, chip.dy * size.width * 0.1),
         size.width * 0.012,
         chips,
       );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../providers/cart_provider.dart';
 import '../../providers/order_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
@@ -71,7 +73,7 @@ class HistoryScreen extends StatelessWidget {
                                     weight: FontWeight.w700)),
                           ),
                           const StatusBadge(
-                              text: 'Ready', color: AppColors.success),
+                              text: 'Received', color: AppColors.success),
                         ],
                       ),
                       const SizedBox(height: 14),
@@ -80,7 +82,12 @@ class HistoryScreen extends StatelessWidget {
                         email: order['email'] as String? ?? '',
                       ),
                       const SizedBox(height: 8),
-                      Text(items.map((item) => item['name']).join(', '),
+                      Text(
+                          items
+                              .map((item) =>
+                                  (item['items_summary'] as String?) ??
+                                  item['name'])
+                              .join(', '),
                           style: AppTextStyles.q(14,
                               color: AppColors.textSecondary)),
                       const SizedBox(height: 8),
@@ -97,6 +104,54 @@ class HistoryScreen extends StatelessWidget {
                                   AppTextStyles.q(16, weight: FontWeight.w700)),
                         ],
                       ),
+                      const SizedBox(height: 8),
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            final cart = context.read<CartProvider>();
+                            for (final item in items) {
+                              final copy =
+                                  Map<String, dynamic>.from(item as Map);
+                              copy['id'] =
+                                  'reorder-${DateTime.now().microsecondsSinceEpoch}-${copy['id']}';
+                              cart.addItem(copy);
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Previous items added to your cart.')));
+                            Navigator.pushNamed(context, '/cart');
+                          },
+                          icon: const Icon(Icons.replay_rounded),
+                          label: const Text('Order again'),
+                        ),
+                        const SizedBox(width: 8),
+                        OutlinedButton.icon(
+                          onPressed: () => showDialog<void>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text('Digital receipt'),
+                                    content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          QrImageView(
+                                              data:
+                                                  'NUMS|${order['id']}|${order['total']}|${order['paymentStatus']}',
+                                              size: 176),
+                                          SelectableText(
+                                              'NUMS receipt · ${order['id']}\nTotal: ${AppFormatters.peso(order['total'] as num)}\nPayment: ${order['paymentStatus']}\nReceived: ${AppFormatters.longDate(order['createdAt'] as DateTime)}'),
+                                        ]),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('Close'))
+                                    ],
+                                  )),
+                          icon: const Icon(Icons.receipt_long_outlined),
+                          label: const Text('Receipt'),
+                        ),
+                      ]),
                     ],
                   ),
                 );

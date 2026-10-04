@@ -52,11 +52,11 @@ class OrderDetailsScreen extends StatelessWidget {
                   style: AppTextStyles.display1(28)),
             ),
             StatusBadge(
-              text: status == OrderProvider.finalStatus ? 'Ready' : status,
-              color:
-                  status == OrderProvider.finalStatus
-                      ? AppColors.success
-                      : AppColors.warning,
+              text: status == OrderProvider.readyStatus ? 'Ready' : status,
+              color: status == OrderProvider.readyStatus ||
+                      status == OrderProvider.finalStatus
+                  ? AppColors.success
+                  : AppColors.warning,
             ),
           ],
         ),
@@ -88,10 +88,15 @@ class OrderDetailsScreen extends StatelessWidget {
                               style:
                                   AppTextStyles.q(15, weight: FontWeight.w700)),
                           Text(
-                            'Box of ${item['boxSize'] ?? 6} · Qty ${item['quantity']}',
+                            '${item['items_summary'] ?? 'Box of ${item['boxSize'] ?? 6}'} · Qty ${item['quantity']}',
                             style: AppTextStyles.q(12,
                                 color: AppColors.textSecondary),
                           ),
+                          if ((item['gift_note'] as String?)?.isNotEmpty ==
+                              true)
+                            Text('Gift note: ${item['gift_note']}',
+                                style: AppTextStyles.q(12,
+                                    color: AppColors.textSecondary)),
                           if ((item['notes'] as String?)?.isNotEmpty ?? false)
                             Text('Note: ${item['notes']}',
                                 style: AppTextStyles.q(12,

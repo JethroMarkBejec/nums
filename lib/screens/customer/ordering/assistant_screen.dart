@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../models/cookie_catalog.dart';
+import '../../../providers/auth_provider.dart';
+import '../../../providers/cart_provider.dart';
+import '../../../providers/daily_batch_provider.dart';
+import '../../../providers/order_provider.dart';
+import '../../../providers/requests_provider.dart';
+import '../../../providers/language_provider.dart';
+import '../../../repositories/points_repository.dart';
+import '../../../services/chat_repository.dart';
 import '../../../services/assistant_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
@@ -13,7 +23,7 @@ class AssistantScreen extends StatefulWidget {
 }
 
 class _AssistantScreenState extends State<AssistantScreen> {
-  final _assistant = AssistantService();
+  final ChatRepository _assistant = LocalChatRepository();
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [
@@ -46,7 +56,121 @@ class _AssistantScreenState extends State<AssistantScreen> {
     _scrollToBottom();
 
     try {
-      final reply = await _assistant.getReply(text);
+      final normalized = text.toLowerCase();
+      final auth = context.read<AuthProvider>();
+      final email = auth.email ?? '';
+      if (normalized.contains('talk to staff') ||
+          normalized.contains('human') ||
+          normalized.contains('contact admin') ||
+          normalized.contains('kausap')) {
+        context.read<RequestsProvider>().create(email: email, message: text);
+        _appendAssistant(
+            'I sent this to the local staff Requests inbox. Staff can open Dashboard → Customer requests to reply.',
+            'Ipinadala ko ito sa local Requests inbox ng staff. Makikita nila ito sa Dashboard → Customer requests.');
+        return;
+      }
+      if (normalized.contains('redeem') && normalized.contains('cookie')) {
+        final repository = context.read<PointsRepository>();
+        final redeemed =
+            repository.redeemPoints(auth, email: email, points: 20);
+        if (redeemed) {
+          final flavor = CookieCatalog.flavors.first;
+          context.read<CartProvider>().addItem({
+            'id': 'reward-${DateTime.now().microsecondsSinceEpoch}',
+            'name': 'Points reward · ${flavor.name}',
+            'price': 0,
+            'quantity': 1,
+            'boxSize': 1,
+            'items_summary': '1x ${flavor.name} (20-point reward)',
+          });
+          _appendAssistant(
+              'Done! I used 20 points and added one Butter Cookie reward to your cart. Your balance is now ${repository.balance(auth, email)} points.',
+              'Nagamit ko ang 20 points at idinagdag ang Butter Cookie reward sa cart mo. May ${repository.balance(auth, email)} points ka na.');
+        } else {
+          _appendAssistant(
+              'A free cookie costs 20 points. Your current balance is ${repository.balance(auth, email)} points, so I have not changed it.',
+              'Kailangan ng 20 points para sa libreng cookie. May ${repository.balance(auth, email)} points ka, kaya walang binago sa balance mo.');
+        }
+        return;
+      }
+      final cookie = CookieCatalog.find(text);
+      final quantity = int.tryParse(RegExp(r'\b(\d+)\s*(?:boxes?|box|kahon)')
+                  .firstMatch(normalized)
+                  ?.group(1) ??
+              '') ??
+          0;
+      if (quantity > 0 &&
+          cookie != null &&
+          cookie.isAvailable &&
+          (normalized.contains('box') || normalized.contains('kahon'))) {
+        final requestedSize = int.tryParse(RegExp(r'box\s+of\s+(4|6|12)')
+                    .firstMatch(normalized)
+                    ?.group(1) ??
+                '') ??
+            6;
+        final size = [4, 6, 12].contains(requestedSize) ? requestedSize : 6;
+        context.read<CartProvider>().addItem({
+          'id': 'assistant-${DateTime.now().microsecondsSinceEpoch}',
+          'name': cookie.name,
+          'price': cookie.pricePerCookie * size,
+          'quantity': quantity,
+          'boxSize': size,
+          'items_summary':
+              '$quantity box${quantity == 1 ? '' : 'es'} of $size · ${cookie.name}',
+        });
+        final day = RegExp(
+                r'\b(on|for)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b')
+            .firstMatch(normalized)
+            ?.group(2);
+        _appendAssistant(
+            'Added $quantity box${quantity == 1 ? '' : 'es'} of ${cookie.name} to your cart. The local demo checkout currently uses tomorrow’s pickup/delivery date${day == null ? '' : ', so “$day” is noted here but cannot be scheduled in this demo'}.',
+            'Idinagdag ko sa cart ang $quantity kahon ng ${cookie.name}. Bukas lang ang petsa sa checkout ng demo na ito${day == null ? '' : ', kaya hindi ma-iiskedyul ang “$day”'}.');
+        return;
+      }
+      if (normalized.contains('batch') ||
+          normalized.contains('cookies left') ||
+          normalized.contains('remaining')) {
+        final batch = context.read<DailyBatchProvider>();
+        _appendAssistant(
+            'Today’s local demo batch has ${batch.remaining} cookies remaining out of ${batch.dailyLimit}.',
+            'May ${batch.remaining} cookies pang kapasidad ang batch ngayon sa local demo.');
+        return;
+      }
+      if (normalized.contains('balance') ||
+          normalized.contains('how many points')) {
+        final balance = context.read<PointsRepository>().balance(auth, email);
+        _appendAssistant(
+            'You have $balance points. A free cookie reward costs 20 points; say “redeem free cookie” to use it.',
+            'May $balance points ka. Kailangan ng 20 points para sa libreng cookie; sabihin ang “redeem free cookie” para gamitin ito.');
+        return;
+      }
+      if (normalized.contains('allerg') ||
+          normalized.contains('ingredient') ||
+          normalized.contains('gluten') ||
+          normalized.contains('nut')) {
+        final flavor = CookieCatalog.find(text);
+        final listed = flavor?.listedIngredients.join(', ');
+        _appendAssistant(
+            flavor == null || listed == null || listed.isEmpty
+                ? 'I do not have verified ingredient details for that item. Please confirm directly with bakery staff before ordering if you have an allergy.'
+                : '${flavor.name} lists these ingredients: $listed. This demo cannot verify preparation or cross-contact, so please confirm with bakery staff before ordering if you have an allergy.',
+            'Wala akong beripikadong impormasyon tungkol sa sangkap o cross-contact. Kumpirmahin muna sa staff bago umorder kung may allergy ka.');
+        return;
+      }
+      if (normalized.contains('my orders') ||
+          normalized.contains('order status') ||
+          normalized.contains('track my') ||
+          normalized.contains('status')) {
+        final orders = context.read<OrderProvider>().ordersFor(email);
+        if (orders.isNotEmpty) {
+          _appendAssistant(
+              'Your latest order ${orders.first['id']} is ${orders.first['status']}. Open Orders for its full progress.',
+              'Ang pinakabagong order mo na ${orders.first['id']} ay ${orders.first['status']}. Buksan ang Orders para makita ang buong progress.');
+          return;
+        }
+      }
+      final reply = await _assistant.replyTo(text,
+          preferTagalog: context.read<LanguageProvider>().isTagalog);
       if (!mounted) return;
       setState(() {
         _messages.add(_ChatMessage(
@@ -69,6 +193,17 @@ class _AssistantScreenState extends State<AssistantScreen> {
       });
       _scrollToBottom();
     }
+  }
+
+  void _appendAssistant(String text, [String? filipino]) {
+    if (!mounted) return;
+    final localized =
+        context.read<LanguageProvider>().isTagalog ? (filipino ?? text) : text;
+    setState(() {
+      _messages.add(_ChatMessage(text: localized, fromAssistant: true));
+      _isReplying = false;
+    });
+    _scrollToBottom();
   }
 
   void _scrollToBottom() {
@@ -101,6 +236,20 @@ class _AssistantScreenState extends State<AssistantScreen> {
       body: Column(
         children: [
           const _LocalAssistantBanner(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+            child: Wrap(spacing: 7, runSpacing: 3, children: [
+              _QuickPrompt(
+                  label: 'Build a box',
+                  onTap: () => _sendMessage('Build a box')),
+              _QuickPrompt(
+                  label: 'My points',
+                  onTap: () => _sendMessage('How many points do I have?')),
+              _QuickPrompt(
+                  label: 'Talk to staff',
+                  onTap: () => _sendMessage('I want to talk to staff')),
+            ]),
+          ),
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -128,6 +277,15 @@ class _AssistantScreenState extends State<AssistantScreen> {
       ),
     );
   }
+}
+
+class _QuickPrompt extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _QuickPrompt({required this.label, required this.onTap});
+  @override
+  Widget build(BuildContext context) =>
+      ActionChip(label: Text(label), onPressed: onTap);
 }
 
 class _LocalAssistantBanner extends StatelessWidget {
@@ -159,8 +317,7 @@ class _LocalAssistantBanner extends StatelessWidget {
                 child: Text(
                   'Screen-reader guide · English and Tagalog',
                   style: AppTextStyles.q(12,
-                      weight: FontWeight.w600,
-                      color: AppColors.textSecondary),
+                      weight: FontWeight.w600, color: AppColors.textSecondary),
                 ),
               ),
             ),
@@ -206,8 +363,7 @@ class _MessageComposer extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Message the Cookie Assistant',
                 hintText: 'Ask in English or Tagalog…',
-                hintStyle:
-                    AppTextStyles.q(13, color: AppColors.textSecondary),
+                hintStyle: AppTextStyles.q(13, color: AppColors.textSecondary),
                 filled: true,
                 fillColor: Colors.white.withValues(alpha: 0.88),
                 contentPadding:

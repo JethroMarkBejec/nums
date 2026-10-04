@@ -15,10 +15,11 @@ class AssistantService {
   ];
 
   /// Local rule-based guide. It does not send messages to an online AI.
-  Future<AssistantReply> getReply(String query) async {
+  Future<AssistantReply> getReply(String query,
+      {bool preferTagalog = false}) async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
     final message = query.trim().toLowerCase();
-    final tagalog = _isTagalog(message);
+    final tagalog = preferTagalog || _isTagalog(message);
 
     if (_isGreeting(message)) {
       return AssistantReply(
@@ -30,6 +31,25 @@ class AssistantService {
                 'Choose a button below or tell me what you need.',
         actions: destinations,
       );
+    }
+
+    if (_matches(message, const ['redeem', 'points', 'reward', 'puntos'])) {
+      return AssistantReply(
+          text: tagalog
+              ? 'May local points rewards sa account mo. Sabihin ang “redeem free cookie” kung may 20 points ka; susuriin ko muna ang balance.'
+              : 'Points are stored in your local demo account. Say “redeem free cookie” to use 20 points; I will check your balance first.',
+          actions: const [
+            AssistantAction(label: 'Open Profile', route: '/profile')
+          ]);
+    }
+    if (_matches(message,
+        const ['build a box', 'custom box', 'mix a box', 'build my box'])) {
+      return const AssistantReply(
+          text:
+              'Choose a 4, 6, or 12-cookie box, then tap or drag flavors into the slots.',
+          actions: [
+            AssistantAction(label: 'Build a Box', route: '/build-box')
+          ]);
     }
 
     if (_matches(message, const [
@@ -94,8 +114,7 @@ class AssistantService {
                 'appear in Notifications.',
         actions: const [
           AssistantAction(label: 'Open Orders', route: '/orders'),
-          AssistantAction(
-              label: 'Open Notifications', route: '/notifications'),
+          AssistantAction(label: 'Open Notifications', route: '/notifications'),
         ],
       );
     }
@@ -248,9 +267,8 @@ class AssistantService {
     final budget = _findBudget(message);
     if (budget != null) {
       final match = _menu.where((cookie) => cookie.price <= budget).toList();
-      final choices = match
-          .map((cookie) => '${cookie.name} (₱${cookie.price})')
-          .join(', ');
+      final choices =
+          match.map((cookie) => '${cookie.name} (₱${cookie.price})').join(', ');
       return AssistantReply(
         text: match.isEmpty
             ? 'The listed box of 6 starts at ₱${_menu.first.price}. Smaller '

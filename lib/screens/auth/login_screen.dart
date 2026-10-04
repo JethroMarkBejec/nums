@@ -65,7 +65,8 @@ class _LoginScreenState extends State<LoginScreen>
       return;
     }
     final role = context.read<AuthProvider>().role;
-    final destination = role == 'admin' ? '/admin-dashboard' : '/customer-shell';
+    final destination =
+        role == 'admin' ? '/admin-dashboard' : '/customer-shell';
     Navigator.pushNamedAndRemoveUntil(context, destination, (route) => false);
   }
 

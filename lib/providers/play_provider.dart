@@ -6,11 +6,9 @@ class PlayProvider with ChangeNotifier {
 
   final Map<String, _DailyPlays> _dailyPlays = {};
 
-  int playsTodayFor(String email) =>
-      _dailyPlaysFor(email)?.plays ?? 0;
+  int playsTodayFor(String email) => _dailyPlaysFor(email)?.plays ?? 0;
 
-  int playsRemainingFor(String email) =>
-      dailyPlayLimit - playsTodayFor(email);
+  int playsRemainingFor(String email) => dailyPlayLimit - playsTodayFor(email);
 
   bool startPlay(String email) {
     final userKey = email.trim().toLowerCase();

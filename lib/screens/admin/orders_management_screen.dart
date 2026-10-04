@@ -95,10 +95,11 @@ class OrdersManagementScreen extends StatelessWidget {
                           ),
                         ),
                         StatusBadge(
-                            text: status == OrderProvider.finalStatus
+                            text: status == OrderProvider.readyStatus
                                 ? 'Ready'
                                 : status,
-                            color: status == OrderProvider.finalStatus
+                            color: status == OrderProvider.readyStatus ||
+                                    status == OrderProvider.finalStatus
                                 ? AppColors.success
                                 : AppColors.warning),
                       ],
@@ -141,11 +142,48 @@ class OrdersManagementScreen extends StatelessWidget {
                           },
                           icon: const Icon(Icons.arrow_forward_rounded),
                           label: Text(next == OrderProvider.finalStatus
-                              ? 'Mark ready'
-                              : 'Advance to $next'),
+                              ? 'Mark received'
+                              : next == OrderProvider.readyStatus
+                                  ? 'Mark ready'
+                                  : 'Advance to $next'),
                         ),
                       ),
                     ],
+                    if (order['paymentStatus'] == 'Paid (demo)')
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (dialogContext) => AlertDialog(
+                                        title: const Text(
+                                            'Refund this demo payment?'),
+                                        content: const Text(
+                                            'This changes the local payment status only; no money moves.'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  dialogContext, false),
+                                              child: const Text('Cancel')),
+                                          FilledButton(
+                                              onPressed: () => Navigator.pop(
+                                                  dialogContext, true),
+                                              child: const Text('Refund'))
+                                        ],
+                                      ));
+                              if (confirm != true || !context.mounted) return;
+                              context.read<OrderProvider>().refundOrder(id);
+                              context.read<NotificationProvider>().add(
+                                  title: 'Payment refunded',
+                                  message:
+                                      'The demo payment for $id was marked Refunded.',
+                                  email: order['email'] as String,
+                                  orderId: id);
+                            },
+                            icon: const Icon(Icons.currency_exchange_rounded),
+                            label: const Text('Refund (demo)'),
+                          )),
                   ],
                 ),
               );
