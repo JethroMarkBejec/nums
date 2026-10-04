@@ -16,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final username = auth.username ?? 'Customer';
+    final roleLabel = auth.role == 'admin' ? 'Admin account' : 'Customer account';
 
     return AppScreenScaffold(
       title: 'My Profile',
@@ -36,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(username, style: AppTextStyles.display1(30)),
                 const SizedBox(height: 4),
-                Text('Customer account',
+                Text(roleLabel,
                     style: AppTextStyles.q(14, color: AppColors.textSecondary)),
               ],
             ),
@@ -59,14 +60,14 @@ class ProfileScreen extends StatelessWidget {
                     label: 'Email',
                     value: auth.email ?? 'Not signed in'),
                 const Divider(height: 24, color: AppColors.divider),
-                const _ProfileDetail(
+                _ProfileDetail(
                     icon: Icons.badge_outlined,
                     label: 'Role',
-                    value: 'Customer'),
+                    value: auth.role == 'admin' ? 'Admin' : 'Customer'),
               ],
             ),
           ),
-          if (kDebugMode) ...[
+          if (kDebugMode && auth.role == 'admin') ...[
             const SizedBox(height: 12),
             OutlinedButton.icon(
               icon: const Icon(Icons.manage_accounts_outlined),

@@ -2,11 +2,14 @@ import 'package:flutter/foundation.dart';
 
 class OrderProvider with ChangeNotifier {
   static const statuses = [
-    'Placed',
-    'Preparing',
-    'Out for delivery',
-    'Delivered'
+    'Confirmed',
+    'Mixing',
+    'Baking',
+    'Cooling',
+    'Packed',
+    'Ready for pickup / Out for delivery',
   ];
+  static const finalStatus = 'Ready for pickup / Out for delivery';
   final List<Map<String, dynamic>> _orders = [];
   int _nextOrderNumber = 1027;
 

@@ -106,8 +106,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'method': _selected,
       'orderedAt': now,
       'deliveryDate': AppFormatters.tomorrow(now),
-      'status': 'Placed',
+      'status': order['status'],
       'paymentStatus': order['paymentStatus'],
+      'email': auth.email ?? '',
     };
     cart.clear();
     Navigator.pushNamedAndRemoveUntil(

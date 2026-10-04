@@ -1,23 +1,34 @@
 import 'package:flutter/foundation.dart';
 
+import '../models/user.dart';
+
 class AuthProvider with ChangeNotifier {
-  final Map<String, ({String name, String password})> _accounts = {
-    'welcome@nums.com': (name: 'Cookie Lover', password: 'cookies123'),
+  final Map<String, ({String name, String password, String role})> _accounts = {
+    'welcome@nums.com': (
+      name: 'Cookie Lover',
+      password: 'cookies123',
+      role: 'customer',
+    ),
+    'staff@nums.com': (
+      name: 'NUMS Staff',
+      password: 'staff123',
+      role: 'admin',
+    ),
   };
 
-  bool _isAuthenticated = false;
-  String? _email;
-  String? _username;
+  AppUser? _currentUser;
 
-  bool get isAuthenticated => _isAuthenticated;
-  String? get email => _email;
-  String? get username => _username;
+  bool get isAuthenticated => _currentUser != null;
+  String? get email => _currentUser?.email;
+  String? get username => _currentUser?.name;
+  String? get role => _currentUser?.role;
+  AppUser? get currentUser => _currentUser;
 
   bool signIn({required String email, required String password}) {
     final normalizedEmail = email.trim().toLowerCase();
     final account = _accounts[normalizedEmail];
     if (account == null || account.password != password) return false;
-    _setSession(normalizedEmail, account.name);
+    _setSession(normalizedEmail, account.name, account.role);
     return true;
   }
 
@@ -29,22 +40,27 @@ class AuthProvider with ChangeNotifier {
     if (trimmedName.isEmpty || normalizedEmail.isEmpty || password.length < 6) {
       return false;
     }
-    _accounts[normalizedEmail] = (name: trimmedName, password: password);
-    _setSession(normalizedEmail, trimmedName);
+    _accounts[normalizedEmail] = (
+      name: trimmedName,
+      password: password,
+      role: 'customer',
+    );
+    _setSession(normalizedEmail, trimmedName, 'customer');
     return true;
   }
 
-  void _setSession(String email, String name) {
-    _email = email;
-    _username = name;
-    _isAuthenticated = true;
+  void _setSession(String email, String name, String role) {
+    _currentUser = AppUser(
+      id: email,
+      name: name,
+      email: email,
+      role: role,
+    );
     notifyListeners();
   }
 
   void logout() {
-    _isAuthenticated = false;
-    _email = null;
-    _username = null;
+    _currentUser = null;
     notifyListeners();
   }
 }

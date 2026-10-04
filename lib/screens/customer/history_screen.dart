@@ -9,6 +9,7 @@ import '../../utils/formatters.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/app_screen_scaffold.dart';
 import '../../widgets/status_badge.dart';
+import '../../widgets/live_bake_tracker.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -19,7 +20,7 @@ class HistoryScreen extends StatelessWidget {
     final orders = context
         .watch<OrderProvider>()
         .ordersFor(email)
-        .where((order) => order['status'] == 'Delivered')
+        .where((order) => order['status'] == OrderProvider.finalStatus)
         .toList();
     return AppScreenScaffold(
       title: 'Order History',
@@ -43,7 +44,7 @@ class HistoryScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text('Your past orders', style: AppTextStyles.display1(30)),
                     const SizedBox(height: 8),
-                    Text('Delivered orders will be saved here.',
+                    Text('Orders at the final tracker stage will appear here.',
                         style:
                             AppTextStyles.q(15, color: AppColors.textSecondary),
                         textAlign: TextAlign.center),
@@ -70,8 +71,13 @@ class HistoryScreen extends StatelessWidget {
                                     weight: FontWeight.w700)),
                           ),
                           const StatusBadge(
-                              text: 'Delivered', color: AppColors.success),
+                              text: 'Ready', color: AppColors.success),
                         ],
+                      ),
+                      const SizedBox(height: 14),
+                      LiveBakeTracker(
+                        orderId: order['id'] as String,
+                        email: order['email'] as String? ?? '',
                       ),
                       const SizedBox(height: 8),
                       Text(items.map((item) => item['name']).join(', '),

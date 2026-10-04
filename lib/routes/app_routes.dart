@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/auth_provider.dart';
 import '../screens/auth/loading_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
@@ -7,7 +9,6 @@ import '../screens/auth/verification_screen.dart';
 import '../screens/auth/welcome_screen.dart';
 import '../screens/design_preview_screen.dart';
 import '../screens/customer/customer_shell.dart';
-import '../screens/customer/home_screen.dart';
 import '../screens/customer/menu_screen.dart';
 import '../screens/customer/cart_screen.dart';
 import '../screens/customer/orders_screen.dart';
@@ -63,7 +64,8 @@ class AppRoutes {
         signup: (context) => const SignupScreen(),
         verification: (context) => const VerificationScreen(),
         customerShell: (context) => const CustomerShell(),
-        home: (context) => const HomeScreen(),
+        // The Home tab needs the shell's Scaffold/Material and bottom nav.
+        home: (context) => const CustomerShell(),
         menu: (context) => const MenuScreen(),
         cart: (context) => const CartScreen(),
         orders: (context) => const OrdersScreen(),
@@ -76,11 +78,63 @@ class AppRoutes {
         orderSummary: (context) => const OrderSummaryScreen(),
         payment: (context) => const PaymentScreen(),
         confirmation: (context) => const ConfirmationScreen(),
-        adminDashboard: (context) => const AdminDashboardScreen(),
-        adminOrders: (context) => const OrdersManagementScreen(),
-        adminOrderDetails: (context) => const OrderDetailsScreen(),
-        adminInventory: (context) => const InventoryScreen(),
-        adminBatch: (context) => const BatchManagementScreen(),
-        adminProfile: (context) => const AdminProfileScreen(),
+        adminDashboard: (context) => _AdminRouteGate(
+              child: const AdminDashboardScreen(),
+            ),
+        adminOrders: (context) => _AdminRouteGate(
+              child: const OrdersManagementScreen(),
+            ),
+        adminOrderDetails: (context) => _AdminRouteGate(
+              child: const OrderDetailsScreen(),
+            ),
+        adminInventory: (context) => _AdminRouteGate(
+              child: const InventoryScreen(),
+            ),
+        adminBatch: (context) => _AdminRouteGate(
+              child: const BatchManagementScreen(),
+            ),
+        adminProfile: (context) => _AdminRouteGate(
+              child: const AdminProfileScreen(),
+            ),
       };
+}
+
+class _AdminRouteGate extends StatelessWidget {
+  final Widget child;
+
+  const _AdminRouteGate({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    if (context.watch<AuthProvider>().role == 'admin') return child;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Staff access')),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.lock_outline_rounded, size: 42),
+              const SizedBox(height: 12),
+              const Text(
+                'Sign in with a staff demo account to open this screen.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.login,
+                  (route) => false,
+                ),
+                child: const Text('Go to sign in'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

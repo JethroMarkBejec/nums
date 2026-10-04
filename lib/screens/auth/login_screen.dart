@@ -64,8 +64,9 @@ class _LoginScreenState extends State<LoginScreen>
       );
       return;
     }
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/customer-shell', (route) => false);
+    final role = context.read<AuthProvider>().role;
+    final destination = role == 'admin' ? '/admin-dashboard' : '/customer-shell';
+    Navigator.pushNamedAndRemoveUntil(context, destination, (route) => false);
   }
 
   @override
@@ -153,7 +154,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 onPressed: _isSubmitting ? null : _logIn,
                               ),
                               const SizedBox(height: 8),
-                              Text('Demo: welcome@nums.com  ·  cookies123',
+                              Text(
+                                  'Customer demo: welcome@nums.com · cookies123\nStaff demo: staff@nums.com · staff123',
                                   textAlign: TextAlign.center,
                                   style: AppTextStyles.q(11,
                                       color: AppColors.textSecondary)),

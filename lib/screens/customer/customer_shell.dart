@@ -45,6 +45,15 @@ class _CustomerShellState extends State<CustomerShell> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: screens[_selectedIndex],
+        floatingActionButton: FloatingActionButton.small(
+          heroTag: 'customer-cookie-assistant',
+          tooltip: 'Open Cookie Assistant',
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 4,
+          onPressed: () => Navigator.pushNamed(context, '/assistant'),
+          child: const Icon(Icons.chat_rounded),
+        ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.88),

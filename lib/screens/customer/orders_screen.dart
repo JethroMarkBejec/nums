@@ -25,7 +25,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final email = context.watch<AuthProvider>().email ?? '';
     final orders = context.watch<OrderProvider>().ordersFor(email);
     final visible = orders
-        .where((order) => (order['status'] == 'Delivered') == _showHistory)
+        .where((order) =>
+            (order['status'] == OrderProvider.finalStatus) == _showHistory)
         .toList();
 
     return AppScreenScaffold(
@@ -170,8 +171,8 @@ class _OrderCard extends StatelessWidget {
                 ),
               ),
               StatusBadge(
-                text: status,
-                color: status == 'Delivered'
+                text: status == OrderProvider.finalStatus ? 'Ready' : status,
+                color: status == OrderProvider.finalStatus
                     ? AppColors.success
                     : AppColors.warning,
               ),
@@ -186,7 +187,7 @@ class _OrderCard extends StatelessWidget {
           Text(
               '$boxCount box${boxCount == 1 ? '' : 'es'} · ${items.length} product${items.length == 1 ? '' : 's'}',
               style: AppTextStyles.q(12, color: AppColors.textSecondary)),
-          if (status != 'Delivered') ...[
+          if (status != OrderProvider.finalStatus) ...[
             const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

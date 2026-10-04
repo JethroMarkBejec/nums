@@ -18,7 +18,7 @@ class AdminDashboardScreen extends StatelessWidget {
     final inventory = context.watch<InventoryProvider>().inventory;
     final batches = context.watch<BatchProvider>().batches;
     final activeOrders =
-        orders.where((order) => order['status'] != 'Delivered').length;
+        orders.where((order) => order['status'] != OrderProvider.finalStatus).length;
     final boxesInStock = inventory.fold<int>(
       0,
       (sum, item) => sum + (item['quantity'] as int),

@@ -95,8 +95,10 @@ class OrdersManagementScreen extends StatelessWidget {
                           ),
                         ),
                         StatusBadge(
-                            text: status,
-                            color: status == 'Delivered'
+                            text: status == OrderProvider.finalStatus
+                                ? 'Ready'
+                                : status,
+                            color: status == OrderProvider.finalStatus
                                 ? AppColors.success
                                 : AppColors.warning),
                       ],
@@ -138,7 +140,9 @@ class OrdersManagementScreen extends StatelessWidget {
                                 content: Text('$id updated to $next')));
                           },
                           icon: const Icon(Icons.arrow_forward_rounded),
-                          label: Text('Advance to $next'),
+                          label: Text(next == OrderProvider.finalStatus
+                              ? 'Mark ready'
+                              : 'Advance to $next'),
                         ),
                       ),
                     ],

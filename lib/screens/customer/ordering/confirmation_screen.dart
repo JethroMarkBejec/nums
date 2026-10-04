@@ -7,6 +7,7 @@ import '../../../utils/formatters.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_card.dart';
 import '../../../widgets/gradient_background.dart';
+import '../../../widgets/live_bake_tracker.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   const ConfirmationScreen({super.key});
@@ -27,13 +28,10 @@ class ConfirmationScreen extends StatelessWidget {
         !OrderProvider.statuses.contains(statusValue)) {
       return _missingOrder(context);
     }
-    final status = statusValue;
-
     final orderNumber = args['orderNumber'] as String;
     final total = args['total'] as num;
     final method = args['method'] as String;
     final paymentStatus = args['paymentStatus'] as String;
-    final statusIndex = OrderProvider.statuses.indexOf(status);
     final orderedAt = args['orderedAt'] as DateTime;
     final delivery = args['deliveryDate'] as DateTime;
 
@@ -98,30 +96,10 @@ class ConfirmationScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 18),
-                      AppCard(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const AppCardHeader(title: 'Order Status'),
-                            const SizedBox(height: 18),
-                            for (var i = 0;
-                                i < OrderProvider.statuses.length;
-                                i++)
-                              _Step(
-                                title: OrderProvider.statuses[i],
-                                subtitle: i == 0
-                                    ? '${AppFormatters.longDate(orderedAt)} - ${AppFormatters.time12(orderedAt)}'
-                                    : i < statusIndex
-                                        ? 'Complete'
-                                        : i == statusIndex
-                                            ? 'In progress'
-                                            : 'Waiting',
-                                done: statusIndex >= i,
-                                last: i == OrderProvider.statuses.length - 1,
-                              ),
-                          ],
-                        ),
+                      LiveBakeTracker(
+                        orderId: orderNumber,
+                        email: args['email'] as String? ?? '',
+                        showDemoButton: true,
                       ),
                       const SizedBox(height: 18),
                       AppCard(
@@ -197,77 +175,4 @@ class ConfirmationScreen extends StatelessWidget {
           ),
         ),
       );
-}
-
-/// One row of the vertical status timeline.
-class _Step extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final bool done;
-  final bool last;
-
-  const _Step({
-    required this.title,
-    required this.subtitle,
-    this.done = false,
-    this.last = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            width: 30,
-            child: Column(
-              children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: done ? AppColors.primary : Colors.transparent,
-                    border: Border.all(
-                      color: done ? AppColors.primary : AppColors.timeline,
-                      width: 2.5,
-                    ),
-                  ),
-                  child: done
-                      ? const Icon(Icons.check_rounded,
-                          color: Colors.white, size: 20)
-                      : null,
-                ),
-                if (!last)
-                  Expanded(
-                    child: Container(
-                      width: 4,
-                      color: done ? AppColors.primary : AppColors.timeline,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: last ? 0 : 22),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: AppTextStyles.q(17, weight: FontWeight.w600)),
-                  const SizedBox(height: 2),
-                  Text(subtitle,
-                      style:
-                          AppTextStyles.q(13, color: AppColors.textSecondary)),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

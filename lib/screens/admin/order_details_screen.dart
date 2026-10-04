@@ -38,7 +38,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   Widget _details(BuildContext context, Map<String, dynamic> order) {
     final items = List<Map<String, dynamic>>.from(order['items'] as List);
-    final status = order['status'] as String? ?? 'Placed';
+    final status = order['status'] as String? ?? OrderProvider.statuses.first;
     final createdAt = order['createdAt'] as DateTime;
     final deliveryDate = order['deliveryDate'] as DateTime;
 
@@ -52,9 +52,11 @@ class OrderDetailsScreen extends StatelessWidget {
                   style: AppTextStyles.display1(28)),
             ),
             StatusBadge(
-              text: status,
+              text: status == OrderProvider.finalStatus ? 'Ready' : status,
               color:
-                  status == 'Delivered' ? AppColors.success : AppColors.warning,
+                  status == OrderProvider.finalStatus
+                      ? AppColors.success
+                      : AppColors.warning,
             ),
           ],
         ),
