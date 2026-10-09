@@ -12,15 +12,6 @@ class PointsRepository {
   int balance(AuthProvider auth, String email) =>
       auth.pointsForAccount(email) ?? 0;
 
-  bool awardGamePoints(
-    AuthProvider auth, {
-    required String email,
-    required int points,
-  }) {
-    if (points <= 0) return false;
-    return _changeBalance(auth, email, points);
-  }
-
   bool awardFeedback(
     AuthProvider auth, {
     required String email,

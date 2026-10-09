@@ -188,7 +188,7 @@ class _BuildBoxScreenState extends State<BuildBoxScreen> {
           children: [
             Text('Make your own cookie mix', style: AppTextStyles.display1(24)),
             const SizedBox(height: 4),
-            Text('Tap a flavor or drag it into a dotted slot.',
+            Text('Tap a flavor or drag it into your cookie box.',
                 style: AppTextStyles.q(14, color: AppColors.textSecondary)),
             const SizedBox(height: 14),
             Wrap(
@@ -209,57 +209,7 @@ class _BuildBoxScreenState extends State<BuildBoxScreen> {
                   style: AppTextStyles.q(17, weight: FontWeight.w700)),
             ]),
             const SizedBox(height: 8),
-            Wrap(
-                spacing: 9,
-                runSpacing: 9,
-                children: List.generate(
-                    _size,
-                    (index) => DragTarget<CookieFlavor>(
-                          onAcceptWithDetails: (details) {
-                            if (details.data.isAvailable)
-                              setState(() => _slots[index] = details.data);
-                          },
-                          builder: (context, candidates, rejected) => InkWell(
-                            onTap: _slots[index] == null
-                                ? null
-                                : () => setState(() => _slots[index] = null),
-                            borderRadius: BorderRadius.circular(16),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 180),
-                              width: 58,
-                              height: 58,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: candidates.isNotEmpty
-                                      ? AppColors.accentSoft
-                                      : Colors.white.withValues(alpha: .7),
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: CustomPaint(
-                                foregroundPainter: _DottedSlotBorder(
-                                    color: AppColors.primary
-                                        .withValues(alpha: .55)),
-                                child: Center(
-                                    child: AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 260),
-                                  switchInCurve: Curves.elasticOut,
-                                  transitionBuilder: (child, animation) =>
-                                      ScaleTransition(
-                                          scale: animation, child: child),
-                                  child: _slots[index] == null
-                                      ? const Icon(Icons.add_rounded,
-                                          key: ValueKey('empty-slot'),
-                                          color: AppColors.textSecondary)
-                                      : Tooltip(
-                                          key: ValueKey(_slots[index]!.id),
-                                          message:
-                                              '${_slots[index]!.name} — tap to remove',
-                                          child: const Text('🍪',
-                                              style: TextStyle(fontSize: 26))),
-                                )),
-                              ),
-                            ),
-                          ),
-                        ))),
+            _buildBoxPreview(),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               TextButton.icon(
                   onPressed: _autoFill,
@@ -391,29 +341,252 @@ class _BuildBoxScreenState extends State<BuildBoxScreen> {
           ]),
     );
   }
+
+  Widget _buildBoxPreview() {
+    final columns = _size == 4 ? 2 : (_size == 6 ? 3 : 4);
+    final rows = (_size / columns).ceil();
+    final height = rows * 64.0 + 128;
+    return LayoutBuilder(builder: (context, constraints) {
+      final cellWidth =
+          (constraints.maxWidth - 36 - (columns - 1) * 4) / columns;
+      return SizedBox(
+        height: height,
+        child: Stack(
+          children: [
+            Positioned.fill(child: CustomPaint(painter: _BakeryBoxPainter())),
+            Positioned(
+              left: 17,
+              right: 17,
+              top: 12,
+              height: rows * 64.0,
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: _size,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: columns,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                  childAspectRatio: cellWidth / 60,
+                ),
+                itemBuilder: (context, index) => _boxSlot(index),
+              ),
+            ),
+            Positioned(
+              left: 28,
+              right: 42,
+              bottom: 20,
+              height: 38,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF4D9),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFD6B785)),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x33263B4F),
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: _gift
+                    ? Row(children: [
+                        const Icon(Icons.favorite_rounded,
+                            size: 15, color: AppColors.primary),
+                        const SizedBox(width: 7),
+                        Expanded(
+                          child: Text(
+                            _note.text.trim().isEmpty
+                                ? 'Your gift note goes here'
+                                : _note.text.trim(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.q(11,
+                                weight: FontWeight.w700,
+                                color: AppColors.primary),
+                          ),
+                        ),
+                      ])
+                    : Row(children: [
+                        const Icon(Icons.cookie_rounded,
+                            size: 16, color: AppColors.primary),
+                        const SizedBox(width: 7),
+                        Text('NUMS · FRESHLY BAKED',
+                            style: AppTextStyles.q(10,
+                                weight: FontWeight.w700,
+                                color: AppColors.primary)),
+                      ]),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _boxSlot(int index) => DragTarget<CookieFlavor>(
+        onAcceptWithDetails: (details) {
+          if (details.data.isAvailable) {
+            setState(() => _slots[index] = details.data);
+          }
+        },
+        builder: (context, candidates, rejected) {
+          final flavor = _slots[index];
+          return InkWell(
+            onTap: flavor == null
+                ? null
+                : () => setState(() => _slots[index] = null),
+            borderRadius: BorderRadius.circular(16),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: candidates.isNotEmpty
+                    ? AppColors.accentSoft
+                    : const Color(0xFFE8D4B5),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFB79769), width: 1.2),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x35263B4F),
+                    blurRadius: 4,
+                    offset: Offset(0, 3),
+                  ),
+                  BoxShadow(
+                    color: Color(0xAAFFF9ED),
+                    blurRadius: 1,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 240),
+                  switchInCurve: Curves.easeOutBack,
+                  transitionBuilder: (child, animation) => ScaleTransition(
+                    scale: animation,
+                    child: FadeTransition(opacity: animation, child: child),
+                  ),
+                  child: flavor == null
+                      ? Container(
+                          key: const ValueKey('empty-cookie-well'),
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: const Color(0xFFC8AC83),
+                            border: Border.all(
+                                color: const Color(0xFFB79769), width: 1),
+                          ),
+                          child: const Icon(Icons.add_rounded,
+                              size: 20, color: AppColors.textSecondary),
+                        )
+                      : Tooltip(
+                          key: ValueKey(flavor.id),
+                          message: '${flavor.name} — tap to remove',
+                          child: Container(
+                            width: 52,
+                            height: 52,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x553D2916),
+                                  blurRadius: 7,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/cookie_oatmeal.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
 }
 
-class _DottedSlotBorder extends CustomPainter {
-  final Color color;
-  const _DottedSlotBorder({required this.color});
-
+class _BakeryBoxPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-          Offset.zero & size, const Radius.circular(16)));
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-    for (final metric in path.computeMetrics()) {
-      for (double distance = 2; distance < metric.length; distance += 8) {
-        canvas.drawCircle(
-            metric.getTangentForOffset(distance)!.position, 1.15, paint);
-      }
-    }
+    final w = size.width;
+    final h = size.height;
+    final body = RRect.fromRectAndRadius(
+        Rect.fromLTWH(5, 4, w - 10, h - 15), const Radius.circular(26));
+    canvas.drawShadow(Path()..addRRect(body), const Color(0x66263B4F), 9, true);
+    canvas.drawRRect(
+      body,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFE5C99D), Color(0xFFB98C55)],
+        ).createShader(Rect.fromLTWH(5, 4, w - 10, h - 15)),
+    );
+
+    final frontY = h - 76;
+    final side = Path()
+      ..moveTo(w - 32, frontY - 12)
+      ..lineTo(w - 5, frontY - 1)
+      ..lineTo(w - 5, h - 27)
+      ..lineTo(w - 32, h - 38)
+      ..close();
+    canvas.drawPath(
+        side,
+        Paint()
+          ..shader = const LinearGradient(
+            colors: [Color(0xFFB18148), Color(0xFF8B6038)],
+          ).createShader(Rect.fromLTWH(w - 32, frontY, 27, 50)));
+
+    final front = RRect.fromRectAndRadius(
+        Rect.fromLTRB(14, frontY - 12, w - 32, h - 20),
+        const Radius.circular(12));
+    canvas.drawRRect(
+      front,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFD0A46B), Color(0xFF9A6B3D)],
+        ).createShader(Rect.fromLTRB(14, frontY - 12, w - 32, h - 20)),
+    );
+    canvas.drawRRect(
+      front,
+      Paint()
+        ..color = const Color(0x66835A33)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.2,
+    );
+
+    final top = RRect.fromRectAndRadius(
+        Rect.fromLTRB(12, 10, w - 14, frontY - 5), const Radius.circular(20));
+    canvas.drawRRect(
+        top,
+        Paint()
+          ..shader = const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFFFE8BE), Color(0xFFD7B17A)],
+          ).createShader(Rect.fromLTRB(12, 10, w - 14, frontY - 5)));
+    canvas.drawRRect(
+      top,
+      Paint()
+        ..color = const Color(0x889B744A)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant _DottedSlotBorder oldDelegate) =>
-      color != oldDelegate.color;
+  bool shouldRepaint(covariant _BakeryBoxPainter oldDelegate) => false;
 }

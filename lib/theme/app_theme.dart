@@ -64,8 +64,8 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
-        elevation: 2,
-        shadowColor: Color(0x22263B4F),
+        elevation: 4,
+        shadowColor: Color(0x30263B4F),
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
@@ -80,10 +80,10 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          elevation: 2,
-          shadowColor: AppColors.primary.withValues(alpha: 0.24),
-          animationDuration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          elevation: 4,
+          shadowColor: AppColors.primary.withValues(alpha: 0.30),
+          animationDuration: const Duration(milliseconds: 220),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
           textStyle: const TextStyle(
             fontFamily: 'Quicksand',
             fontWeight: FontWeight.w700,
@@ -95,8 +95,10 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
-          side: const BorderSide(color: AppColors.cardBorder),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          backgroundColor: AppColors.surface.withValues(alpha: 0.55),
+          side: const BorderSide(color: AppColors.cardBorder, width: 1.2),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+          elevation: 1,
           textStyle: const TextStyle(
             fontFamily: 'Quicksand',
             fontWeight: FontWeight.w700,
@@ -118,6 +120,13 @@ class AppTheme {
       navigationBarTheme: const NavigationBarThemeData(
         labelTextStyle: WidgetStatePropertyAll(
           TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        ),
+      ),
+      listTileTheme: const ListTileThemeData(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        minVerticalPadding: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(

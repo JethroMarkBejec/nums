@@ -232,7 +232,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScreenScaffold(
-      title: 'Cookie Assistant',
+      title: 'Chip',
       body: Column(
         children: [
           const _LocalAssistantBanner(),
@@ -310,12 +310,12 @@ class _LocalAssistantBanner extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Semantics(
-              label: 'Local Cookie Assistant. Screen-reader-friendly guided '
+              label: 'Chip is a local screen-reader-friendly guide with guided '
                   'navigation. Type in English or Tagalog. Replies stay on '
                   'this device.',
               child: ExcludeSemantics(
                 child: Text(
-                  'Screen-reader guide · English and Tagalog',
+                  'Chip · Screen-reader guide · English and Tagalog',
                   style: AppTextStyles.q(12,
                       weight: FontWeight.w600, color: AppColors.textSecondary),
                 ),
@@ -361,7 +361,7 @@ class _MessageComposer extends StatelessWidget {
               onSubmitted: (_) => onSend(),
               style: AppTextStyles.q(14),
               decoration: InputDecoration(
-                labelText: 'Message the Cookie Assistant',
+                labelText: 'Message Chip',
                 hintText: 'Ask in English or Tagalog…',
                 hintStyle: AppTextStyles.q(13, color: AppColors.textSecondary),
                 filled: true,
@@ -449,7 +449,7 @@ class _MessageBubble extends StatelessWidget {
       ),
       child: Semantics(
         liveRegion: isAssistant,
-        label: '${isAssistant ? 'Cookie Assistant' : 'You'}: ${message.text}',
+        label: '${isAssistant ? 'Chip' : 'You'}: ${message.text}',
         child: ExcludeSemantics(
           child: Text(
             message.text,

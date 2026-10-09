@@ -337,14 +337,14 @@ class HomeScreen extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                     decoration: const BoxDecoration(
                       color: AppColors.primary,
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(8)),
                     ),
                     child: Text('In Stock',
-                        style: AppTextStyles.q(9,
+                        style: AppTextStyles.q(7.5,
                             weight: FontWeight.w600, color: Colors.white)),
                   ),
                 ),

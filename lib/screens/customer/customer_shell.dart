@@ -9,7 +9,6 @@ import 'cart_screen.dart';
 import 'home_screen.dart';
 import 'menu_screen.dart';
 import 'orders_screen.dart';
-import 'play_screen.dart';
 import 'profile_screen.dart';
 
 class CustomerShell extends StatefulWidget {
@@ -26,7 +25,6 @@ class _CustomerShellState extends State<CustomerShell> {
     (Icons.home_outlined, Icons.home_rounded, 'Home'),
     (Icons.fact_check_outlined, Icons.fact_check_rounded, 'Menu'),
     (Icons.shopping_cart_outlined, Icons.shopping_cart_rounded, 'Cart'),
-    (Icons.sports_esports_outlined, Icons.sports_esports_rounded, 'Play'),
     (Icons.checklist_rounded, Icons.checklist_rounded, 'Orders'),
     (Icons.person_outline_rounded, Icons.person_rounded, 'Profile'),
   ];
@@ -35,11 +33,11 @@ class _CustomerShellState extends State<CustomerShell> {
   Widget build(BuildContext context) {
     final cartCount = context.watch<CartProvider>().itemCount;
     final navVerticalOffset = MediaQuery.of(context).viewPadding.bottom / 2;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final screens = [
       const HomeScreen(),
       const MenuScreen(),
       const CartScreen(),
-      const PlayScreen(),
       const OrdersScreen(),
       const ProfileScreen(),
     ];
@@ -47,10 +45,29 @@ class _CustomerShellState extends State<CustomerShell> {
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: screens[_selectedIndex],
+        body: AnimatedSwitcher(
+          duration: Duration(milliseconds: reduceMotion ? 1 : 200),
+          reverseDuration: Duration(milliseconds: reduceMotion ? 1 : 160),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation) => FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.018),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          ),
+          child: KeyedSubtree(
+            key: ValueKey(_selectedIndex),
+            child: screens[_selectedIndex],
+          ),
+        ),
         floatingActionButton: FloatingActionButton.small(
-          heroTag: 'customer-cookie-assistant',
-          tooltip: 'Open Cookie Assistant',
+          heroTag: 'customer-chip-assistant',
+          tooltip: 'Open Chip',
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           elevation: 4,
@@ -95,9 +112,7 @@ class _CustomerShellState extends State<CustomerShell> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 7, vertical: 5),
                                 decoration: BoxDecoration(
-                                  color: i == _selectedIndex
-                                      ? AppColors.accentSoft
-                                      : Colors.transparent,
+                                  color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Stack(

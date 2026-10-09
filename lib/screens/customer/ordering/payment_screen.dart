@@ -35,6 +35,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _isReviewing = false;
   bool _isPaying = false;
   bool _didLoadAccount = false;
+  bool _editingLinkedAccount = false;
   final _numberController = TextEditingController();
 
   @override
@@ -60,6 +61,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final saved = context
         .read<PaymentAccountProvider>()
         .save(email, _selected, _numberController.text);
+    if (saved) {
+      setState(() {
+        _editingLinkedAccount = false;
+        _numberController.clear();
+      });
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(saved
             ? 'Payment preference saved on this device.'
@@ -362,15 +369,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             const SizedBox(height: 14),
                             for (final m in _methods)
                               _methodTile(m.name, m.asset),
-                            if (_selected != 'Cash') ...[
-                              TextField(
-                                  controller: _numberController,
-                                  keyboardType: TextInputType.phone,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Linked mobile number')),
-                            ],
-                            Text(
-                                'Linked account: ${context.watch<PaymentAccountProvider>().accountFor(context.watch<AuthProvider>().email ?? '')?['number'] ?? 'Not linked'}'),
                             const SizedBox(height: 8),
                             Row(children: [
                               Expanded(
@@ -490,54 +488,131 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Widget _methodTile(String name, String? asset) {
     final selected = _selected == name;
-    return InkWell(
-      onTap: () => setState(() => _selected = name),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            if (asset != null)
-              ClipOval(
-                  child: Image.asset(asset,
-                      width: 46, height: 46, fit: BoxFit.cover))
-            else
-              const CircleAvatar(
-                  backgroundColor: AppColors.accentSoft,
-                  child:
-                      Icon(Icons.payments_outlined, color: AppColors.primary)),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(name,
-                      style: AppTextStyles.q(17, weight: FontWeight.w600)),
-                  Text('Pay with $name',
-                      style:
-                          AppTextStyles.q(14, color: AppColors.textSecondary)),
-                ],
-              ),
+    final email = context.watch<AuthProvider>().email ?? '';
+    final saved = context.watch<PaymentAccountProvider>().accountFor(email);
+    final accountLinked = saved?['method'] == name;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    return Column(
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: () => setState(() {
+            if (_selected != name) _numberController.clear();
+            _selected = name;
+            _editingLinkedAccount = false;
+          }),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                if (asset != null)
+                  ClipOval(
+                      child: Image.asset(asset,
+                          width: 46, height: 46, fit: BoxFit.cover))
+                else
+                  const CircleAvatar(
+                      backgroundColor: AppColors.accentSoft,
+                      child: Icon(Icons.payments_outlined,
+                          color: AppColors.primary)),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name,
+                          style: AppTextStyles.q(17, weight: FontWeight.w600)),
+                      Text('Pay with $name',
+                          style: AppTextStyles.q(14,
+                              color: AppColors.textSecondary)),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.primary, width: 1.3),
+                  ),
+                  alignment: Alignment.center,
+                  child: selected
+                      ? Container(
+                          width: 12,
+                          height: 12,
+                          decoration: const BoxDecoration(
+                              color: AppColors.primary, shape: BoxShape.circle),
+                        )
+                      : null,
+                ),
+              ],
             ),
-            Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primary, width: 1.3),
-              ),
-              alignment: Alignment.center,
-              child: selected
-                  ? Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                          color: AppColors.primary, shape: BoxShape.circle),
-                    )
-                  : null,
-            ),
-          ],
+          ),
         ),
-      ),
+        AnimatedSize(
+          duration: Duration(milliseconds: reduceMotion ? 1 : 220),
+          curve: Curves.easeInOutCubic,
+          alignment: Alignment.topCenter,
+          child: selected && name != 'Cash'
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 60, right: 4, bottom: 8),
+                  child: accountLinked && !_editingLinkedAccount
+                      ? Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.accentSoft.withValues(alpha: 0.48),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: AppColors.cardBorder),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.verified_user_outlined,
+                                  size: 19, color: AppColors.primary),
+                              const SizedBox(width: 9),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('$name account linked',
+                                        style: AppTextStyles.q(12,
+                                            weight: FontWeight.w700)),
+                                    Text(saved?['number'] ?? '',
+                                        style: AppTextStyles.q(12,
+                                            color: AppColors.textSecondary)),
+                                  ],
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () => setState(() {
+                                  _editingLinkedAccount = true;
+                                  _numberController.clear();
+                                }),
+                                child: const Text('Change'),
+                              ),
+                            ],
+                          ),
+                        )
+                      : TextField(
+                          controller: _numberController,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: 'Link $name mobile number',
+                            hintText: '09XX XXX XXXX',
+                            suffixIcon: _editingLinkedAccount
+                                ? IconButton(
+                                    tooltip: 'Cancel change',
+                                    onPressed: () => setState(
+                                        () => _editingLinkedAccount = false),
+                                    icon: const Icon(Icons.close_rounded),
+                                  )
+                                : null,
+                          ),
+                        ),
+                )
+              : const SizedBox(width: double.infinity),
+        ),
+      ],
     );
   }
 }
