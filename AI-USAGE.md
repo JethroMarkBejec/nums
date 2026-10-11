@@ -92,30 +92,31 @@ I did not keep a dated prompt log or save the original assistant responses. The 
 
 These are three problems I encountered while reviewing AI-assisted work during development. The descriptions are based on the behavior I observed and the code revisions that remain. Since I did not save the original prompts or assistant responses, I cannot attribute a specific faulty line to Claude or Codex. The linked commits show the relevant implementation and later changes; their dates are when the code landed, not necessarily when I noticed the issue.
 
-### Checkout could show payment as pending
+### AI-assisted checkout allowed an order to remain unpaid
 
-- **What the first checkout implementation did:** Its confirmation dialog said, “Place this order? Payment will show as pending until a payment provider is connected,” and it created the order before any payment step. That is visible in the initial code and is the behavior I reviewed and asked to change; I no longer have the original assistant response, and the grouped commit does not show who wrote that exact line.
+- **What the AI-assisted first pass did:** Its confirmation dialog said, “Place this order? Payment will show as pending until a payment provider is connected,” and the flow created the order before any payment step. I used AI assistance on this checkout flow; I later noticed that the behavior did not match the payment-first process I wanted.
 - **Date / tools:** The initial pending-payment flow landed October 4; the pay-before-confirmation correction landed October 5 with OpenAI Codex. I did not record which assistant first proposed the pending flow or the exact date I noticed the mismatch.
-- **What was wrong:** It confirmed an order without first completing payment, contrary to the flow I wanted, even though the rest of the app presented checkout as a payment step.
-- **What I did instead:** I specified that a local payment simulation must succeed before the order is confirmed, reviewed the payment warning and result, and kept an exception for allergy orders that need staff approval before payment. The implemented correction only marks a normal order as paid after the repository reports success.
+- **What was wrong:** A customer could reach an order record without the demo payment succeeding. That made the order state conflict with the intended checkout sequence.
+- **What I did instead:** I specified that the local payment simulation must succeed before a normal order is confirmed or marked paid. Allergy-exclusion orders remain a separate staff-review path before payment.
 - **Flutter/Dart files:** `lib/screens/customer/ordering/payment_screen.dart`, `lib/screens/customer/ordering/confirmation_screen.dart`, `lib/providers/order_provider.dart`.
 - **Commit:** [Initial pending-payment checkout](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [pay-before-confirmation correction](https://github.com/JethroMarkBejec/nums/commit/cbd3aefe01ad9f6faf1da78af4760767e9a97a7f).
 
-### Some screen layouts clipped or used space awkwardly
+### AI-assisted UI polish needed correction to fit the design
 
-- **What the AI-assisted layouts did:** Some narrow mobile layouts showed overflow indicators or clipped content, alongside inconsistent spacing and alignment.
-- **Date / tools:** The specific spacing and responsive-layout revisions landed October 9, 2026, with OpenAI Codex. Individual prompt dates were not recorded.
-- **What was wrong:** The affected screens were harder to read and the layout did not feel consistent on the mobile preview.
-- **What I did instead:** I called out the mobile preview's `BOTTOM OVERFLOWED BY 12 PIXELS` warning, cramped spacing, and clipped elements, then reviewed padding, alignment, and component sizing changes. I asked to keep the existing palette and mobile preview while making the layouts fit.
-- **Flutter/Dart files:** `lib/screens/customer/ordering/build_box_screen.dart`, `lib/screens/customer/profile_preferences_card.dart`, `lib/theme/app_theme.dart`, `lib/widgets/app_button.dart`, `lib/widgets/app_card.dart`.
+- **What the AI-assisted first passes did:** Some layouts had cramped or clipped content, including a `BOTTOM OVERFLOWED BY 12 PIXELS` warning. Other UI details did not match my requirements: the linked-payment controls lacked spacing, the selected navigation item had a background I wanted removed, the allergy choices looked like boxed checkboxes, and the “In Stock” label was too large for its badge. The first visual-polish passes also did not give every screen a consistent sense of depth and interaction; shadows, hover/press feedback, and motion needed more careful tuning to feel lively without changing the palette or becoming too heavy.
+- **Date / tools:** I reported these issues during follow-up UI work; related grouped Flutter UI revisions landed October 9, 2026, with OpenAI Codex. I did not keep exact dates for each request.
+- **Why this needed correction:** Some items were usability or layout problems; others were mismatches with my design requirements rather than functional defects. The first AI-assisted result was not ready to keep without review because spacing, control sizing, selected states, and visual effects needed to work together across screens.
+- **What I did instead:** I gave specific feedback about spacing, badge and text sizing, checkbox shape, selected-state treatment, and the amount of visual depth. I asked to preserve the existing palette and mobile preview, then reviewed the revised shared styles and screen layouts. Some of these were my design preferences becoming more specific; I treated the first result as a draft and requested changes until it matched those requirements.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/build_box_screen.dart`, `lib/screens/customer/profile_preferences_card.dart`, `lib/screens/customer/customer_shell.dart`, `lib/screens/customer/menu_screen.dart`, `lib/theme/app_theme.dart`, `lib/widgets/app_button.dart`, `lib/widgets/app_card.dart`.
 - **Commit:** [Shared Flutter UI revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
+- **Attribution:** These visual changes were made through back-and-forth work. The grouped commits do not isolate which individual property or line came from AI versus my edits, so I describe the first-pass mismatches and my corrections without assigning every line to one author.
 
-### Assistant navigation did not open the selected destination correctly
+### AI-assisted Chip navigation crashed instead of opening Home
 
-- **What the AI-assisted flow did:** Selecting Home from Chip produced a Flutter runtime error (`type 'Null' is not a subtype of type 'int'`) instead of showing the destination.
+- **What the AI-assisted flow did:** The guided Home action from Chip produced a Flutter runtime error (`type 'Null' is not a subtype of type 'int'`) instead of opening the intended destination.
 - **Date / tools:** The assistant service and navigation revisions landed October 5 and 9, 2026, with OpenAI Codex. I did not record the exact prompt date for this error.
-- **What was wrong:** The assistant is meant to reduce navigation effort, so a broken destination defeated its purpose.
-- **What I did instead:** I reported the failure and requested that its Flutter navigation and destination handling be corrected.
+- **What was wrong:** Chip is intended to help customers navigate the app. A runtime exception made its Home action unusable and interrupted the flow.
+- **What I did instead:** I reported the failed action and requested corrections to the assistant action and route/destination handling. I treated the action as unfinished until it opened the intended screen rather than relying on the response text alone.
 - **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/routes/app_routes.dart`, `lib/screens/customer/customer_shell.dart`.
 - **Commit:** [Assistant service and guided-navigation revisions](https://github.com/JethroMarkBejec/nums/commit/7c1b4d5026db603b31c1c2d9a5e13f66580ad89c), [assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
