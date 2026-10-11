@@ -161,7 +161,7 @@ The screenshots supplied so far do not cover every route. Add original captures 
 
 ## Presentation
 
-- **Presentation Video:** [Watch the public Google Drive video](https://drive.google.com/file/d/1c8ja0-bsB7ThlaaLmiGVSCP5rLiJsx2e/view?usp=sharing)
+- **Presentation Video:** [Watch the public Google Drive video](https://drive.google.com/file/d/15gs5qLaw--Mx22JCGuuMSLaYZf6bw_C7/view?usp=sharing)
 - **Presentation Slides:** [Download the updated PDF](presentation/NUMS-Presentation.pdf)
 - **Square Image:** [NUMS logo](presentation/nums_logo.png)
 
