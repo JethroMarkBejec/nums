@@ -42,6 +42,7 @@ class NumSApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RequestsProvider()),
       ],
       child: MaterialApp(
+        useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         title: 'nums',

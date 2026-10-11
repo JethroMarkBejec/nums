@@ -8,6 +8,8 @@ void main() {
   runApp(
     DevicePreview(
       enabled: kIsWeb || !kReleaseMode,
+      isToolbarVisible: true,
+      storage: const DevicePreviewStorage.none(),
       builder: (context) => const NumSApp(),
     ),
   );
