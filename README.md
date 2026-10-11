@@ -169,7 +169,7 @@ The screenshots supplied so far do not cover every route. Add original captures 
 
 ## AI Usage Disclosure
 
-AI credit: I used Claude and OpenAI Codex extensively during the initial implementation (September 20–October 4), then used OpenAI Codex for Flutter/Dart revisions on October 5 and 9 and compatibility maintenance on October 11. My retrospective 80% AI / 20% personal-contribution estimate applies to the initial implementation only; it is not a line-by-line measurement. My contributions included writing the initial welcome, login, and sign-up screens; setting the visual direction; reviewing spacing and motion; and guiding feature scope, including keeping relevant points rewards while removing the standalone game. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record and a clear distinction between my design decisions and code authorship.
+AI credit: I used Claude and OpenAI Codex extensively during the initial implementation (September 20–October 4), and continued the project afterward with both my own hands-on revisions and AI assistance. I also used OpenAI Codex for Flutter/Dart compatibility maintenance on October 11. My retrospective 80% AI / 20% personal-contribution estimate applies to the initial implementation only; it is not a line-by-line measurement. My contributions included writing the initial welcome, login, and sign-up screens; setting the visual direction; reviewing spacing and motion; and guiding feature scope, including keeping relevant points rewards while removing the standalone game. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record and a clear distinction between my design decisions and code authorship.
 
 ## Security
 
