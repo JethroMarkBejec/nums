@@ -169,7 +169,7 @@ The screenshots supplied so far do not cover every route. Add original captures 
 
 ## AI Usage Disclosure
 
-AI credit: During the original implementation from September 20 to October 4, I used Claude and OpenAI Codex extensively for Flutter/Dart implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement. I also used OpenAI Codex for Flutter/Dart compatibility maintenance on October 11. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record.
+AI credit: I used Claude and OpenAI Codex extensively during the initial implementation (September 20–October 4), then used OpenAI Codex for Flutter/Dart revisions on October 5 and 9 and compatibility maintenance on October 11. My retrospective 80% AI / 20% personal-contribution estimate applies to the initial implementation only; it is not a line-by-line measurement. My contributions included writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record.
 
 ## Security
 
