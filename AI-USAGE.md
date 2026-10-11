@@ -69,6 +69,15 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 - **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/services/assistant_service.dart`, `lib/services/chat_repository.dart`, `lib/routes/app_routes.dart`.
 - **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [assistant service and guided-navigation revisions](https://github.com/JethroMarkBejec/nums/commit/7c1b4d5026db603b31c1c2d9a5e13f66580ad89c), [assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
+### Loyalty points and keeping the feature focused
+
+- **Date / tool:** October 5, 2026; OpenAI Codex. I later asked Codex to remove the standalone game on October 9 while keeping the useful ordering rewards.
+- **What I asked:** Add a points system for activities such as feedback and trying a new flavor, with points tracked for each user and logic kept in one repository. I also explored a mini-game as a way to earn points.
+- **What it gave me:** A `PointsRepository` that awards feedback and new-flavor points once per item, reads and updates the user's points balance, and checks a balance before redemption. Chip can tell the customer their balance and apply an eligible reward to the cart.
+- **What I kept or changed, and why:** I decided the standalone game felt unrelated to a cookie-ordering app, so I removed that screen. I kept the points tied to relevant customer actions—feedback and flavors—and the reward/redemption flow.
+- **Flutter/Dart files:** `lib/repositories/points_repository.dart`, `lib/models/user.dart`, `lib/providers/auth_provider.dart`, `lib/screens/customer/orders_screen.dart`, `lib/screens/customer/ordering/assistant_screen.dart`, `lib/screens/customer/play_screen.dart` (removed).
+- **Commit:** [Initial game and points implementation](https://github.com/JethroMarkBejec/nums/commit/2242d77bb50ef46977e25f01c3bec43d7271ab1e), [remove standalone game and keep ordering rewards](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
+
 ### Flutter compatibility and analyzer cleanup
 
 - **Date / tool:** October 11, 2026; OpenAI Codex.
@@ -120,6 +129,10 @@ I wrote the initial welcome, login, and sign-up screens. I also made the visual 
 - **`lib/screens/auth/signup_screen.dart`:** I organized name, email, and password entry as one form. It checks the fields, reports duplicate email, and then takes a created demo account into the customer app.
 - **Why I built them this way:** Keeping welcome, login, and sign-up separate gives each screen one clear job. I made the layout and visual decisions so the first step stays obvious and consistent with the bakery theme.
 - **Commit for these initial screens:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c). The later changes to their behavior are AI-assisted revisions, as noted above.
+
+### Product and visual direction I owned
+
+I reviewed the screens and called out spacing, padding, margin, and sizing problems when content felt cramped or misplaced. I set the intended visual direction for motion, shadows, button depth, and consistent use of the existing palette. I also guided feature scope: I requested the points/reward idea, then decided the standalone game did not fit the ordering app and should be removed while relevant rewards stayed. These are my product and design decisions; I am not presenting design direction by itself as Dart code authorship.
 
 ### AI-assisted Flutter/Dart code I understand best
 
