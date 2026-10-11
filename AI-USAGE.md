@@ -80,9 +80,12 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 
 ## 2. Where the AI got it wrong
 
+For the three cases below, the work happened during September 20–October 4, 2026, with Claude and OpenAI Codex. I did not record which assistant or exact day produced each suggestion, so I am not assigning either more precisely.
+
 ### Checkout could show payment as pending
 
 - **What the AI-assisted flow did:** The order display could say “Payment: Pending” even though checkout was supposed to collect payment before confirming the order.
+- **Date / tools:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact assistant and date were not recorded.
 - **What was wrong:** That status contradicted the intended order flow.
 - **What I did instead:** I asked for the local payment step to complete first and for the confirmed demo order to be labeled paid only after the simulation succeeds.
 - **Flutter/Dart files:** `lib/screens/customer/ordering/payment_screen.dart`, `lib/screens/customer/ordering/confirmation_screen.dart`, `lib/providers/order_provider.dart`.
@@ -91,6 +94,7 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 ### Some screen layouts clipped or used space awkwardly
 
 - **What the AI-assisted layouts did:** Some screen iterations had cramped spacing, awkward alignment, or content extending beyond its intended area.
+- **Date / tools:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact assistant and date were not recorded.
 - **What was wrong:** The affected screens were harder to read and the layout did not feel consistent on the mobile preview.
 - **What I did instead:** I reviewed the screens and requested specific adjustments to padding, alignment, and component sizing while preserving the existing palette and preview.
 - **Flutter/Dart files:** `lib/screens/customer/ordering/build_box_screen.dart`, `lib/screens/customer/profile_preferences_card.dart`, `lib/theme/app_theme.dart`, `lib/widgets/app_button.dart`, `lib/widgets/app_card.dart`.
@@ -99,18 +103,11 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 ### Assistant navigation did not open the selected destination correctly
 
 - **What the AI-assisted flow did:** The assistant's navigation could land on an unusable screen instead of taking the customer to the selected app destination.
+- **Date / tools:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact assistant and date were not recorded.
 - **What was wrong:** The assistant is meant to reduce navigation effort, so a broken destination defeated its purpose.
 - **What I did instead:** I reported the failure and requested that its Flutter navigation and destination handling be corrected.
 - **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/routes/app_routes.dart`, `lib/screens/customer/customer_shell.dart`.
 - **Commit:** [Assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
-
-### A Flutter API was deprecated
-
-- **What the AI-assisted app code did:** It kept `useInheritedMediaQuery: true` in the `MaterialApp` setup even though the current Flutter SDK ignores and deprecates that property.
-- **What was wrong:** Keeping a no-op deprecated option made the current Flutter code less clear and caused an analyzer finding.
-- **What I did instead:** I removed the option and verified the app with Flutter analysis and a production web build; the DevicePreview locale and builder remain in place.
-- **Flutter/Dart file:** `lib/app.dart`.
-- **Commit:** [Flutter compatibility and analyzer cleanup](https://github.com/JethroMarkBejec/nums/commit/20619a3).
 
 ## 3. Who wrote what
 

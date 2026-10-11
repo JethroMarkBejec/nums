@@ -1,3 +1,5 @@
+[![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
+
 # NUMS — Cookie Ordering App
 
 A Flutter ordering app for a small home-based cookie bakery. Customers can browse and customize orders, while bakery staff can manage orders, inventory, and baking batches.
@@ -166,8 +168,6 @@ The screenshots supplied so far do not cover every route. Add original captures 
 - **Square Image:** [NUMS logo](presentation/nums_logo.png)
 
 ## AI Usage Disclosure
-
-[![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
 
 AI credit: During the original implementation from September 20 to October 4, I used Claude and OpenAI Codex extensively for Flutter/Dart implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement. I also used OpenAI Codex for Flutter/Dart compatibility maintenance on October 11. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record.
 
