@@ -9,7 +9,7 @@ void main() {
     DevicePreview(
       enabled: kIsWeb || !kReleaseMode,
       isToolbarVisible: true,
-      storage: const DevicePreviewStorage.none(),
+      storage: DevicePreviewStorage.none(),
       builder: (context) => const NumSApp(),
     ),
   );
