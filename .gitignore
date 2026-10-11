@@ -18,3 +18,7 @@ Thumbs.db
 *.log
 
 .flutter-plugins-dependencies
+
+# Keep presentation deliverables out of the Flutter app repository.
+/presentation-build/
+/presentation-output/
