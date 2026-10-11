@@ -1,9 +1,5 @@
 # nums
 
-[![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
-
-AI credit: From September 20 to October 4, I used Claude and OpenAI Codex extensively for implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement.
-
 ## 1. Overview
 
 `nums` is a Flutter cookie ordering app for customers and bakery staff. Customers can browse and customize cookie orders and follow their progress, while staff can manage orders, inventory, and baking batches.
@@ -19,6 +15,8 @@ The app was verified locally with Flutter 3.47.5 and Dart 3.13.4. `pubspec.yaml`
    git clone https://github.com/JethroMarkBejec/nums.git
    cd nums
    ```
+
+   Want to preview it without installing Flutter? [Open the deployed app](https://jethromarkbejec.github.io/nums/).
 
 3. Fetch the packages:
 
@@ -93,7 +91,7 @@ Add your app screenshots here using the screen names shown in the app (for examp
 
 Public repository: [nums](https://github.com/JethroMarkBejec/nums)
 
-Live app: Not deployed
+Live app: [Open the deployed preview](https://jethromarkbejec.github.io/nums/)
 
 ### What it is
 
@@ -105,10 +103,12 @@ Follow [Setup and installation](#setup-and-installation) and [How to run it](#ho
 
 ### Presentation
 
-- Video (public Google Drive link): Add your video link
-- Slides (link or PDF): Add your slides link
-- Square image: Add the image to this folder or provide a link
+- Video (public Google Drive link): [Watch the presentation](https://drive.google.com/file/d/1c8ja0-bsB7ThlaaLmiGVSCP5rLiJsx2e/view?usp=sharing)
+- Slides (PDF): [NUMS presentation](presentation/NUMS-Presentation.pdf)
+- Square image (logo): [NUMS logo](presentation/nums_logo.png)
 
 ## AI usage
 
-See [AI-USAGE.md](AI-USAGE.md) for the tools used, what I changed, and my contributions.
+[![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
+
+AI credit: From September 20 to October 4, I used Claude and OpenAI Codex extensively for implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement.

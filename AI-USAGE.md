@@ -1,100 +1,116 @@
-# AI Usage
+# AI Usage in Flutter/Dart Code
 
-I used Claude and OpenAI Codex while building the nums Flutter app between September 20 and October 4, 2026. I estimate that AI assisted with about 80% of the implementation, while my contribution was about 20%, mainly through product decisions, visual design, layout, motion, and review. These percentages are my estimate, not a measurement of lines of code.
+I used Claude and OpenAI Codex while building the NUMS Flutter app between September 20 and October 4, 2026. My retrospective estimate is that AI helped with about 80% of the implementation. I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is an estimate, not a line-by-line measurement.
 
-I did not keep a dated log of every prompt or make a separate commit for each screen. The entries below are a retrospective account of the work. Where the exact assistant or day for an individual change was not recorded, I say so rather than guessing. The project was committed in larger batches, so a linked commit may contain several related changes.
+I did not keep a dated prompt log or separate commits for each screen. These entries describe the Flutter/Dart work from memory; the linked commits contain grouped changes. I have not assigned an exact day or assistant to an individual code change where I did not record it.
 
 ## 1. How I used AI
 
-### Customer and staff app flows
+### Authentication screens and validation
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. The exact tool and day for each individual change were not recorded.
-- **What I asked:** Help make the existing Flutter screens and functions work as a connected demo, including sign-in, username display, cart, checkout, order history, notifications, and staff workflows.
-- **What it gave me:** Suggestions and Dart implementation help across the app screens, providers, and shared widgets.
-- **What I kept or changed, and why:** I kept the local in-memory approach because this is a course demo. I reviewed the flows and requested changes when behavior did not match the customer or staff experience I wanted.
-- **Commit:** [Initial project implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help connect the Flutter sign-in and account flow, including verification, field validation, and showing the signed-in user's details.
+- **What it gave me:** Dart suggestions for form behavior, navigation, and feedback around the existing authentication screens.
+- **What I kept or changed, and why:** I wrote the initial welcome, login, and sign-up screens and set their visual direction. I used AI help on later behavior and revisions, then reviewed the changes against the account flow I wanted.
+- **Flutter/Dart files:** `lib/screens/auth/welcome_screen.dart`, `lib/screens/auth/login_screen.dart`, `lib/screens/auth/signup_screen.dart`, `lib/screens/auth/verification_screen.dart`, `lib/providers/auth_provider.dart`.
+- **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [auth and customer-flow revisions](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f).
 
-### Login and verification
+### Cookie selection, customization, and cart
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. I did not record which assistant handled each login change.
-- **What I asked:** Help with the login and verification flow, including form behavior, validation, and showing the signed-in user's information in the app.
-- **What it gave me:** Flutter code and suggestions for form state, navigation, and user-facing feedback.
-- **What I kept or changed, and why:** I used the suggestions as a starting point and directed the screen layout and motion. I kept authentication local to the demo rather than presenting it as production security.
-- **Commit:** [Login and app flow updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help connect menu choices, cookie box customization, quantities, and cart contents in the local demo.
+- **What it gave me:** Dart implementation suggestions for the customer ordering screens and cart state.
+- **What I kept or changed, and why:** I kept the local cart flow and directed the screen layout and visual treatment so customers could review and customize a box before checkout.
+- **Flutter/Dart files:** `lib/screens/customer/menu_screen.dart`, `lib/screens/customer/ordering/build_box_screen.dart`, `lib/screens/customer/ordering/customization_screen.dart`, `lib/screens/customer/ordering/solo_order_screen.dart`, `lib/screens/customer/cart_screen.dart`, `lib/providers/cart_provider.dart`.
+- **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [cookie box and ordering UI revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
-### Cart, payment, and confirmation
+### Checkout, demo payment, and confirmation
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact per-change attribution was not logged.
-- **What I asked:** Help connect cart contents to checkout and make the user review the payment before the order is confirmed.
-- **What it gave me:** Suggestions and Dart changes for order totals, checkout review, demo payment, and confirmation.
-- **What I kept or changed, and why:** I kept payment as a local simulation and directed the flow so a successful demo payment comes before order confirmation. No real payment provider is connected.
-- **Commit:** [Checkout-related updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help make checkout reflect the cart, show the total and payment choice, and require payment before confirming an order.
+- **What it gave me:** Dart changes and suggestions for the checkout review, local payment simulation, and order confirmation flow.
+- **What I kept or changed, and why:** I kept payment as a local demo simulation. After noticing that the flow could show payment as pending, I directed it to show a paid demo status only after a successful simulated payment.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/payment_screen.dart`, `lib/screens/customer/ordering/confirmation_screen.dart`, `lib/providers/order_provider.dart`, `lib/services/payment_service.dart`, `lib/repositories/payment_repository.dart`.
+- **Commit:** [Checkout and confirmation revisions](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f), [payment screen revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
-### Order history and progress
+### Customer order history and notifications
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. The exact assistant for this screen work was not recorded.
-- **What I asked:** Help display customer orders with their status and make the history and in-progress views understandable.
-- **What it gave me:** Suggestions and Flutter changes to show order information and progress through the customer screens.
-- **What I kept or changed, and why:** I kept the local demo order state and asked for clearer status and layout behavior so customers can follow an order from placement through delivery.
-- **Commit:** [Order history updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help show order status and progress clearly, keep in-progress and delivered orders understandable, and surface order updates in the app.
+- **What it gave me:** Flutter/Dart changes to customer order views and local order and notification state.
+- **What I kept or changed, and why:** I kept the local demo status flow and reviewed the labels and screen layout so a customer can follow an order through its stages.
+- **Flutter/Dart files:** `lib/screens/customer/orders_screen.dart`, `lib/screens/customer/history_screen.dart`, `lib/screens/customer/notifications_screen.dart`, `lib/providers/order_provider.dart`, `lib/providers/notification_provider.dart`.
+- **Commit:** [Order progress and customer-flow revisions](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f), [order management revisions](https://github.com/JethroMarkBejec/nums/commit/7c1b4d5026db603b31c1c2d9a5e13f66580ad89c).
 
-### Staff dashboard, inventory, and batch management
+### Staff order, inventory, and baking screens
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact assistant and date per screen were not recorded.
-- **What I asked:** Help make the existing staff screens respond to order, stock, and batch actions in the demo.
-- **What it gave me:** Suggestions and Dart implementation help for screen navigation and local state updates.
-- **What I kept or changed, and why:** I kept these workflows local and focused on the staff actions needed for the class demo. I did not add a database or production staff authentication.
-- **Commit:** [Initial project implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help make staff screens support the demo tasks of reviewing orders, updating their progress, adjusting stock, and tracking baking batches.
+- **What it gave me:** Dart screen and state suggestions for staff order, inventory, and batch workflows.
+- **What I kept or changed, and why:** I kept the local demo behavior and focused the workflows on actions that can be shown in the app without a backend.
+- **Flutter/Dart files:** `lib/screens/admin/admin_dashboard_screen.dart`, `lib/screens/admin/orders_management_screen.dart`, `lib/screens/admin/order_details_screen.dart`, `lib/screens/admin/inventory_screen.dart`, `lib/screens/admin/batch_management_screen.dart`, `lib/providers/inventory_provider.dart`, `lib/providers/batch_provider.dart`.
+- **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [staff order progress revisions](https://github.com/JethroMarkBejec/nums/commit/7c1b4d5026db603b31c1c2d9a5e13f66580ad89c).
 
-### Visual design and shared Flutter components
+### Shared Flutter styling, spacing, and motion
 
-- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Individual design iterations were not logged by date or assistant.
-- **What I asked:** Help refine spacing, typography, button and card depth, layout, and motion while keeping the established color palette and mobile preview.
-- **What it gave me:** Flutter styling and layout suggestions for screens, theme files, and reusable widgets.
-- **What I kept or changed, and why:** I set the visual direction and reviewed the results. I kept the palette, directed the layout and motion, and asked for adjustments when spacing, sizing, or alignment felt inconsistent.
-- **Commit:** [Initial project implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c)
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Individual design iterations were not logged by day or assistant.
+- **What I asked:** Help refine Dart layouts, spacing, type sizes, card and button depth, and motion while keeping the app's existing palette and device preview.
+- **What it gave me:** Flutter theme and reusable-widget suggestions, plus screen layout revisions.
+- **What I kept or changed, and why:** I made the visual design and layout decisions, reviewed the results, and asked for changes when elements felt crowded, misaligned, too large, or too flat. I kept the existing palette and mobile preview.
+- **Flutter/Dart files:** `lib/theme/app_theme.dart`, `lib/theme/app_text_styles.dart`, `lib/widgets/app_button.dart`, `lib/widgets/app_card.dart`, `lib/widgets/app_screen_scaffold.dart`, `lib/screens/customer/customer_shell.dart`, `lib/screens/customer/profile_preferences_card.dart`.
+- **Commit:** [Shared Flutter UI revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
+
+### Local Chip assistant and guided navigation
+
+- **Date / tool:** September 20–October 4, 2026; Claude and OpenAI Codex. Exact attribution by change was not recorded.
+- **What I asked:** Help add a local in-app assistant to guide customers through ordering and navigating the app, including accessible guided actions.
+- **What it gave me:** Flutter/Dart UI and local assistant-flow suggestions.
+- **What I kept or changed, and why:** I kept the assistant as a local demo feature and directed its role toward helping with the app's own ordering flow. I reviewed its navigation behavior and requested fixes when a destination did not open correctly.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/services/assistant_service.dart`, `lib/services/chat_repository.dart`, `lib/routes/app_routes.dart`.
+- **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
 ## 2. Where the AI got it wrong
 
-### Payment status did not match the intended checkout flow
+### Checkout could show payment as pending
 
-- **What it gave me:** An earlier checkout flow could leave the order labeled “Payment: Pending.”
-- **What was wrong:** I wanted the customer to complete the demo payment before order confirmation, so a pending status did not match the required flow.
-- **What I did instead:** I directed the checkout to run the local payment simulation first and show a paid demo status only after it succeeds.
-- **Commit:** [Checkout-related updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **What the AI-assisted flow did:** The order display could say “Payment: Pending” even though checkout was supposed to collect payment before confirming the order.
+- **What was wrong:** That status contradicted the intended order flow.
+- **What I did instead:** I asked for the local payment step to complete first and for the confirmed demo order to be labeled paid only after the simulation succeeds.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/payment_screen.dart`, `lib/screens/customer/ordering/confirmation_screen.dart`, `lib/providers/order_provider.dart`.
+- **Commit:** [Checkout and confirmation revisions](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f).
 
-### Some layout suggestions did not use the available space well
+### Some screen layouts clipped or used space awkwardly
 
-- **What it gave me:** Early layout results had inconsistent spacing and sizing, and some content did not align well within the mobile layout.
-- **What was wrong:** The screens felt uneven and some content was crowded or clipped.
-- **What I did instead:** I reviewed the screens and gave specific direction about centering, spacing, component size, and keeping the established palette and mobile preview.
-- **Commit:** [UI and screen updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **What the AI-assisted layouts did:** Some screen iterations had cramped spacing, awkward alignment, or content extending beyond its intended area.
+- **What was wrong:** The affected screens were harder to read and the layout did not feel consistent on the mobile preview.
+- **What I did instead:** I reviewed the screens and requested specific adjustments to padding, alignment, and component sizing while preserving the existing palette and preview.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/build_box_screen.dart`, `lib/screens/customer/profile_preferences_card.dart`, `lib/theme/app_theme.dart`, `lib/widgets/app_button.dart`, `lib/widgets/app_card.dart`.
+- **Commit:** [Shared Flutter UI revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
-### The order experience did not clearly communicate progress
+### Assistant navigation did not open the selected destination correctly
 
-- **What it gave me:** An earlier order view did not present the order status and surrounding layout as clearly as I wanted.
-- **What was wrong:** The screen felt incomplete and made it harder to understand an order's progress.
-- **What I did instead:** I requested a clearer order-history and progress presentation and reviewed the screen layout and status labels.
-- **Commit:** [Order history updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
+- **What the AI-assisted flow did:** The assistant's navigation could land on an unusable screen instead of taking the customer to the selected app destination.
+- **What was wrong:** The assistant is meant to reduce navigation effort, so a broken destination defeated its purpose.
+- **What I did instead:** I reported the failure and requested that its Flutter navigation and destination handling be corrected.
+- **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/routes/app_routes.dart`, `lib/screens/customer/customer_shell.dart`.
+- **Commit:** [Assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
 ## 3. Who wrote what
 
-### My contribution
+### My Flutter/Dart contribution
 
-I personally wrote the initial welcome, login, and sign-up screens, and made the app's visual design and layout decisions. AI later helped me revise and connect parts of the app, including these screens, so the final versions are AI-assisted rather than untouched original work.
+I wrote the initial welcome, login, and sign-up screens. I also made the visual design and layout decisions, including the spacing, type sizing, visual hierarchy, color palette, and the amount of motion and depth. AI later helped revise behavior and connect parts of the app, so the current versions are AI-assisted revisions of my initial work.
 
-- **Files:** `lib/screens/auth/welcome_screen.dart`, `lib/screens/auth/login_screen.dart`, and `lib/screens/auth/signup_screen.dart`.
-- **Commit:** [Initial project implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c)
-- **My explanation:** The welcome screen introduces the app and guides the user into the account flow. The login screen collects and validates sign-in details. The sign-up screen collects the information needed to create a demo account. I designed their layouts and visual direction to make the entry flow feel consistent with the rest of the app.
+- **Files:** `lib/screens/auth/welcome_screen.dart`, `lib/screens/auth/login_screen.dart`, `lib/screens/auth/signup_screen.dart`.
+- **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c).
+- **My explanation:** Welcome introduces NUMS and routes into the account flow. Login validates sign-in fields and starts the local session. Sign-up collects details to create a local demo account. I designed the screens and chose how they should look and guide the user.
 
-My personal design contribution also included decisions about spacing, typography, motion, visual hierarchy, and the existing color palette. I reviewed the AI-assisted revisions and requested changes when the layout or behavior did not match the design I intended.
+### AI-assisted Flutter/Dart code I understand best
 
-### AI-assisted code I understand best
-
-- **Files:** `lib/providers/order_provider.dart`, `lib/screens/customer/ordering/payment_screen.dart`, and `lib/screens/customer/ordering/confirmation_screen.dart`.
-- **Commit:** [Checkout-related updates](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f)
-- **Explanation:** The payment screen reviews the order and runs a local demo payment flow. On success, the app creates the order and opens its confirmation. The provider keeps orders in memory and supports displaying and advancing their statuses. Because this is a demo, the state resets when the app restarts and no real payment is processed.
+- **Files:** `lib/screens/customer/ordering/payment_screen.dart`, `lib/screens/customer/ordering/confirmation_screen.dart`, `lib/providers/order_provider.dart`, `lib/services/payment_service.dart`.
+- **Commit:** [Checkout and confirmation revisions](https://github.com/JethroMarkBejec/nums/commit/3390f28f7dfeb3a07d06af389b6b10f07fef5a7f).
+- **My explanation:** The payment screen summarizes the cart and runs a local payment simulation. If it succeeds, the app creates an order and opens the confirmation screen. The order provider holds that order and its progress in memory. The payment is only a demo and no money is transferred.
 
 ## Limits of this record
 
-This is a retrospective summary. I used Claude and Codex during the stated period, but I did not preserve a prompt diary or separate commits for each feature. The commit links point to bundled project commits, so they show the project changes without proving which assistant produced each line. My 80/20 contribution estimate is approximate. The welcome, login, and sign-up files listed above are the parts I identify as my original work; AI later helped revise and connect them.
+This file describes Flutter/Dart code only. It is a retrospective account, not a prompt diary or a line-by-line authorship report. The commit links identify grouped code changes and do not establish which assistant wrote each line. My 80/20 estimate is approximate, and I have identified the welcome, login, and sign-up screens as my initial code contribution while acknowledging AI-assisted revisions to them.
