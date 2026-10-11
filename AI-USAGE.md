@@ -1,6 +1,6 @@
 # AI Usage in Flutter/Dart Code
 
-I used Claude and OpenAI Codex while building the NUMS Flutter app between September 20 and October 4, 2026. My retrospective estimate is that AI helped with about 80% of the implementation. I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is an estimate, not a line-by-line measurement.
+During the original NUMS implementation from September 20 to October 4, 2026, I used Claude and OpenAI Codex. My retrospective estimate is that AI helped with about 80% of that implementation. I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is an estimate, not a line-by-line measurement. On October 11, 2026, I also used OpenAI Codex for the Flutter/Dart compatibility and analyzer cleanup documented below; that maintenance is separate from the original 80/20 estimate.
 
 I did not keep a dated prompt log or separate commits for each screen. These entries describe the Flutter/Dart work from memory; the linked commits contain grouped changes. I have not assigned an exact day or assistant to an individual code change where I did not record it.
 
@@ -69,6 +69,15 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 - **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/services/assistant_service.dart`, `lib/services/chat_repository.dart`, `lib/routes/app_routes.dart`.
 - **Commit:** [Initial Flutter app implementation](https://github.com/JethroMarkBejec/nums/commit/cfdfc2c8db1cc4e62db60ca9a63d810b4f9c545c), [assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
+### Flutter compatibility and analyzer cleanup
+
+- **Date / tool:** October 11, 2026; OpenAI Codex.
+- **What I asked:** Review the Flutter/Dart project for current SDK compatibility and dependency versions, while keeping the mobile device preview available.
+- **What it gave me:** A dependency review, an updated compatible package lock, and analyzer suggestions for current Flutter APIs and Dart style.
+- **What I kept or changed, and why:** I updated `image_picker` and `flutter_lints` within compatible versions and refreshed compatible transitive packages. I kept `device_preview` on 1.x because 3.x removes the app's embedded preview toolbar and moves controls into DevTools. I removed the deprecated `useInheritedMediaQuery` option and applied the safe analyzer fixes.
+- **Flutter/Dart files:** `pubspec.yaml`, `pubspec.lock`, and `lib/**/*.dart`. I formatted the Dart source tree and fixed analyzer findings in the app setup, providers, routes, customer/staff screens, theme, and shared widgets.
+- **Commit:** [Flutter compatibility and analyzer cleanup](https://github.com/JethroMarkBejec/nums/commit/20619a3).
+
 ## 2. Where the AI got it wrong
 
 ### Checkout could show payment as pending
@@ -95,6 +104,14 @@ I did not keep a dated prompt log or separate commits for each screen. These ent
 - **Flutter/Dart files:** `lib/screens/customer/ordering/assistant_screen.dart`, `lib/routes/app_routes.dart`, `lib/screens/customer/customer_shell.dart`.
 - **Commit:** [Assistant and customer-shell revisions](https://github.com/JethroMarkBejec/nums/commit/f6542b2fde13c7a5182ab1b4fcdd9799e62b393b).
 
+### A Flutter API was deprecated
+
+- **What the AI-assisted app code did:** It kept `useInheritedMediaQuery: true` in the `MaterialApp` setup even though the current Flutter SDK ignores and deprecates that property.
+- **What was wrong:** Keeping a no-op deprecated option made the current Flutter code less clear and caused an analyzer finding.
+- **What I did instead:** I removed the option and verified the app with Flutter analysis and a production web build; the DevicePreview locale and builder remain in place.
+- **Flutter/Dart file:** `lib/app.dart`.
+- **Commit:** [Flutter compatibility and analyzer cleanup](https://github.com/JethroMarkBejec/nums/commit/20619a3).
+
 ## 3. Who wrote what
 
 ### My Flutter/Dart contribution
@@ -113,4 +130,4 @@ I wrote the initial welcome, login, and sign-up screens. I also made the visual 
 
 ## Limits of this record
 
-This file describes Flutter/Dart code only. It is a retrospective account, not a prompt diary or a line-by-line authorship report. The commit links identify grouped code changes and do not establish which assistant wrote each line. My 80/20 estimate is approximate, and I have identified the welcome, login, and sign-up screens as my initial code contribution while acknowledging AI-assisted revisions to them.
+This file describes Flutter/Dart code only. It is a retrospective account, not a prompt diary or a line-by-line authorship report. The historical commit links identify grouped code changes and do not establish which assistant wrote each line. My 80/20 estimate applies to the original implementation, is approximate, and identifies the welcome, login, and sign-up screens as my initial code contribution while acknowledging AI-assisted revisions to them.
