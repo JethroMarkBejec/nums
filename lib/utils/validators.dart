@@ -15,8 +15,9 @@ class AppValidators {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return 'Email or phone number is required';
     final isEmail = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v);
-    final isPhone = RegExp(r'^(\+63|0)?9\d{9}$')
-        .hasMatch(v.replaceAll(RegExp(r'[\s-]'), ''));
+    final isPhone = RegExp(
+      r'^(\+63|0)?9\d{9}$',
+    ).hasMatch(v.replaceAll(RegExp(r'[\s-]'), ''));
     if (!isEmail && !isPhone) return 'Enter a valid email or phone number';
     return null;
   }

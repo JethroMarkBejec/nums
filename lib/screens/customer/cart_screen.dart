@@ -23,9 +23,9 @@ class _CartScreenState extends State<CartScreen> {
     final cart = context.watch<CartProvider>();
     final items = cart.items;
     final total = cart.total;
-    final allergyProfile = context
-        .watch<AllergyProfileProvider>()
-        .forEmail(context.watch<AuthProvider>().email ?? '');
+    final allergyProfile = context.watch<AllergyProfileProvider>().forEmail(
+      context.watch<AuthProvider>().email ?? '',
+    );
 
     return AppScreenScaffold(
       title: 'Your Cart',
@@ -43,18 +43,27 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.white.withValues(alpha: 0.62),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.shopping_bag_outlined,
-                          color: AppColors.primary, size: 42),
+                      child: const Icon(
+                        Icons.shopping_bag_outlined,
+                        color: AppColors.primary,
+                        size: 42,
+                      ),
                     ),
                     const SizedBox(height: 20),
-                    Text('Your cart is empty',
-                        style: AppTextStyles.display1(30),
-                        textAlign: TextAlign.center),
+                    Text(
+                      'Your cart is empty',
+                      style: AppTextStyles.display1(30),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 8),
-                    Text('Your next batch of cookies is just a few taps away.',
-                        style:
-                            AppTextStyles.q(15, color: AppColors.textSecondary),
-                        textAlign: TextAlign.center),
+                    Text(
+                      'Your next batch of cookies is just a few taps away.',
+                      style: AppTextStyles.q(
+                        15,
+                        color: AppColors.textSecondary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
@@ -65,16 +74,20 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   if (allergyProfile.isNotEmpty)
                     Padding(
-                        padding: const EdgeInsets.only(bottom: 9),
-                        child: Text(
-                            'Allergy profile on file (${allergyProfile.join(', ')}). Confirm ingredients and cross-contact with bakery staff before paying.',
-                            style: AppTextStyles.q(12,
-                                weight: FontWeight.w700,
-                                color: AppColors.error))),
+                      padding: const EdgeInsets.only(bottom: 9),
+                      child: Text(
+                        'Allergy profile on file (${allergyProfile.join(', ')}). Confirm ingredients and cross-contact with bakery staff before paying.',
+                        style: AppTextStyles.q(
+                          12,
+                          weight: FontWeight.w700,
+                          color: AppColors.error,
+                        ),
+                      ),
+                    ),
                   Expanded(
                     child: ListView.separated(
                       itemCount: items.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
                         final item = items[index];
                         return AppCard(
@@ -84,32 +97,43 @@ class _CartScreenState extends State<CartScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
                                 child: Image.asset(
-                                    'assets/images/box_cookies.png',
-                                    width: 86,
-                                    height: 86,
-                                    fit: BoxFit.contain),
+                                  'assets/images/box_cookies.png',
+                                  width: 86,
+                                  height: 86,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                               const SizedBox(width: 14),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item['name'] as String,
-                                        style: AppTextStyles.q(17,
-                                            weight: FontWeight.w700)),
+                                    Text(
+                                      item['name'] as String,
+                                      style: AppTextStyles.q(
+                                        17,
+                                        weight: FontWeight.w700,
+                                      ),
+                                    ),
                                     const SizedBox(height: 4),
                                     Text(
-                                        '${item['items_summary'] ?? 'Box of ${item['boxSize'] ?? 6}'}  ·  Qty ${item['quantity']}${(item['gift_note'] as String?)?.isNotEmpty == true ? ' · Gift: ${item['gift_note']}' : ''}',
-                                        style: AppTextStyles.q(13,
-                                            color: AppColors.textSecondary)),
+                                      '${item['items_summary'] ?? 'Box of ${item['boxSize'] ?? 6}'}  ·  Qty ${item['quantity']}${(item['gift_note'] as String?)?.isNotEmpty == true ? ' · Gift: ${item['gift_note']}' : ''}',
+                                      style: AppTextStyles.q(
+                                        13,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
                                     if ((item['exclusions'] as List?)
                                             ?.isNotEmpty ==
                                         true)
                                       Text(
-                                          'Staff review: ${(item['exclusions'] as List).join(', ')}',
-                                          style: AppTextStyles.q(12,
-                                              weight: FontWeight.w700,
-                                              color: AppColors.error)),
+                                        'Staff review: ${(item['exclusions'] as List).join(', ')}',
+                                        style: AppTextStyles.q(
+                                          12,
+                                          weight: FontWeight.w700,
+                                          color: AppColors.error,
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -117,11 +141,15 @@ class _CartScreenState extends State<CartScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                      AppFormatters.peso(
-                                          (item['price'] as num) *
-                                              (item['quantity'] as int)),
-                                      style: AppTextStyles.q(16,
-                                          weight: FontWeight.w700)),
+                                    AppFormatters.peso(
+                                      (item['price'] as num) *
+                                          (item['quantity'] as int),
+                                    ),
+                                    style: AppTextStyles.q(
+                                      16,
+                                      weight: FontWeight.w700,
+                                    ),
+                                  ),
                                   const SizedBox(height: 8),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -129,31 +157,40 @@ class _CartScreenState extends State<CartScreen> {
                                       _quantityButton(
                                         icon: Icons.remove_rounded,
                                         onTap: () => cart.setQuantity(
-                                            item['id'] as String,
-                                            (item['quantity'] as int) - 1),
+                                          item['id'] as String,
+                                          (item['quantity'] as int) - 1,
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 7),
-                                        child: Text('${item['quantity']}',
-                                            style: AppTextStyles.q(14,
-                                                weight: FontWeight.w700)),
+                                          horizontal: 7,
+                                        ),
+                                        child: Text(
+                                          '${item['quantity']}',
+                                          style: AppTextStyles.q(
+                                            14,
+                                            weight: FontWeight.w700,
+                                          ),
+                                        ),
                                       ),
                                       _quantityButton(
                                         icon: Icons.add_rounded,
                                         onTap: () => cart.setQuantity(
-                                            item['id'] as String,
-                                            (item['quantity'] as int) + 1),
+                                          item['id'] as String,
+                                          (item['quantity'] as int) + 1,
+                                        ),
                                       ),
                                       IconButton(
                                         tooltip: 'Remove item',
                                         visualDensity: VisualDensity.compact,
-                                        onPressed: () => cart
-                                            .removeItem(item['id'] as String),
+                                        onPressed: () => cart.removeItem(
+                                          item['id'] as String,
+                                        ),
                                         icon: const Icon(
-                                            Icons.delete_outline_rounded,
-                                            color: AppColors.error,
-                                            size: 20),
+                                          Icons.delete_outline_rounded,
+                                          color: AppColors.error,
+                                          size: 20,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -173,9 +210,13 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('Order total', style: AppTextStyles.q(17)),
-                            Text(AppFormatters.peso(total),
-                                style: AppTextStyles.q(22,
-                                    weight: FontWeight.w700)),
+                            Text(
+                              AppFormatters.peso(total),
+                              style: AppTextStyles.q(
+                                22,
+                                weight: FontWeight.w700,
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 14),
@@ -186,20 +227,27 @@ class _CartScreenState extends State<CartScreen> {
                             onPressed: () =>
                                 Navigator.pushNamed(context, '/payment'),
                             icon: const Icon(Icons.lock_outline_rounded),
-                            label: Text('Continue to payment',
-                                style: AppTextStyles.q(16,
-                                    weight: FontWeight.w700,
-                                    color: Colors.white)),
+                            label: Text(
+                              'Continue to payment',
+                              style: AppTextStyles.q(
+                                16,
+                                weight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
                               elevation: 3,
-                              shadowColor:
-                                  AppColors.primary.withValues(alpha: 0.28),
-                              animationDuration:
-                                  const Duration(milliseconds: 180),
+                              shadowColor: AppColors.primary.withValues(
+                                alpha: 0.28,
+                              ),
+                              animationDuration: const Duration(
+                                milliseconds: 180,
+                              ),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           ),
                         ),
@@ -212,8 +260,10 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _quantityButton(
-      {required IconData icon, required VoidCallback onTap}) {
+  Widget _quantityButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),

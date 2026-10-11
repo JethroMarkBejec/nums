@@ -17,24 +17,33 @@ class CustomizationScreen extends StatelessWidget {
         children: [
           Text('Make it your own', style: AppTextStyles.display1(30)),
           const SizedBox(height: 5),
-          Text('Choose the finishing touches for your cookie box.',
-              style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+          Text(
+            'Choose the finishing touches for your cookie box.',
+            style: AppTextStyles.q(14, color: AppColors.textSecondary),
+          ),
           const SizedBox(height: 18),
           ClipRRect(
             borderRadius: BorderRadius.circular(22),
-            child: Image.asset('assets/images/cookie_oatmeal.png',
-                height: 180, fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/cookie_oatmeal.png',
+              height: 180,
+              fit: BoxFit.cover,
+            ),
           ),
           const SizedBox(height: 18),
           AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Mix-ins',
-                    style: AppTextStyles.q(19, weight: FontWeight.w700)),
+                Text(
+                  'Mix-ins',
+                  style: AppTextStyles.q(19, weight: FontWeight.w700),
+                ),
                 const SizedBox(height: 4),
-                Text('Included with your selected cookie.',
-                    style: AppTextStyles.q(13, color: AppColors.textSecondary)),
+                Text(
+                  'Included with your selected cookie.',
+                  style: AppTextStyles.q(13, color: AppColors.textSecondary),
+                ),
                 const SizedBox(height: 14),
                 const _ChoiceRow(label: 'Chocolate chips', selected: true),
                 const Divider(height: 20, color: AppColors.divider),
@@ -47,19 +56,28 @@ class CustomizationScreen extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.edit_note_rounded,
-                    color: AppColors.primary, size: 26),
+                const Icon(
+                  Icons.edit_note_rounded,
+                  color: AppColors.primary,
+                  size: 26,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Special requests',
-                          style: AppTextStyles.q(17, weight: FontWeight.w700)),
+                      Text(
+                        'Special requests',
+                        style: AppTextStyles.q(17, weight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 4),
-                      Text('Add baking notes on the order details screen.',
-                          style: AppTextStyles.q(13,
-                              color: AppColors.textSecondary)),
+                      Text(
+                        'Add baking notes on the order details screen.',
+                        style: AppTextStyles.q(
+                          13,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -82,14 +100,18 @@ class _ChoiceRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-            color: selected ? AppColors.primary : AppColors.textMuted,
-            size: 21),
+        Icon(
+          selected ? Icons.check_circle_rounded : Icons.circle_outlined,
+          color: selected ? AppColors.primary : AppColors.textMuted,
+          size: 21,
+        ),
         const SizedBox(width: 10),
         Text(label, style: AppTextStyles.q(15, weight: FontWeight.w600)),
         const Spacer(),
-        Text('Included',
-            style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+        Text(
+          'Included',
+          style: AppTextStyles.q(12, color: AppColors.textSecondary),
+        ),
       ],
     );
   }

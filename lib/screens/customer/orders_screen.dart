@@ -29,8 +29,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final email = context.watch<AuthProvider>().email ?? '';
     final orders = context.watch<OrderProvider>().ordersFor(email);
     final visible = orders
-        .where((order) =>
-            (order['status'] == OrderProvider.finalStatus) == _showHistory)
+        .where(
+          (order) =>
+              (order['status'] == OrderProvider.finalStatus) == _showHistory,
+        )
         .toList();
 
     return AppScreenScaffold(
@@ -43,14 +45,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_showHistory ? 'Order history' : 'Your bakes, in progress',
-                    style: AppTextStyles.display1(28)),
+                Text(
+                  _showHistory ? 'Order history' : 'Your bakes, in progress',
+                  style: AppTextStyles.display1(28),
+                ),
                 const SizedBox(height: 5),
                 Text(
-                    _showHistory
-                        ? 'Your delivered orders, all in one place.'
-                        : 'Follow each order from oven to doorstep.',
-                    style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+                  _showHistory
+                      ? 'Your delivered orders, all in one place.'
+                      : 'Follow each order from oven to doorstep.',
+                  style: AppTextStyles.q(14, color: AppColors.textSecondary),
+                ),
                 const SizedBox(height: 14),
                 Container(
                   padding: const EdgeInsets.all(4),
@@ -58,7 +63,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     color: Colors.white.withValues(alpha: 0.55),
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
-                        color: AppColors.cardBorder.withValues(alpha: 0.8)),
+                      color: AppColors.cardBorder.withValues(alpha: 0.8),
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -83,8 +89,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               ? 'Completed orders will appear here.'
                               : 'No active orders yet. Your next batch is just a few taps away.',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.q(15,
-                              color: AppColors.textSecondary),
+                          style: AppTextStyles.q(
+                            15,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
                     )
@@ -92,7 +100,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       key: ValueKey('orders-$_showHistory'),
                       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                       itemCount: visible.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
                       itemBuilder: (context, index) =>
                           _OrderCard(order: visible[index]),
                     ),
@@ -118,10 +126,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
           borderRadius: BorderRadius.circular(14),
           boxShadow: selected ? const [AppColors.cardShadow] : null,
         ),
-        child: Text(label,
-            style: AppTextStyles.q(14,
-                weight: FontWeight.w700,
-                color: selected ? Colors.white : AppColors.textSecondary)),
+        child: Text(
+          label,
+          style: AppTextStyles.q(
+            14,
+            weight: FontWeight.w700,
+            color: selected ? Colors.white : AppColors.textSecondary,
+          ),
+        ),
       ),
     );
   }
@@ -138,8 +150,10 @@ class _OrderCard extends StatelessWidget {
     final createdAt = order['createdAt'] as DateTime;
     final items = order['items'] as List;
     final productNames = items
-        .map((item) =>
-            (item['items_summary'] as String?) ?? item['name'] as String)
+        .map(
+          (item) =>
+              (item['items_summary'] as String?) ?? item['name'] as String,
+        )
         .join(', ');
     final boxCount = items.fold<int>(
       0,
@@ -159,27 +173,37 @@ class _OrderCard extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                    color: AppColors.accentSoft,
-                    borderRadius: BorderRadius.circular(13)),
-                child: const Icon(Icons.receipt_long_rounded,
-                    color: AppColors.primary),
+                  color: AppColors.accentSoft,
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: const Icon(
+                  Icons.receipt_long_rounded,
+                  color: AppColors.primary,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(order['id'] as String,
-                        style: AppTextStyles.q(17, weight: FontWeight.w700)),
-                    Text(AppFormatters.longDate(createdAt),
-                        style: AppTextStyles.q(12,
-                            color: AppColors.textSecondary)),
+                    Text(
+                      order['id'] as String,
+                      style: AppTextStyles.q(17, weight: FontWeight.w700),
+                    ),
+                    Text(
+                      AppFormatters.longDate(createdAt),
+                      style: AppTextStyles.q(
+                        12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),
               StatusBadge(
                 text: status == OrderProvider.readyStatus ? 'Ready' : status,
-                color: status == OrderProvider.readyStatus ||
+                color:
+                    status == OrderProvider.readyStatus ||
                         status == OrderProvider.finalStatus
                     ? AppColors.success
                     : AppColors.warning,
@@ -187,28 +211,38 @@ class _OrderCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          Text(productNames.isEmpty ? 'Cookie order' : productNames,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.q(15, weight: FontWeight.w700)),
+          Text(
+            productNames.isEmpty ? 'Cookie order' : productNames,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.q(15, weight: FontWeight.w700),
+          ),
           const SizedBox(height: 3),
           Text(
-              '$boxCount box${boxCount == 1 ? '' : 'es'} · ${items.length} product${items.length == 1 ? '' : 's'}',
-              style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+            '$boxCount box${boxCount == 1 ? '' : 'es'} · ${items.length} product${items.length == 1 ? '' : 's'}',
+            style: AppTextStyles.q(12, color: AppColors.textSecondary),
+          ),
           if (status != OrderProvider.finalStatus) ...[
             const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Order progress',
-                    style: AppTextStyles.q(12,
-                        weight: FontWeight.w700,
-                        color: AppColors.textSecondary)),
                 Text(
-                    'Step ${statusIndex + 1} of ${OrderProvider.statuses.length}',
-                    style: AppTextStyles.q(12,
-                        weight: FontWeight.w700,
-                        color: AppColors.textSecondary)),
+                  'Order progress',
+                  style: AppTextStyles.q(
+                    12,
+                    weight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                Text(
+                  'Step ${statusIndex + 1} of ${OrderProvider.statuses.length}',
+                  style: AppTextStyles.q(
+                    12,
+                    weight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 7),
@@ -222,9 +256,14 @@ class _OrderCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            Text('Currently: $status',
-                style: AppTextStyles.q(13,
-                    weight: FontWeight.w600, color: AppColors.primary)),
+            Text(
+              'Currently: $status',
+              style: AppTextStyles.q(
+                13,
+                weight: FontWeight.w600,
+                color: AppColors.primary,
+              ),
+            ),
           ],
           const SizedBox(height: 14),
           const Divider(height: 1, color: AppColors.divider),
@@ -233,14 +272,18 @@ class _OrderCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text('Payment · ${order['paymentStatus']}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+                child: Text(
+                  'Payment · ${order['paymentStatus']}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.q(12, color: AppColors.textSecondary),
+                ),
               ),
               const SizedBox(width: 12),
-              Text(AppFormatters.peso(order['total'] as num),
-                  style: AppTextStyles.q(17, weight: FontWeight.w700)),
+              Text(
+                AppFormatters.peso(order['total'] as num),
+                style: AppTextStyles.q(17, weight: FontWeight.w700),
+              ),
             ],
           ),
           if (order['paymentStatus'] == 'Pending' &&
@@ -250,21 +293,28 @@ class _OrderCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: FilledButton.icon(
-                  onPressed: () => Navigator.pushNamed(context, '/payment',
-                      arguments: {'orderId': order['id']}),
-                  icon: const Icon(Icons.lock_open_rounded),
-                  label: const Text('Pay approved order')),
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  '/payment',
+                  arguments: {'orderId': order['id']},
+                ),
+                icon: const Icon(Icons.lock_open_rounded),
+                label: const Text('Pay approved order'),
+              ),
             ),
           ],
           if (status == 'Declined')
             Text(
-                'Staff message: ${order['adminMessage'] ?? 'This order was declined.'}',
-                style: AppTextStyles.q(13, color: AppColors.error)),
+              'Staff message: ${order['adminMessage'] ?? 'This order was declined.'}',
+              style: AppTextStyles.q(13, color: AppColors.error),
+            ),
           if (status == OrderProvider.finalStatus && order['feedback'] == null)
             _FeedbackForm(order: order),
           if (status == OrderProvider.finalStatus && order['feedback'] != null)
-            Text('Thanks for your ${order['feedback']['rating']}-star rating.',
-                style: AppTextStyles.q(13, weight: FontWeight.w700)),
+            Text(
+              'Thanks for your ${order['feedback']['rating']}-star rating.',
+              style: AppTextStyles.q(13, weight: FontWeight.w700),
+            ),
         ],
       ),
     );
@@ -293,8 +343,10 @@ class _FeedbackFormState extends State<_FeedbackForm> {
   Future<void> _pickPhoto() async {
     setState(() => _pickingPhoto = true);
     try {
-      final file = await ImagePicker()
-          .pickImage(source: ImageSource.gallery, imageQuality: 75);
+      final file = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 75,
+      );
       if (file == null || !mounted) return;
       final bytes = await file.readAsBytes();
       if (!mounted) return;
@@ -304,78 +356,101 @@ class _FeedbackFormState extends State<_FeedbackForm> {
       });
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           content: Text(
-              'Photo picker is unavailable here. You can still send your rating and comment.')));
+            'Photo picker is unavailable here. You can still send your rating and comment.',
+          ),
+        ),
+      );
     } finally {
       if (mounted) setState(() => _pickingPhoto = false);
     }
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const SizedBox(height: 10),
-        Text('How was your order?',
-            style: AppTextStyles.q(15, weight: FontWeight.w700)),
-        Row(
-            children: List.generate(
-                5,
-                (index) => IconButton(
-                    tooltip: '${index + 1} stars',
-                    onPressed: () => setState(() => _rating = index + 1),
-                    icon: Icon(
-                        index < _rating
-                            ? Icons.star_rounded
-                            : Icons.star_outline_rounded,
-                        color: AppColors.warning)))),
-        TextField(
-            controller: _comment,
-            maxLength: 240,
-            decoration: const InputDecoration(labelText: 'Leave feedback')),
-        OutlinedButton.icon(
-          onPressed: _pickingPhoto ? null : _pickPhoto,
-          icon: const Icon(Icons.photo_library_outlined),
-          label: Text(_pickingPhoto
-              ? 'Opening photos…'
-              : (_photo == null ? 'Add optional photo' : 'Change photo')),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SizedBox(height: 10),
+      Text(
+        'How was your order?',
+        style: AppTextStyles.q(15, weight: FontWeight.w700),
+      ),
+      Row(
+        children: List.generate(
+          5,
+          (index) => IconButton(
+            tooltip: '${index + 1} stars',
+            onPressed: () => setState(() => _rating = index + 1),
+            icon: Icon(
+              index < _rating ? Icons.star_rounded : Icons.star_outline_rounded,
+              color: AppColors.warning,
+            ),
+          ),
         ),
-        if (_photoBytes != null) ...[
-          ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child:
-                  Image.memory(_photoBytes!, height: 140, fit: BoxFit.cover)),
-          Text(_photo!.name,
-              style: AppTextStyles.q(12, color: AppColors.textSecondary)),
-        ],
-        Align(
-            alignment: Alignment.centerRight,
-            child: FilledButton(
-                onPressed: () {
-                  final id = widget.order['id'] as String;
-                  final email = widget.order['email'] as String;
-                  if (!context.read<OrderProvider>().saveFeedback(id,
-                      rating: _rating,
-                      comment: _comment.text,
-                      photoName: _photo?.name,
-                      photoBytes: _photoBytes)) return;
-                  context.read<ReviewsProvider>().add(
-                      orderId: id,
-                      email: email,
-                      rating: _rating,
-                      comment: _comment.text,
-                      photoName: _photo?.name,
-                      photoBytes: _photoBytes,
-                      flavors: ((widget.order['items'] as List?) ?? const [])
-                          .map((item) => item['name'] as String? ?? '')
-                          .where((name) => name.isNotEmpty)
-                          .toSet()
-                          .toList());
-                  context.read<PointsRepository>().awardFeedback(
-                      context.read<AuthProvider>(),
-                      email: email,
-                      feedbackId: id);
-                },
-                child: const Text('Send feedback'))),
-      ]);
+      ),
+      TextField(
+        controller: _comment,
+        maxLength: 240,
+        decoration: const InputDecoration(labelText: 'Leave feedback'),
+      ),
+      OutlinedButton.icon(
+        onPressed: _pickingPhoto ? null : _pickPhoto,
+        icon: const Icon(Icons.photo_library_outlined),
+        label: Text(
+          _pickingPhoto
+              ? 'Opening photos…'
+              : (_photo == null ? 'Add optional photo' : 'Change photo'),
+        ),
+      ),
+      if (_photoBytes != null) ...[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.memory(_photoBytes!, height: 140, fit: BoxFit.cover),
+        ),
+        Text(
+          _photo!.name,
+          style: AppTextStyles.q(12, color: AppColors.textSecondary),
+        ),
+      ],
+      Align(
+        alignment: Alignment.centerRight,
+        child: FilledButton(
+          onPressed: () {
+            final id = widget.order['id'] as String;
+            final email = widget.order['email'] as String;
+            if (!context.read<OrderProvider>().saveFeedback(
+              id,
+              rating: _rating,
+              comment: _comment.text,
+              photoName: _photo?.name,
+              photoBytes: _photoBytes,
+            )) {
+              return;
+            }
+            context.read<ReviewsProvider>().add(
+              orderId: id,
+              email: email,
+              rating: _rating,
+              comment: _comment.text,
+              photoName: _photo?.name,
+              photoBytes: _photoBytes,
+              flavors: ((widget.order['items'] as List?) ?? const [])
+                  .map((item) => item['name'] as String? ?? '')
+                  .where((name) => name.isNotEmpty)
+                  .toSet()
+                  .toList(),
+            );
+            context.read<PointsRepository>().awardFeedback(
+              context.read<AuthProvider>(),
+              email: email,
+              feedbackId: id,
+            );
+          },
+          child: const Text('Send feedback'),
+        ),
+      ),
+    ],
+  );
 }

@@ -14,11 +14,14 @@ abstract class PaymentRepository {
 class LocalPaymentRepository implements PaymentRepository {
   final PaymentService _service = PaymentService();
   @override
-  Future<PaymentResult> pay(
-      {required double amount, required String method}) async {
+  Future<PaymentResult> pay({
+    required double amount,
+    required String method,
+  }) async {
     final paid = await _service.processPayment(amount, method);
     return PaymentResult(
-        status: paid ? 'Paid' : 'Pending',
-        reference: 'NUMS-${DateTime.now().millisecondsSinceEpoch}');
+      status: paid ? 'Paid' : 'Pending',
+      reference: 'NUMS-${DateTime.now().millisecondsSinceEpoch}',
+    );
   }
 }

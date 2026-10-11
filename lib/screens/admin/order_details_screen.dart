@@ -48,12 +48,15 @@ class OrderDetailsScreen extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Text(order['id'] as String,
-                  style: AppTextStyles.display1(28)),
+              child: Text(
+                order['id'] as String,
+                style: AppTextStyles.display1(28),
+              ),
             ),
             StatusBadge(
               text: status == OrderProvider.readyStatus ? 'Ready' : status,
-              color: status == OrderProvider.readyStatus ||
+              color:
+                  status == OrderProvider.readyStatus ||
                       status == OrderProvider.finalStatus
                   ? AppColors.success
                   : AppColors.warning,
@@ -61,46 +64,65 @@ class OrderDetailsScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 5),
-        Text(order['customerName'] as String,
-            style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+        Text(
+          order['customerName'] as String,
+          style: AppTextStyles.q(14, color: AppColors.textSecondary),
+        ),
         const SizedBox(height: 18),
         AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Order items',
-                  style: AppTextStyles.q(19, weight: FontWeight.w700)),
+              Text(
+                'Order items',
+                style: AppTextStyles.q(19, weight: FontWeight.w700),
+              ),
               const SizedBox(height: 14),
               for (final item in items) ...[
                 Row(
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset('assets/images/box_cookies.png',
-                          width: 62, height: 62, fit: BoxFit.contain),
+                      child: Image.asset(
+                        'assets/images/box_cookies.png',
+                        width: 62,
+                        height: 62,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item['name'] as String,
-                              style:
-                                  AppTextStyles.q(15, weight: FontWeight.w700)),
+                          Text(
+                            item['name'] as String,
+                            style: AppTextStyles.q(15, weight: FontWeight.w700),
+                          ),
                           Text(
                             '${item['items_summary'] ?? 'Box of ${item['boxSize'] ?? 6}'} · Qty ${item['quantity']}',
-                            style: AppTextStyles.q(12,
-                                color: AppColors.textSecondary),
+                            style: AppTextStyles.q(
+                              12,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                           if ((item['gift_note'] as String?)?.isNotEmpty ==
                               true)
-                            Text('Gift note: ${item['gift_note']}',
-                                style: AppTextStyles.q(12,
-                                    color: AppColors.textSecondary)),
+                            Text(
+                              'Gift note: ${item['gift_note']}',
+                              style: AppTextStyles.q(
+                                12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
                           if ((item['notes'] as String?)?.isNotEmpty ?? false)
-                            Text('Note: ${item['notes']}',
-                                style: AppTextStyles.q(12,
-                                    color: AppColors.textSecondary)),
+                            Text(
+                              'Note: ${item['notes']}',
+                              style: AppTextStyles.q(
+                                12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -116,9 +138,10 @@ class OrderDetailsScreen extends StatelessWidget {
               ],
               const Divider(height: 20, color: AppColors.divider),
               _DetailRow(
-                  label: 'Total',
-                  value: AppFormatters.peso(order['total'] as num),
-                  bold: true),
+                label: 'Total',
+                value: AppFormatters.peso(order['total'] as num),
+                bold: true,
+              ),
             ],
           ),
         ),
@@ -127,24 +150,30 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Fulfillment and payment',
-                  style: AppTextStyles.q(19, weight: FontWeight.w700)),
+              Text(
+                'Fulfillment and payment',
+                style: AppTextStyles.q(19, weight: FontWeight.w700),
+              ),
               const SizedBox(height: 14),
               _DetailRow(
-                  label: 'Order date',
-                  value: AppFormatters.longDate(createdAt)),
+                label: 'Order date',
+                value: AppFormatters.longDate(createdAt),
+              ),
               const SizedBox(height: 12),
               _DetailRow(
-                  label: 'Pickup / delivery',
-                  value: AppFormatters.longDate(deliveryDate)),
+                label: 'Pickup / delivery',
+                value: AppFormatters.longDate(deliveryDate),
+              ),
               const SizedBox(height: 12),
               _DetailRow(
-                  label: 'Payment method',
-                  value: order['paymentMethod'] as String),
+                label: 'Payment method',
+                value: order['paymentMethod'] as String,
+              ),
               const SizedBox(height: 12),
               _DetailRow(
-                  label: 'Payment status',
-                  value: order['paymentStatus'] as String),
+                label: 'Payment status',
+                value: order['paymentStatus'] as String,
+              ),
             ],
           ),
         ),
@@ -154,8 +183,11 @@ class OrderDetailsScreen extends StatelessWidget {
 }
 
 class _DetailRow extends StatelessWidget {
-  const _DetailRow(
-      {required this.label, required this.value, this.bold = false});
+  const _DetailRow({
+    required this.label,
+    required this.value,
+    this.bold = false,
+  });
 
   final String label;
   final String value;
@@ -163,19 +195,25 @@ class _DetailRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(label,
-                style: AppTextStyles.q(13, color: AppColors.textSecondary)),
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(
+        child: Text(
+          label,
+          style: AppTextStyles.q(13, color: AppColors.textSecondary),
+        ),
+      ),
+      const SizedBox(width: 12),
+      Flexible(
+        child: Text(
+          value,
+          textAlign: TextAlign.end,
+          style: AppTextStyles.q(
+            14,
+            weight: bold ? FontWeight.w700 : FontWeight.w600,
           ),
-          const SizedBox(width: 12),
-          Flexible(
-            child: Text(value,
-                textAlign: TextAlign.end,
-                style: AppTextStyles.q(14,
-                    weight: bold ? FontWeight.w700 : FontWeight.w600)),
-          ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 }

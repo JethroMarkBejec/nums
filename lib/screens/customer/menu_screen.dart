@@ -16,8 +16,10 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = CookieCatalog.flavors;
     final email = context.watch<AuthProvider>().email ?? '';
-    final hasAllergies =
-        context.watch<AllergyProfileProvider>().forEmail(email).isNotEmpty;
+    final hasAllergies = context
+        .watch<AllergyProfileProvider>()
+        .forEmail(email)
+        .isNotEmpty;
     final reviews = context.watch<ReviewsProvider>();
 
     return AppScreenScaffold(
@@ -27,15 +29,18 @@ class MenuScreen extends StatelessWidget {
         children: [
           Text('The cookie menu', style: AppTextStyles.display1(30)),
           const SizedBox(height: 4),
-          Text('Small-batch favorites, baked fresh for tomorrow.',
-              style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+          Text(
+            'Small-batch favorites, baked fresh for tomorrow.',
+            style: AppTextStyles.q(14, color: AppColors.textSecondary),
+          ),
           const SizedBox(height: 20),
           for (var index = 0; index < items.length; index++) ...[
             if (index > 0) const SizedBox(height: 12),
             _MenuItem(
-                item: items[index],
-                showAllergyWarning: hasAllergies,
-                averageRating: reviews.averageFor(items[index].name)),
+              item: items[index],
+              showAllergyWarning: hasAllergies,
+              averageRating: reviews.averageFor(items[index].name),
+            ),
           ],
           const SizedBox(height: 16),
           Container(
@@ -46,12 +51,17 @@ class MenuScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.schedule_rounded,
-                    color: Colors.white, size: 24),
+                const Icon(
+                  Icons.schedule_rounded,
+                  color: Colors.white,
+                  size: 24,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Order today for pickup or delivery tomorrow.',
-                      style: AppTextStyles.q(14, color: Colors.white)),
+                  child: Text(
+                    'Order today for pickup or delivery tomorrow.',
+                    style: AppTextStyles.q(14, color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -67,10 +77,11 @@ class _MenuItem extends StatelessWidget {
   final bool showAllergyWarning;
   final double averageRating;
 
-  const _MenuItem(
-      {required this.item,
-      required this.showAllergyWarning,
-      required this.averageRating});
+  const _MenuItem({
+    required this.item,
+    required this.showAllergyWarning,
+    required this.averageRating,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +91,16 @@ class _MenuItem extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: item.isAvailable
-            ? () => Navigator.pushNamed(context, '/solo-order', arguments: {
+            ? () => Navigator.pushNamed(
+                context,
+                '/solo-order',
+                arguments: {
                   'id': item.id,
                   'name': item.name,
                   'price': item.boxPrice,
                   'description': item.description,
-                })
+                },
+              )
             : null,
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -93,33 +108,55 @@ class _MenuItem extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.asset('assets/images/cookie_oatmeal.png',
-                    width: 82, height: 82, fit: BoxFit.cover),
+                child: Image.asset(
+                  'assets/images/cookie_oatmeal.png',
+                  width: 82,
+                  height: 82,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.name,
-                        style: AppTextStyles.q(17, weight: FontWeight.w700)),
+                    Text(
+                      item.name,
+                      style: AppTextStyles.q(17, weight: FontWeight.w700),
+                    ),
                     const SizedBox(height: 4),
-                    Text(item.description,
-                        style: AppTextStyles.q(13,
-                            color: AppColors.textSecondary)),
+                    Text(
+                      item.description,
+                      style: AppTextStyles.q(
+                        13,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                     if (averageRating > 0)
                       Text(
-                          '★ ${averageRating.toStringAsFixed(1)} average rating',
-                          style: AppTextStyles.q(12,
-                              color: AppColors.textSecondary)),
+                        '★ ${averageRating.toStringAsFixed(1)} average rating',
+                        style: AppTextStyles.q(
+                          12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     if (showAllergyWarning)
-                      Text('Check ingredients with staff',
-                          style: AppTextStyles.q(11,
-                              weight: FontWeight.w700, color: AppColors.error)),
+                      Text(
+                        'Check ingredients with staff',
+                        style: AppTextStyles.q(
+                          11,
+                          weight: FontWeight.w700,
+                          color: AppColors.error,
+                        ),
+                      ),
                     const SizedBox(height: 8),
-                    Text('Box of 6',
-                        style: AppTextStyles.q(12,
-                            color: AppColors.textSecondary)),
+                    Text(
+                      'Box of 6',
+                      style: AppTextStyles.q(
+                        12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -127,11 +164,16 @@ class _MenuItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('₱${item.boxPrice}',
-                      style: AppTextStyles.q(16, weight: FontWeight.w700)),
+                  Text(
+                    '₱${item.boxPrice}',
+                    style: AppTextStyles.q(16, weight: FontWeight.w700),
+                  ),
                   const SizedBox(height: 8),
-                  const Icon(Icons.arrow_forward_rounded,
-                      color: AppColors.primary, size: 20),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: AppColors.primary,
+                    size: 20,
+                  ),
                 ],
               ),
             ],

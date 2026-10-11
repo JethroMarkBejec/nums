@@ -15,11 +15,12 @@ class NotificationProvider with ChangeNotifier {
       .where((item) => item['email'] == email && item['isRead'] != true)
       .length;
 
-  void add(
-      {required String title,
-      required String message,
-      required String email,
-      String? orderId}) {
+  void add({
+    required String title,
+    required String message,
+    required String email,
+    String? orderId,
+  }) {
     _notifications.insert(0, {
       'id': DateTime.now().microsecondsSinceEpoch.toString(),
       'title': title,
@@ -27,7 +28,7 @@ class NotificationProvider with ChangeNotifier {
       'createdAt': DateTime.now(),
       'isRead': false,
       'email': email,
-      if (orderId != null) 'orderId': orderId,
+      'orderId': ?orderId,
     });
     notifyListeners();
   }

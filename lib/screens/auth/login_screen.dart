@@ -53,20 +53,22 @@ class _LoginScreenState extends State<LoginScreen>
     await Future<void>.delayed(const Duration(milliseconds: 250));
     if (!mounted) return;
     final signedIn = context.read<AuthProvider>().signIn(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
     if (!signedIn) {
       setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('That email and password do not match an account.')),
+          content: Text('That email and password do not match an account.'),
+        ),
       );
       return;
     }
     final role = context.read<AuthProvider>().role;
-    final destination =
-        role == 'admin' ? '/admin-dashboard' : '/customer-shell';
+    final destination = role == 'admin'
+        ? '/admin-dashboard'
+        : '/customer-shell';
     Navigator.pushNamedAndRemoveUntil(context, destination, (route) => false);
   }
 
@@ -86,8 +88,9 @@ class _LoginScreenState extends State<LoginScreen>
               child: LayoutBuilder(
                 builder: (context, constraints) => SingleChildScrollView(
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: constraints.maxHeight),
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
                     child: IntrinsicHeight(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
@@ -96,8 +99,11 @@ class _LoginScreenState extends State<LoginScreen>
                           child: Column(
                             children: [
                               const SizedBox(height: 15),
-                              Image.asset('assets/images/logo.png',
-                                  width: 300, fit: BoxFit.contain),
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: 300,
+                                fit: BoxFit.contain,
+                              ),
                               const SizedBox(height: 2),
                               Text(
                                 'Cookie\u2019s, Baked for You',
@@ -132,7 +138,8 @@ class _LoginScreenState extends State<LoginScreen>
                                       builder: (context) => AlertDialog(
                                         title: const Text('Password reset'),
                                         content: const Text(
-                                            'Password reset is unavailable until email service is connected.'),
+                                          'Password reset is unavailable until email service is connected.',
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () =>
@@ -142,8 +149,10 @@ class _LoginScreenState extends State<LoginScreen>
                                         ],
                                       ),
                                     ),
-                                    child: Text('Forgot Password?',
-                                        style: AppTextStyles.q(13)),
+                                    child: Text(
+                                      'Forgot Password?',
+                                      style: AppTextStyles.q(13),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -156,28 +165,35 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                  'Customer demo: welcome@nums.com · cookies123\nStaff demo: staff@nums.com · staff123',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.q(11,
-                                      color: AppColors.textSecondary)),
+                                'Customer demo: welcome@nums.com · cookies123\nStaff demo: staff@nums.com · staff123',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.q(
+                                  11,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
                               const SizedBox(height: 10),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 32),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                ),
                                 child: Row(
                                   children: [
                                     const Expanded(
-                                        child:
-                                            Divider(color: AppColors.divider)),
+                                      child: Divider(color: AppColors.divider),
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: Text('or',
-                                          style: AppTextStyles.q(14)),
+                                        horizontal: 20,
+                                      ),
+                                      child: Text(
+                                        'or',
+                                        style: AppTextStyles.q(14),
+                                      ),
                                     ),
                                     const Expanded(
-                                        child:
-                                            Divider(color: AppColors.divider)),
+                                      child: Divider(color: AppColors.divider),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -191,29 +207,37 @@ class _LoginScreenState extends State<LoginScreen>
                                     Navigator.pushNamed(context, '/signup'),
                               ),
                               const SizedBox(height: 32),
-                              Image.asset('assets/images/cats_login.png',
-                                  width: 180),
+                              Image.asset(
+                                'assets/images/cats_login.png',
+                                width: 180,
+                              ),
                               const SizedBox(height: 12),
                               Text.rich(
                                 TextSpan(
-                                  style: AppTextStyles.q(12,
-                                      color: AppColors.textSecondary),
+                                  style: AppTextStyles.q(
+                                    12,
+                                    color: AppColors.textSecondary,
+                                  ),
                                   children: [
                                     const TextSpan(
-                                        text:
-                                            'By continuing, you agree to our\n'),
+                                      text: 'By continuing, you agree to our\n',
+                                    ),
                                     TextSpan(
                                       text: 'Terms of Service',
-                                      style: AppTextStyles.q(12,
-                                          color: AppColors.textSecondary,
-                                          decoration: TextDecoration.underline),
+                                      style: AppTextStyles.q(
+                                        12,
+                                        color: AppColors.textSecondary,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                     ),
                                     const TextSpan(text: ' and '),
                                     TextSpan(
                                       text: 'Privacy Policy',
-                                      style: AppTextStyles.q(12,
-                                          color: AppColors.textSecondary,
-                                          decoration: TextDecoration.underline),
+                                      style: AppTextStyles.q(
+                                        12,
+                                        color: AppColors.textSecondary,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                     ),
                                     const TextSpan(text: '.'),
                                   ],

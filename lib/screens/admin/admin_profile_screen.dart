@@ -22,15 +22,22 @@ class AdminProfileScreen extends StatelessWidget {
                   width: 96,
                   height: 96,
                   decoration: const BoxDecoration(
-                      color: AppColors.primary, shape: BoxShape.circle),
-                  child: const Icon(Icons.storefront_rounded,
-                      color: Colors.white, size: 44),
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.storefront_rounded,
+                    color: Colors.white,
+                    size: 44,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text('Shop administrator', style: AppTextStyles.display1(28)),
                 const SizedBox(height: 4),
-                Text('NUMS Bakery',
-                    style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+                Text(
+                  'NUMS Bakery',
+                  style: AppTextStyles.q(14, color: AppColors.textSecondary),
+                ),
               ],
             ),
           ),
@@ -39,23 +46,28 @@ class AdminProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Profile details',
-                    style: AppTextStyles.q(19, weight: FontWeight.w700)),
+                Text(
+                  'Profile details',
+                  style: AppTextStyles.q(19, weight: FontWeight.w700),
+                ),
                 const SizedBox(height: 16),
                 const _AdminProfileRow(
-                    icon: Icons.admin_panel_settings_outlined,
-                    label: 'Access',
-                    value: 'Administrator'),
+                  icon: Icons.admin_panel_settings_outlined,
+                  label: 'Access',
+                  value: 'Administrator',
+                ),
                 const Divider(height: 24, color: AppColors.divider),
                 const _AdminProfileRow(
-                    icon: Icons.store_outlined,
-                    label: 'Store',
-                    value: 'NUMS Bakery'),
+                  icon: Icons.store_outlined,
+                  label: 'Store',
+                  value: 'NUMS Bakery',
+                ),
                 const Divider(height: 24, color: AppColors.divider),
                 const _AdminProfileRow(
-                    icon: Icons.manage_accounts_outlined,
-                    label: 'Account',
-                    value: 'Profile settings'),
+                  icon: Icons.manage_accounts_outlined,
+                  label: 'Account',
+                  value: 'Profile settings',
+                ),
               ],
             ),
           ),
@@ -70,8 +82,11 @@ class _AdminProfileRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const _AdminProfileRow(
-      {required this.icon, required this.label, required this.value});
+  const _AdminProfileRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +98,10 @@ class _AdminProfileRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label,
-                  style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+              Text(
+                label,
+                style: AppTextStyles.q(12, color: AppColors.textSecondary),
+              ),
               const SizedBox(height: 2),
               Text(value, style: AppTextStyles.q(15, weight: FontWeight.w600)),
             ],

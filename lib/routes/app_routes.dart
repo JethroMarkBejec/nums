@@ -65,51 +65,44 @@ class AppRoutes {
   static const String adminRequests = '/admin-requests';
 
   static Map<String, WidgetBuilder> get routes => {
-        loading: (context) => const LoadingScreen(),
-        preview: (context) => const DesignPreviewScreen(),
-        welcome: (context) => const WelcomeScreen(),
-        login: (context) => const LoginScreen(),
-        signup: (context) => const SignupScreen(),
-        verification: (context) => const VerificationScreen(),
-        customerShell: (context) => const CustomerShell(),
-        // The Home tab needs the shell's Scaffold/Material and bottom nav.
-        home: (context) => const CustomerShell(),
-        menu: (context) => const MenuScreen(),
-        cart: (context) => const CartScreen(),
-        orders: (context) => const OrdersScreen(),
-        history: (context) => const HistoryScreen(),
-        notifications: (context) => const NotificationsScreen(),
-        profile: (context) => const ProfileScreen(),
-        soloOrder: (context) => const SoloOrderScreen(),
-        buildBox: (context) => const BuildBoxScreen(),
-        flavorIdeas: (context) => const FlavorIdeasScreen(),
-        customRequest: (context) => const CustomRequestScreen(),
-        assistant: (context) => const AssistantScreen(),
-        customization: (context) => const CustomizationScreen(),
-        orderSummary: (context) => const OrderSummaryScreen(),
-        payment: (context) => const PaymentScreen(),
-        confirmation: (context) => const ConfirmationScreen(),
-        adminDashboard: (context) => _AdminRouteGate(
-              child: const AdminDashboardScreen(),
-            ),
-        adminOrders: (context) => _AdminRouteGate(
-              child: const OrdersManagementScreen(),
-            ),
-        adminOrderDetails: (context) => _AdminRouteGate(
-              child: const OrderDetailsScreen(),
-            ),
-        adminInventory: (context) => _AdminRouteGate(
-              child: const InventoryScreen(),
-            ),
-        adminBatch: (context) => _AdminRouteGate(
-              child: const BatchManagementScreen(),
-            ),
-        adminProfile: (context) => _AdminRouteGate(
-              child: const AdminProfileScreen(),
-            ),
-        adminRequests: (context) =>
-            _AdminRouteGate(child: const RequestsScreen()),
-      };
+    loading: (context) => const LoadingScreen(),
+    preview: (context) => const DesignPreviewScreen(),
+    welcome: (context) => const WelcomeScreen(),
+    login: (context) => const LoginScreen(),
+    signup: (context) => const SignupScreen(),
+    verification: (context) => const VerificationScreen(),
+    customerShell: (context) => const CustomerShell(),
+    // The Home tab needs the shell's Scaffold/Material and bottom nav.
+    home: (context) => const CustomerShell(),
+    menu: (context) => const MenuScreen(),
+    cart: (context) => const CartScreen(),
+    orders: (context) => const OrdersScreen(),
+    history: (context) => const HistoryScreen(),
+    notifications: (context) => const NotificationsScreen(),
+    profile: (context) => const ProfileScreen(),
+    soloOrder: (context) => const SoloOrderScreen(),
+    buildBox: (context) => const BuildBoxScreen(),
+    flavorIdeas: (context) => const FlavorIdeasScreen(),
+    customRequest: (context) => const CustomRequestScreen(),
+    assistant: (context) => const AssistantScreen(),
+    customization: (context) => const CustomizationScreen(),
+    orderSummary: (context) => const OrderSummaryScreen(),
+    payment: (context) => const PaymentScreen(),
+    confirmation: (context) => const ConfirmationScreen(),
+    adminDashboard: (context) =>
+        const _AdminRouteGate(child: AdminDashboardScreen()),
+    adminOrders: (context) =>
+        const _AdminRouteGate(child: OrdersManagementScreen()),
+    adminOrderDetails: (context) =>
+        const _AdminRouteGate(child: OrderDetailsScreen()),
+    adminInventory: (context) =>
+        const _AdminRouteGate(child: InventoryScreen()),
+    adminBatch: (context) =>
+        const _AdminRouteGate(child: BatchManagementScreen()),
+    adminProfile: (context) =>
+        const _AdminRouteGate(child: AdminProfileScreen()),
+    adminRequests: (context) => const _AdminRouteGate(child: RequestsScreen()),
+  };
 }
 
 class _AdminRouteGate extends StatelessWidget {

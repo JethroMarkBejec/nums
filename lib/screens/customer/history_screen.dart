@@ -40,16 +40,23 @@ class HistoryScreen extends StatelessWidget {
                         color: Colors.white.withValues(alpha: 0.62),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.history_rounded,
-                          color: AppColors.primary, size: 46),
+                      child: const Icon(
+                        Icons.history_rounded,
+                        color: AppColors.primary,
+                        size: 46,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text('Your past orders', style: AppTextStyles.display1(30)),
                     const SizedBox(height: 8),
-                    Text('Orders at the final tracker stage will appear here.',
-                        style:
-                            AppTextStyles.q(15, color: AppColors.textSecondary),
-                        textAlign: TextAlign.center),
+                    Text(
+                      'Orders at the final tracker stage will appear here.',
+                      style: AppTextStyles.q(
+                        15,
+                        color: AppColors.textSecondary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
@@ -57,7 +64,7 @@ class HistoryScreen extends StatelessWidget {
           : ListView.separated(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               itemCount: orders.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final order = orders[index];
                 final items = order['items'] as List;
@@ -68,12 +75,18 @@ class HistoryScreen extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(order['id'] as String,
-                                style: AppTextStyles.q(17,
-                                    weight: FontWeight.w700)),
+                            child: Text(
+                              order['id'] as String,
+                              style: AppTextStyles.q(
+                                17,
+                                weight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                           const StatusBadge(
-                              text: 'Received', color: AppColors.success),
+                            text: 'Received',
+                            color: AppColors.success,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 14),
@@ -83,75 +96,96 @@ class HistoryScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                          items
-                              .map((item) =>
+                        items
+                            .map(
+                              (item) =>
                                   (item['items_summary'] as String?) ??
-                                  item['name'])
-                              .join(', '),
-                          style: AppTextStyles.q(14,
-                              color: AppColors.textSecondary)),
+                                  item['name'],
+                            )
+                            .join(', '),
+                        style: AppTextStyles.q(
+                          14,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                              AppFormatters.longDate(
-                                  order['createdAt'] as DateTime),
-                              style: AppTextStyles.q(12,
-                                  color: AppColors.textMuted)),
-                          Text(AppFormatters.peso(order['total'] as num),
-                              style:
-                                  AppTextStyles.q(16, weight: FontWeight.w700)),
+                            AppFormatters.longDate(
+                              order['createdAt'] as DateTime,
+                            ),
+                            style: AppTextStyles.q(
+                              12,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                          Text(
+                            AppFormatters.peso(order['total'] as num),
+                            style: AppTextStyles.q(16, weight: FontWeight.w700),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            final cart = context.read<CartProvider>();
-                            for (final item in items) {
-                              final copy =
-                                  Map<String, dynamic>.from(item as Map);
-                              copy['id'] =
-                                  'reorder-${DateTime.now().microsecondsSinceEpoch}-${copy['id']}';
-                              cart.addItem(copy);
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              final cart = context.read<CartProvider>();
+                              for (final item in items) {
+                                final copy = Map<String, dynamic>.from(
+                                  item as Map,
+                                );
+                                copy['id'] =
+                                    'reorder-${DateTime.now().microsecondsSinceEpoch}-${copy['id']}';
+                                cart.addItem(copy);
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text(
-                                        'Previous items added to your cart.')));
-                            Navigator.pushNamed(context, '/cart');
-                          },
-                          icon: const Icon(Icons.replay_rounded),
-                          label: const Text('Order again'),
-                        ),
-                        const SizedBox(width: 8),
-                        OutlinedButton.icon(
-                          onPressed: () => showDialog<void>(
+                                  content: Text(
+                                    'Previous items added to your cart.',
+                                  ),
+                                ),
+                              );
+                              Navigator.pushNamed(context, '/cart');
+                            },
+                            icon: const Icon(Icons.replay_rounded),
+                            label: const Text('Order again'),
+                          ),
+                          const SizedBox(width: 8),
+                          OutlinedButton.icon(
+                            onPressed: () => showDialog<void>(
                               context: context,
                               builder: (context) => AlertDialog(
-                                    title: const Text('Digital receipt'),
-                                    content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          QrImageView(
-                                              data:
-                                                  'NUMS|${order['id']}|${order['total']}|${order['paymentStatus']}',
-                                              size: 176),
-                                          SelectableText(
-                                              'NUMS receipt · ${order['id']}\nTotal: ${AppFormatters.peso(order['total'] as num)}\nPayment: ${order['paymentStatus']}\nReceived: ${AppFormatters.longDate(order['createdAt'] as DateTime)}'),
-                                        ]),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('Close'))
-                                    ],
-                                  )),
-                          icon: const Icon(Icons.receipt_long_outlined),
-                          label: const Text('Receipt'),
-                        ),
-                      ]),
+                                title: const Text('Digital receipt'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    QrImageView(
+                                      data:
+                                          'NUMS|${order['id']}|${order['total']}|${order['paymentStatus']}',
+                                      size: 176,
+                                    ),
+                                    SelectableText(
+                                      'NUMS receipt · ${order['id']}\nTotal: ${AppFormatters.peso(order['total'] as num)}\nPayment: ${order['paymentStatus']}\nReceived: ${AppFormatters.longDate(order['createdAt'] as DateTime)}',
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Close'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            icon: const Icon(Icons.receipt_long_outlined),
+                            label: const Text('Receipt'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );

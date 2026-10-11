@@ -4,11 +4,7 @@ class EmptyState extends StatelessWidget {
   final String title;
   final String message;
 
-  const EmptyState({
-    super.key,
-    required this.title,
-    required this.message,
-  });
+  const EmptyState({super.key, required this.title, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +14,7 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            Text(title, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Text(message),
           ],

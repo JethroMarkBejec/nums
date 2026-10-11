@@ -32,9 +32,10 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
-            {};
+        {};
     final productName = args['name'] as String? ?? 'Oatmeal Chocolate Chip';
-    final description = args['description'] as String? ??
+    final description =
+        args['description'] as String? ??
         'Soft, chewy, and packed with\nchocolate chips and oats';
     final basePrice = (args['price'] as num?)?.toInt() ?? 220;
     final boxes = [
@@ -44,9 +45,9 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
     ];
     final box = boxes[_selectedBox];
     final total = box.price * _quantity;
-    final allergies = context
-        .watch<AllergyProfileProvider>()
-        .forEmail(context.watch<AuthProvider>().email ?? '');
+    final allergies = context.watch<AllergyProfileProvider>().forEmail(
+      context.watch<AuthProvider>().email ?? '',
+    );
 
     return GradientBackground(
       child: Scaffold(
@@ -61,16 +62,22 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.maybePop(context),
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                          size: 20),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 20,
+                      ),
                     ),
-                    Text('Order Details',
-                        style: AppTextStyles.q(20, weight: FontWeight.w500)),
+                    Text(
+                      'Order Details',
+                      style: AppTextStyles.q(20, weight: FontWeight.w500),
+                    ),
                     const Spacer(),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/cart'),
-                      child: const Icon(Icons.shopping_cart_outlined,
-                          color: AppColors.primary),
+                      child: const Icon(
+                        Icons.shopping_cart_outlined,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -83,12 +90,16 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                     children: [
                       if (allergies.isNotEmpty)
                         Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Text(
-                                'Saved allergy profile (${allergies.join(', ')}). Ingredients and cross-contact are unverified; check with staff before ordering.',
-                                style: AppTextStyles.q(13,
-                                    weight: FontWeight.w700,
-                                    color: AppColors.error))),
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            'Saved allergy profile (${allergies.join(', ')}). Ingredients and cross-contact are unverified; check with staff before ordering.',
+                            style: AppTextStyles.q(
+                              13,
+                              weight: FontWeight.w700,
+                              color: AppColors.error,
+                            ),
+                          ),
+                        ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -106,21 +117,32 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(productName,
-                                    style: AppTextStyles.q(30,
-                                        weight: FontWeight.w700, height: 1.15)),
+                                Text(
+                                  productName,
+                                  style: AppTextStyles.q(
+                                    30,
+                                    weight: FontWeight.w700,
+                                    height: 1.15,
+                                  ),
+                                ),
                                 const SizedBox(height: 10),
-                                Text(description,
-                                    style: AppTextStyles.q(12,
-                                        color: AppColors.textPrimary)),
+                                Text(
+                                  description,
+                                  style: AppTextStyles.q(
+                                    12,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 22),
-                      Text('Choose Box Size',
-                          style: AppTextStyles.q(20, weight: FontWeight.w700)),
+                      Text(
+                        'Choose Box Size',
+                        style: AppTextStyles.q(20, weight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 10),
                       Row(
                         children: [
@@ -131,28 +153,42 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Text('Quantity',
-                          style: AppTextStyles.q(20, weight: FontWeight.w700)),
+                      Text(
+                        'Quantity',
+                        style: AppTextStyles.q(20, weight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           QuantitySelector(
                             quantity: _quantity,
-                            onDecrement: () => setState(() =>
-                                _quantity = _quantity > 1 ? _quantity - 1 : 1),
+                            onDecrement: () => setState(
+                              () =>
+                                  _quantity = _quantity > 1 ? _quantity - 1 : 1,
+                            ),
                             onIncrement: () => setState(() => _quantity++),
                           ),
                           const Spacer(),
-                          Text.rich(TextSpan(children: [
+                          Text.rich(
                             TextSpan(
-                                text: 'Total: ',
-                                style: AppTextStyles.q(20,
-                                    weight: FontWeight.w400)),
-                            TextSpan(
-                                text: AppFormatters.peso(total),
-                                style: AppTextStyles.q(20,
-                                    weight: FontWeight.w700)),
-                          ])),
+                              children: [
+                                TextSpan(
+                                  text: 'Total: ',
+                                  style: AppTextStyles.q(
+                                    20,
+                                    weight: FontWeight.w400,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: AppFormatters.peso(total),
+                                  style: AppTextStyles.q(
+                                    20,
+                                    weight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(width: 16),
                         ],
                       ),
@@ -160,19 +196,23 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 12),
+                          vertical: 14,
+                          horizontal: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.accentSoft,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                              color:
-                                  AppColors.cardBorder.withValues(alpha: 0.6)),
+                            color: AppColors.cardBorder.withValues(alpha: 0.6),
+                          ),
                         ),
                         child: Text(
                           'This item is included in the daily preorder limit (500 cookies).',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.q(12,
-                              color: AppColors.textSecondary),
+                          style: AppTextStyles.q(
+                            12,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 18),
@@ -180,9 +220,10 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
                         children: [
-                          Text('Special Requests',
-                              style:
-                                  AppTextStyles.q(20, weight: FontWeight.w700)),
+                          Text(
+                            'Special Requests',
+                            style: AppTextStyles.q(20, weight: FontWeight.w700),
+                          ),
                           const SizedBox(width: 10),
                           Text('(optional)', style: AppTextStyles.q(12)),
                         ],
@@ -195,12 +236,16 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                         style: AppTextStyles.q(14),
                         decoration: InputDecoration(
                           hintText: 'e.g, less sweet, extra chips',
-                          hintStyle:
-                              AppTextStyles.q(14, color: AppColors.textMuted),
+                          hintStyle: AppTextStyles.q(
+                            14,
+                            color: AppColors.textMuted,
+                          ),
                           filled: true,
                           fillColor: Colors.white.withValues(alpha: 0.35),
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                           border: _fieldBorder(AppColors.cardBorder),
                           enabledBorder: _fieldBorder(AppColors.cardBorder),
                           focusedBorder: _fieldBorder(AppColors.primary),
@@ -225,7 +270,8 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                       shadowColor: AppColors.primary.withValues(alpha: 0.3),
                       animationDuration: const Duration(milliseconds: 180),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -234,8 +280,11 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
                         const SizedBox(width: 9),
                         Text(
                           'Add to Cart  ·  ${AppFormatters.peso(total)}',
-                          style: AppTextStyles.q(18,
-                              weight: FontWeight.w700, color: Colors.white),
+                          style: AppTextStyles.q(
+                            18,
+                            weight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
@@ -250,9 +299,9 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
   }
 
   OutlineInputBorder _fieldBorder(Color c) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: c.withValues(alpha: 0.8)),
-      );
+    borderRadius: BorderRadius.circular(14),
+    borderSide: BorderSide(color: c.withValues(alpha: 0.8)),
+  );
 
   void _addToCart(String name, int boxSize, int boxPrice) {
     // price = price of ONE box; CartProvider.total multiplies by quantity.
@@ -293,8 +342,9 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
             ),
             boxShadow: [
               BoxShadow(
-                color:
-                    AppColors.primary.withValues(alpha: selected ? 0.18 : 0.06),
+                color: AppColors.primary.withValues(
+                  alpha: selected ? 0.18 : 0.06,
+                ),
                 blurRadius: selected ? 14 : 7,
                 offset: const Offset(0, 4),
               ),
@@ -303,14 +353,25 @@ class _SoloOrderScreenState extends State<SoloOrderScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: Image.asset('assets/images/box_cookies.png',
-                      fit: BoxFit.contain)),
-              Text('Box of ${b.size}',
-                  style: AppTextStyles.q(15,
-                      weight: selected ? FontWeight.w700 : FontWeight.w500)),
-              Text(AppFormatters.peso(b.price),
-                  style: AppTextStyles.q(15,
-                      weight: selected ? FontWeight.w700 : FontWeight.w500)),
+                child: Image.asset(
+                  'assets/images/box_cookies.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Text(
+                'Box of ${b.size}',
+                style: AppTextStyles.q(
+                  15,
+                  weight: selected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+              Text(
+                AppFormatters.peso(b.price),
+                style: AppTextStyles.q(
+                  15,
+                  weight: selected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
               const SizedBox(height: 6),
               _radio(selected),
             ],
@@ -335,7 +396,9 @@ Widget _radio(bool selected) {
             width: 12,
             height: 12,
             decoration: const BoxDecoration(
-                color: AppColors.primary, shape: BoxShape.circle),
+              color: AppColors.primary,
+              shape: BoxShape.circle,
+            ),
           )
         : null,
   );

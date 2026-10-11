@@ -37,8 +37,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final username = auth.username ?? 'Customer';
-    final unreadCount =
-        context.watch<NotificationProvider>().unreadCountFor(auth.email ?? '');
+    final unreadCount = context.watch<NotificationProvider>().unreadCountFor(
+      auth.email ?? '',
+    );
     final flavorOfTheMonth = context.watch<RequestsProvider>().flavorOfTheMonth;
 
     return SafeArea(
@@ -49,8 +50,11 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Image.asset('assets/images/logo.png',
-                  width: 170, fit: BoxFit.contain),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 170,
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(height: 10),
             Padding(
@@ -63,14 +67,18 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Hi $username,',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.display1(28)),
-                        Text('Good things are baking!',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.q(16)),
+                        Text(
+                          'Hi $username,',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.display1(28),
+                        ),
+                        Text(
+                          'Good things are baking!',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.q(16),
+                        ),
                       ],
                     ),
                   ),
@@ -82,8 +90,11 @@ class HomeScreen extends StatelessWidget {
                     icon: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        const Icon(Icons.notifications_none_rounded,
-                            color: AppColors.primary, size: 27),
+                        const Icon(
+                          Icons.notifications_none_rounded,
+                          color: AppColors.primary,
+                          size: 27,
+                        ),
                         if (unreadCount > 0)
                           Positioned(
                             right: -4,
@@ -91,16 +102,22 @@ class HomeScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(3),
                               constraints: const BoxConstraints(
-                                  minWidth: 16, minHeight: 16),
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
                               decoration: const BoxDecoration(
                                 color: AppColors.error,
                                 shape: BoxShape.circle,
                               ),
-                              child: Text('$unreadCount',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.q(9,
-                                      weight: FontWeight.w700,
-                                      color: Colors.white)),
+                              child: Text(
+                                '$unreadCount',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.q(
+                                  9,
+                                  weight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                       ],
@@ -128,25 +145,34 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .7),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: const [AppColors.cardShadow]),
-                child: Text('Flavor of the Month · $flavorOfTheMonth',
-                    style: AppTextStyles.q(15, weight: FontWeight.w700)),
+                  color: Colors.white.withValues(alpha: .7),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [AppColors.cardShadow],
+                ),
+                child: Text(
+                  'Flavor of the Month · $flavorOfTheMonth',
+                  style: AppTextStyles.q(15, weight: FontWeight.w700),
+                ),
               ),
               const SizedBox(height: 10),
             ],
             Padding(
               padding: const EdgeInsets.only(left: 4),
-              child: Row(children: [
-                Expanded(
-                    child: Text('Today\u2019s Specials',
-                        style: AppTextStyles.display1(24))),
-                TextButton(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Today\u2019s Specials',
+                      style: AppTextStyles.display1(24),
+                    ),
+                  ),
+                  TextButton(
                     onPressed: () =>
                         Navigator.pushNamed(context, '/flavor-ideas'),
-                    child: const Text('Suggest a flavor')),
-              ]),
+                    child: const Text('Suggest a flavor'),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Row(
@@ -155,8 +181,12 @@ class HomeScreen extends StatelessWidget {
                 for (var i = 0; i < _specials.length; i++) ...[
                   if (i > 0) const SizedBox(width: 10),
                   Expanded(
-                      child: _specialCard(
-                          context, _specials[i].$1, _specials[i].$2)),
+                    child: _specialCard(
+                      context,
+                      _specials[i].$1,
+                      _specials[i].$2,
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -182,8 +212,10 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Today\u2019s Batch',
-              style: AppTextStyles.display1(18, color: Colors.white)),
+          Text(
+            'Today\u2019s Batch',
+            style: AppTextStyles.display1(18, color: Colors.white),
+          ),
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
@@ -191,18 +223,30 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                Text('${batch.remaining}',
-                    style: AppTextStyles.q(32,
-                        weight: FontWeight.w700, color: Colors.white)),
+                Text(
+                  '${batch.remaining}',
+                  style: AppTextStyles.q(
+                    32,
+                    weight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
                 const SizedBox(width: 5),
-                Text('cookies left',
-                    style: AppTextStyles.q(17,
-                        weight: FontWeight.w700, color: Colors.white)),
+                Text(
+                  'cookies left',
+                  style: AppTextStyles.q(
+                    17,
+                    weight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
-          Text('${batch.claimed} / ${batch.dailyLimit} claimed',
-              style: AppTextStyles.q(11, color: Colors.white)),
+          Text(
+            '${batch.claimed} / ${batch.dailyLimit} claimed',
+            style: AppTextStyles.q(11, color: Colors.white),
+          ),
           const SizedBox(height: 4),
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -221,8 +265,10 @@ class HomeScreen extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, '/orders'),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Text('Orders still open  >',
-                    style: AppTextStyles.q(12, color: Colors.white)),
+                child: Text(
+                  'Orders still open  >',
+                  style: AppTextStyles.q(12, color: Colors.white),
+                ),
               ),
             ),
           ),
@@ -242,15 +288,21 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Tomorrow\u2019s preorder',
-              maxLines: 2,
-              overflow: TextOverflow.clip,
-              style: AppTextStyles.display1(14, color: Colors.white)),
+          Text(
+            'Tomorrow\u2019s preorder',
+            maxLines: 2,
+            overflow: TextOverflow.clip,
+            style: AppTextStyles.display1(14, color: Colors.white),
+          ),
           const SizedBox(height: 5),
-          Text('Pick up / Delivery',
-              style: AppTextStyles.q(10, color: Colors.white)),
-          Text(AppFormatters.longDate(AppFormatters.tomorrow()),
-              style: AppTextStyles.q(10, color: Colors.white)),
+          Text(
+            'Pick up / Delivery',
+            style: AppTextStyles.q(10, color: Colors.white),
+          ),
+          Text(
+            AppFormatters.longDate(AppFormatters.tomorrow()),
+            style: AppTextStyles.q(10, color: Colors.white),
+          ),
           const Spacer(),
           Material(
             color: Colors.white,
@@ -263,15 +315,21 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text('Pre-order',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.q(12,
-                              weight: FontWeight.w700,
-                              color: AppColors.textSecondary)),
+                      child: Text(
+                        'Pre-order',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.q(
+                          12,
+                          weight: FontWeight.w700,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ),
-                    const Icon(Icons.arrow_right_alt_rounded,
-                        color: AppColors.primary),
+                    const Icon(
+                      Icons.arrow_right_alt_rounded,
+                      color: AppColors.primary,
+                    ),
                   ],
                 ),
               ),
@@ -299,12 +357,19 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Tomorrow\u2019s Delivery',
-                    style: AppTextStyles.display1(22)),
+                Text(
+                  'Tomorrow\u2019s Delivery',
+                  style: AppTextStyles.display1(22),
+                ),
                 const SizedBox(height: 4),
-                Text('Pre-order today,\ndelivered tomorrow.',
-                    style: AppTextStyles.q(15,
-                        color: AppColors.textSecondary, height: 1.25)),
+                Text(
+                  'Pre-order today,\ndelivered tomorrow.',
+                  style: AppTextStyles.q(
+                    15,
+                    color: AppColors.textSecondary,
+                    height: 1.25,
+                  ),
+                ),
               ],
             ),
           ),
@@ -330,25 +395,33 @@ class HomeScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.asset('assets/images/cookie_oatmeal.png',
-                    fit: BoxFit.cover),
+                Image.asset(
+                  'assets/images/cookie_oatmeal.png',
+                  fit: BoxFit.cover,
+                ),
                 Positioned(
                   left: 8,
                   bottom: 0,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 1,
+                    ),
                     decoration: const BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(8)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(8),
+                      ),
                     ),
-                    child: Text('In Stock',
-                        style: const TextStyle(
-                            fontFamily: AppTextStyles.body,
-                            fontSize: 8.5,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
+                    child: const Text(
+                      'In Stock',
+                      style: TextStyle(
+                        fontFamily: AppTextStyles.body,
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -356,15 +429,19 @@ class HomeScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-            child: Text(name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.q(12, weight: FontWeight.w700)),
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.q(12, weight: FontWeight.w700),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text('Box of 6',
-                style: AppTextStyles.q(10, color: AppColors.textSecondary)),
+            child: Text(
+              'Box of 6',
+              style: AppTextStyles.q(10, color: AppColors.textSecondary),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
@@ -381,12 +458,18 @@ class HomeScreen extends StatelessWidget {
                   shadowColor: AppColors.primary.withValues(alpha: 0.25),
                   animationDuration: const Duration(milliseconds: 160),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 child: FittedBox(
-                  child: Text('Add to cart',
-                      style: AppTextStyles.q(12,
-                          weight: FontWeight.w600, color: Colors.white)),
+                  child: Text(
+                    'Add to cart',
+                    style: AppTextStyles.q(
+                      12,
+                      weight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -418,12 +501,15 @@ class HomeScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Bulk / Custom Order',
-                    style: AppTextStyles.display1(22, color: Colors.white)),
+                Text(
+                  'Bulk / Custom Order',
+                  style: AppTextStyles.display1(22, color: Colors.white),
+                ),
                 const SizedBox(height: 2),
-                Text('For events, parties, and\nlarger packages.',
-                    style:
-                        AppTextStyles.q(14, color: Colors.white, height: 1.2)),
+                Text(
+                  'For events, parties, and\nlarger packages.',
+                  style: AppTextStyles.q(14, color: Colors.white, height: 1.2),
+                ),
               ],
             ),
           ),
@@ -437,16 +523,23 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 onTap: () => Navigator.pushNamed(context, '/build-box'),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 9,
+                  ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Inquire Now',
-                          style: AppTextStyles.q(12, weight: FontWeight.w600)),
+                      Text(
+                        'Inquire Now',
+                        style: AppTextStyles.q(12, weight: FontWeight.w600),
+                      ),
                       const SizedBox(width: 6),
-                      const Icon(Icons.arrow_right_alt_rounded,
-                          size: 20, color: AppColors.primary),
+                      const Icon(
+                        Icons.arrow_right_alt_rounded,
+                        size: 20,
+                        color: AppColors.primary,
+                      ),
                     ],
                   ),
                 ),
@@ -480,17 +573,21 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text('Boxes: 3, 6, or 12 cookies', style: textStyle),
                       const SizedBox(height: 4),
-                      Text('Daily preorder limit: $dailyLimit cookies',
-                          style: textStyle),
+                      Text(
+                        'Daily preorder limit: $dailyLimit cookies',
+                        style: textStyle,
+                      ),
                     ],
                   )
                 : Row(
                     children: [
                       Expanded(
-                        child: Text('Boxes: 3, 6, or 12 cookies',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: textStyle),
+                        child: Text(
+                          'Boxes: 3, 6, or 12 cookies',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyle,
+                        ),
                       ),
                       Container(
                         width: 1,
@@ -499,10 +596,12 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.textSecondary,
                       ),
                       Expanded(
-                        child: Text('Daily preorder limit: $dailyLimit cookies',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: textStyle),
+                        child: Text(
+                          'Daily preorder limit: $dailyLimit cookies',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyle,
+                        ),
                       ),
                     ],
                   ),

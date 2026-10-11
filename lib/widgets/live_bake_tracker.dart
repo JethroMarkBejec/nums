@@ -68,8 +68,9 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
         timer.cancel();
         return;
       }
-      final advanced =
-          context.read<OrderProvider>().advanceStatus(widget.orderId);
+      final advanced = context.read<OrderProvider>().advanceStatus(
+        widget.orderId,
+      );
       if (!advanced) {
         timer.cancel();
         setState(() => _isRunning = false);
@@ -78,18 +79,20 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
       final order = context.read<OrderProvider>().orderById(widget.orderId);
       final stage = order?['status'] as String? ?? 'Updated';
       context.read<NotificationProvider>().add(
-            title: 'Bake tracker update',
-            message: 'Order ${widget.orderId} is now $stage.',
-            email: widget.email,
-            orderId: widget.orderId,
-          );
+        title: 'Bake tracker update',
+        message: 'Order ${widget.orderId} is now $stage.',
+        email: widget.email,
+        orderId: widget.orderId,
+      );
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text('Your cookies are now: $stage'),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-        ));
+        ..showSnackBar(
+          SnackBar(
+            content: Text('Your cookies are now: $stage'),
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 2),
+          ),
+        );
       if (stage == OrderProvider.finalStatus) {
         timer.cancel();
         setState(() => _isRunning = false);
@@ -121,12 +124,19 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
           Row(
             children: [
               Expanded(
-                child: Text('Live bake tracker',
-                    style: AppTextStyles.q(18, weight: FontWeight.w700)),
+                child: Text(
+                  'Live bake tracker',
+                  style: AppTextStyles.q(18, weight: FontWeight.w700),
+                ),
               ),
-              Text('${index + 1} / ${OrderProvider.statuses.length}',
-                  style: AppTextStyles.q(12,
-                      weight: FontWeight.w700, color: AppColors.textSecondary)),
+              Text(
+                '${index + 1} / ${OrderProvider.statuses.length}',
+                style: AppTextStyles.q(
+                  12,
+                  weight: FontWeight.w700,
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -154,12 +164,18 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(stage,
-                          style: AppTextStyles.q(16, weight: FontWeight.w700)),
+                      Text(
+                        stage,
+                        style: AppTextStyles.q(16, weight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 4),
-                      Text(_stageMessage(index),
-                          style: AppTextStyles.q(12,
-                              color: AppColors.textSecondary)),
+                      Text(
+                        _stageMessage(index),
+                        style: AppTextStyles.q(
+                          12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -178,7 +194,7 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
           ),
           const SizedBox(height: 9),
           Text(
-            '${OrderProvider.statuses.take(index + 1).join('  ·  ')}',
+            OrderProvider.statuses.take(index + 1).join('  ·  '),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.q(10, color: AppColors.textSecondary),
@@ -191,9 +207,11 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
                 onPressed: _isRunning || stage == OrderProvider.finalStatus
                     ? null
                     : _runDemo,
-                icon: Icon(_isRunning
-                    ? Icons.hourglass_top_rounded
-                    : Icons.play_arrow_rounded),
+                icon: Icon(
+                  _isRunning
+                      ? Icons.hourglass_top_rounded
+                      : Icons.play_arrow_rounded,
+                ),
                 label: Text(_isRunning ? 'Running…' : 'Run demo'),
               ),
             ),
@@ -204,14 +222,14 @@ class _LiveBakeTrackerState extends State<LiveBakeTracker>
   }
 
   String _stageMessage(int index) => switch (index) {
-        0 => 'Your order is confirmed and in our queue.',
-        1 => 'We are mixing your cookie dough.',
-        2 => 'Your cookies are baking in the oven.',
-        3 => 'The fresh batch is cooling.',
-        4 => 'Your cookies are being packed with care.',
-        5 => 'Your order is ready for pickup or delivery.',
-        _ => 'Your order has been received. Enjoy your cookies!',
-      };
+    0 => 'Your order is confirmed and in our queue.',
+    1 => 'We are mixing your cookie dough.',
+    2 => 'Your cookies are baking in the oven.',
+    3 => 'The fresh batch is cooling.',
+    4 => 'Your cookies are being packed with care.',
+    5 => 'Your order is ready for pickup or delivery.',
+    _ => 'Your order has been received. Enjoy your cookies!',
+  };
 }
 
 class _BakeStagePainter extends CustomPainter {
@@ -256,46 +274,73 @@ class _BakeStagePainter extends CustomPainter {
         canvas.translate(center.dx, center.dy);
         canvas.rotate(angle);
         canvas.translate(-center.dx, -center.dy);
-        canvas.drawArc(Rect.fromCenter(center: center, width: 48, height: 44),
-            0, math.pi, false, ink);
-        canvas.drawLine(Offset(center.dx - 24, center.dy),
-            Offset(center.dx + 24, center.dy), ink);
-        canvas.drawLine(Offset(center.dx - 18, center.dy + 1),
-            Offset(center.dx - 11, center.dy + 19), ink);
-        canvas.drawLine(Offset(center.dx + 18, center.dy + 1),
-            Offset(center.dx + 11, center.dy + 19), ink);
-        canvas.drawLine(Offset(center.dx - 11, center.dy + 19),
-            Offset(center.dx + 11, center.dy + 19), ink);
+        canvas.drawArc(
+          Rect.fromCenter(center: center, width: 48, height: 44),
+          0,
+          math.pi,
+          false,
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx - 24, center.dy),
+          Offset(center.dx + 24, center.dy),
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx - 18, center.dy + 1),
+          Offset(center.dx - 11, center.dy + 19),
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx + 18, center.dy + 1),
+          Offset(center.dx + 11, center.dy + 19),
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx - 11, center.dy + 19),
+          Offset(center.dx + 11, center.dy + 19),
+          ink,
+        );
         canvas.restore();
         break;
       case 2: // glowing oven and puffing cookies
         canvas.drawRRect(
-            RRect.fromRectAndRadius(
-                Rect.fromCenter(center: center, width: 52, height: 58),
-                const Radius.circular(8)),
-            fill);
+          RRect.fromRectAndRadius(
+            Rect.fromCenter(center: center, width: 52, height: 58),
+            const Radius.circular(8),
+          ),
+          fill,
+        );
         canvas.drawRRect(
-            RRect.fromRectAndRadius(
-                Rect.fromCenter(center: center, width: 52, height: 58),
-                const Radius.circular(8)),
-            ink);
+          RRect.fromRectAndRadius(
+            Rect.fromCenter(center: center, width: 52, height: 58),
+            const Radius.circular(8),
+          ),
+          ink,
+        );
         final glow = Paint()
           ..color = AppColors.accent.withValues(alpha: 0.4 + t * 0.3);
         canvas.drawRRect(
-            RRect.fromRectAndRadius(
-                Rect.fromCenter(
-                    center: Offset(center.dx, center.dy + 4),
-                    width: 36,
-                    height: 30),
-                const Radius.circular(5)),
-            glow);
+          RRect.fromRectAndRadius(
+            Rect.fromCenter(
+              center: Offset(center.dx, center.dy + 4),
+              width: 36,
+              height: 30,
+            ),
+            const Radius.circular(5),
+          ),
+          glow,
+        );
         canvas.drawCircle(Offset(center.dx - 8, center.dy + 5), 4, ink);
         canvas.drawCircle(Offset(center.dx + 8, center.dy + 5), 4, ink);
         canvas.drawCircle(Offset(center.dx + 18, center.dy - 20), 2, ink);
         break;
       case 3: // cooling cookies and rising steam
-        canvas.drawLine(Offset(center.dx - 25, center.dy + 18),
-            Offset(center.dx + 25, center.dy + 18), ink);
+        canvas.drawLine(
+          Offset(center.dx - 25, center.dy + 18),
+          Offset(center.dx + 25, center.dy + 18),
+          ink,
+        );
         for (var i = 0; i < 3; i++) {
           final x = center.dx - 15 + i * 15;
           canvas.drawCircle(Offset(x, center.dy + 8), 5, fill);
@@ -303,8 +348,14 @@ class _BakeStagePainter extends CustomPainter {
           final lift = reduceMotion ? 3.0 : 3 + ((t + i * 0.22) % 1) * 8;
           final steam = Path()
             ..moveTo(x, center.dy - 1)
-            ..cubicTo(x - 5, center.dy - lift, x + 5, center.dy - lift - 5, x,
-                center.dy - lift - 12);
+            ..cubicTo(
+              x - 5,
+              center.dy - lift,
+              x + 5,
+              center.dy - lift - 5,
+              x,
+              center.dy - lift - 12,
+            );
           canvas.drawPath(steam, ink);
         }
         break;
@@ -321,33 +372,64 @@ class _BakeStagePainter extends CustomPainter {
           ..close();
         canvas.drawPath(box, fill);
         canvas.drawPath(box, ink);
-        canvas.drawLine(Offset(center.dx, center.dy + 2),
-            Offset(center.dx, center.dy + 27), ink);
-        canvas.drawLine(Offset(center.dx - 22, topY),
-            Offset(center.dx, center.dy + 2), ink);
-        canvas.drawLine(Offset(center.dx + 22, topY),
-            Offset(center.dx, center.dy + 2), ink);
+        canvas.drawLine(
+          Offset(center.dx, center.dy + 2),
+          Offset(center.dx, center.dy + 27),
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx - 22, topY),
+          Offset(center.dx, center.dy + 2),
+          ink,
+        );
+        canvas.drawLine(
+          Offset(center.dx + 22, topY),
+          Offset(center.dx, center.dy + 2),
+          ink,
+        );
         break;
       default: // sliding pickup bag / bicycle
         final dx = reduceMotion ? 0.0 : math.sin(t * math.pi * 2) * 7;
         canvas.drawCircle(center.translate(-17 + dx, 15), 8, ink);
         canvas.drawCircle(center.translate(18 + dx, 15), 8, ink);
         canvas.drawLine(
-            center.translate(-17 + dx, 15), center.translate(-5 + dx, -2), ink);
+          center.translate(-17 + dx, 15),
+          center.translate(-5 + dx, -2),
+          ink,
+        );
         canvas.drawLine(
-            center.translate(-5 + dx, -2), center.translate(4 + dx, 15), ink);
+          center.translate(-5 + dx, -2),
+          center.translate(4 + dx, 15),
+          ink,
+        );
         canvas.drawLine(
-            center.translate(4 + dx, 15), center.translate(-17 + dx, 15), ink);
+          center.translate(4 + dx, 15),
+          center.translate(-17 + dx, 15),
+          ink,
+        );
         canvas.drawLine(
-            center.translate(-5 + dx, -2), center.translate(18 + dx, 15), ink);
+          center.translate(-5 + dx, -2),
+          center.translate(18 + dx, 15),
+          ink,
+        );
         final bag = Rect.fromCenter(
-            center: center.translate(8 + dx, -8), width: 21, height: 19);
+          center: center.translate(8 + dx, -8),
+          width: 21,
+          height: 19,
+        );
         canvas.drawRRect(
-            RRect.fromRectAndRadius(bag, const Radius.circular(4)), fill);
+          RRect.fromRectAndRadius(bag, const Radius.circular(4)),
+          fill,
+        );
         canvas.drawRRect(
-            RRect.fromRectAndRadius(bag, const Radius.circular(4)), ink);
+          RRect.fromRectAndRadius(bag, const Radius.circular(4)),
+          ink,
+        );
         canvas.drawLine(
-            center.translate(4 + dx, -19), center.translate(13 + dx, -19), ink);
+          center.translate(4 + dx, -19),
+          center.translate(13 + dx, -19),
+          ink,
+        );
     }
   }
 

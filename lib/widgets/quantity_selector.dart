@@ -31,8 +31,10 @@ class QuantitySelector extends StatelessWidget {
           _cell('-', onDecrement, Colors.white.withValues(alpha: 0.35)),
           Expanded(
             child: Center(
-              child: Text('$quantity',
-                  style: AppTextStyles.q(20, weight: FontWeight.w700)),
+              child: Text(
+                '$quantity',
+                style: AppTextStyles.q(20, weight: FontWeight.w700),
+              ),
             ),
           ),
           _cell('+', onIncrement, AppColors.accentSoft),
@@ -49,8 +51,10 @@ class QuantitySelector extends StatelessWidget {
         height: double.infinity,
         color: fill,
         alignment: Alignment.center,
-        child:
-            Text(symbol, style: AppTextStyles.q(20, weight: FontWeight.w700)),
+        child: Text(
+          symbol,
+          style: AppTextStyles.q(20, weight: FontWeight.w700),
+        ),
       ),
     );
   }

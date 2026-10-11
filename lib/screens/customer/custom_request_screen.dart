@@ -23,34 +23,40 @@ class _CustomRequestScreenState extends State<CustomRequestScreen> {
 
   @override
   Widget build(BuildContext context) => AppScreenScaffold(
-      title: 'Custom request',
-      body: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-          children: [
-            Text(
-                'Tell us what you have in mind. Bakery staff will review your request.',
-                style: AppTextStyles.q(14, color: AppColors.textSecondary)),
-            const SizedBox(height: 16),
-            TextField(
-                controller: _description,
-                minLines: 3,
-                maxLines: 6,
-                maxLength: 300,
-                decoration:
-                    const InputDecoration(labelText: 'Request details')),
-            const SizedBox(height: 16),
-            FilledButton(
-                onPressed: () {
-                  final message = _description.text.trim();
-                  if (message.isEmpty) return;
-                  context.read<RequestsProvider>().create(
-                      email: context.read<AuthProvider>().email ?? '',
-                      type: 'custom',
-                      message: message);
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Custom request sent for review.')));
-                },
-                child: const Text('Send request')),
-          ]));
+    title: 'Custom request',
+    body: ListView(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      children: [
+        Text(
+          'Tell us what you have in mind. Bakery staff will review your request.',
+          style: AppTextStyles.q(14, color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          controller: _description,
+          minLines: 3,
+          maxLines: 6,
+          maxLength: 300,
+          decoration: const InputDecoration(labelText: 'Request details'),
+        ),
+        const SizedBox(height: 16),
+        FilledButton(
+          onPressed: () {
+            final message = _description.text.trim();
+            if (message.isEmpty) return;
+            context.read<RequestsProvider>().create(
+              email: context.read<AuthProvider>().email ?? '',
+              type: 'custom',
+              message: message,
+            );
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Custom request sent for review.')),
+            );
+          },
+          child: const Text('Send request'),
+        ),
+      ],
+    ),
+  );
 }

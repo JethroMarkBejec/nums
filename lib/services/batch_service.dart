@@ -6,13 +6,13 @@ class BatchService {
         'id': 'B-101',
         'name': 'Morning Batch',
         'quantity': 50,
-        'createdAt': DateTime.now()
+        'createdAt': DateTime.now(),
       },
       {
         'id': 'B-102',
         'name': 'Afternoon Batch',
         'quantity': 35,
-        'createdAt': DateTime.now()
+        'createdAt': DateTime.now(),
       },
     ];
   }

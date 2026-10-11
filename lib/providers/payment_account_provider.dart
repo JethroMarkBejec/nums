@@ -17,15 +17,17 @@ class PaymentAccountProvider extends ChangeNotifier {
   bool save(String email, String method, String number) {
     final key = email.trim().toLowerCase();
     final digits = number.replaceAll(RegExp(r'\D'), '');
-    if (key.isEmpty || !['GCash', 'Maya', 'Cash'].contains(method))
+    if (key.isEmpty || !['GCash', 'Maya', 'Cash'].contains(method)) {
       return false;
+    }
     final previous = _accounts[key];
-    if (method != 'Cash' && digits.isEmpty && previous?['method'] == method)
+    if (method != 'Cash' && digits.isEmpty && previous?['method'] == method) {
       return true;
+    }
     if (method != 'Cash' && digits.length < 10) return false;
     _accounts[key] = {
       'method': method,
-      'number': method == 'Cash' ? '' : mask(digits)
+      'number': method == 'Cash' ? '' : mask(digits),
     };
     notifyListeners();
     return true;

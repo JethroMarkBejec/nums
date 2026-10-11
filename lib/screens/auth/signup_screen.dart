@@ -35,20 +35,24 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!_formKey.currentState!.validate() || _isSubmitting) return;
     setState(() => _isSubmitting = true);
     final created = context.read<AuthProvider>().signUp(
-          name: _nameController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+      name: _nameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
     if (!created) {
       setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('An account with that email already exists.')),
+          content: Text('An account with that email already exists.'),
+        ),
       );
       return;
     }
     Navigator.pushNamedAndRemoveUntil(
-        context, '/customer-shell', (route) => false);
+      context,
+      '/customer-shell',
+      (route) => false,
+    );
   }
 
   @override
@@ -70,30 +74,41 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.maybePop(context),
-                          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                              size: 20),
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 20,
+                          ),
                           padding: EdgeInsets.zero,
                           alignment: Alignment.centerLeft,
                         ),
                         const SizedBox(height: 12),
                         Center(
-                            child: Image.asset('assets/images/logo.png',
-                                height: 116)),
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            height: 116,
+                          ),
+                        ),
                         const SizedBox(height: 18),
-                        Text('Create your account',
-                            style: AppTextStyles.display1(34)),
+                        Text(
+                          'Create your account',
+                          style: AppTextStyles.display1(34),
+                        ),
                         const SizedBox(height: 6),
-                        Text('A fresh batch is just around the corner.',
-                            style: AppTextStyles.q(14,
-                                color: AppColors.textSecondary)),
+                        Text(
+                          'A fresh batch is just around the corner.',
+                          style: AppTextStyles.q(
+                            14,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                         const SizedBox(height: 24),
                         AppTextField(
                           controller: _nameController,
                           labelText: 'Full Name',
                           validator: (value) =>
                               value == null || value.trim().isEmpty
-                                  ? 'Your name is required'
-                                  : null,
+                              ? 'Your name is required'
+                              : null,
                         ),
                         const SizedBox(height: 14),
                         AppTextField(
@@ -120,14 +135,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         Center(
                           child: Text.rich(
                             TextSpan(
-                              style: AppTextStyles.q(12,
-                                  color: AppColors.textSecondary),
+                              style: AppTextStyles.q(
+                                12,
+                                color: AppColors.textSecondary,
+                              ),
                               children: const [
                                 TextSpan(
-                                    text: 'By continuing, you agree to our\n'),
+                                  text: 'By continuing, you agree to our\n',
+                                ),
                                 TextSpan(
-                                    text:
-                                        'Terms of Service and Privacy Policy'),
+                                  text: 'Terms of Service and Privacy Policy',
+                                ),
                               ],
                             ),
                             textAlign: TextAlign.center,

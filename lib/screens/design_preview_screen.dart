@@ -7,13 +7,13 @@ class DesignPreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFD8E9F0),
+    return const Scaffold(
+      backgroundColor: Color(0xFFD8E9F0),
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: const [
+            children: [
               _PhoneMockup(
                 accent: Color(0xFFEDF7FB),
                 screen: _LoginScreenMockup(),
@@ -95,51 +95,68 @@ class _LoginScreenMockup extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 6),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('9:41',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18 * AppTextStyles.scaleFactor)),
-              Row(children: [
-                Icon(Icons.signal_cellular_4_bar, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.wifi, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.battery_5_bar, size: 16)
-              ]),
+            children: [
+              Text(
+                '9:41',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.signal_cellular_4_bar, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.wifi, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.battery_5_bar, size: 16),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 22),
-          const Text('noms',
-              style: TextStyle(
-                  fontSize: 32 * AppTextStyles.scaleFactor,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -2,
-                  color: Color(0xFF1B2D39),
-                  fontFamily: 'Georgia')),
+          const Text(
+            'noms',
+            style: TextStyle(
+              fontSize: 32 * AppTextStyles.scaleFactor,
+              fontWeight: FontWeight.w900,
+              letterSpacing: -2,
+              color: Color(0xFF1B2D39),
+              fontFamily: 'Georgia',
+            ),
+          ),
           const SizedBox(height: 16),
-          const Text('Welcome back!',
-              style: TextStyle(
-                  fontSize: 30 * AppTextStyles.scaleFactor,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF243C4A))),
+          const Text(
+            'Welcome back!',
+            style: TextStyle(
+              fontSize: 30 * AppTextStyles.scaleFactor,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF243C4A),
+            ),
+          ),
           const SizedBox(height: 22),
           _field('Email or Phone Number'),
           const SizedBox(height: 12),
           _field('Password', obscure: true),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(children: [
-                Checkbox(value: false, onChanged: null),
-                Text('Remember Me')
-              ]),
-              Text('Forgot Password?',
-                  style: TextStyle(
-                      color: Color(0xFF2A4B5E), fontWeight: FontWeight.w600)),
+            children: [
+              Row(
+                children: [
+                  Checkbox(value: false, onChanged: null),
+                  Text('Remember Me'),
+                ],
+              ),
+              Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  color: Color(0xFF2A4B5E),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -151,17 +168,24 @@ class _LoginScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-                child: Text('Log in',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18 * AppTextStyles.scaleFactor))),
+              child: Text(
+                'Log in',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 16),
-          const Text('or',
-              style: TextStyle(
-                  fontSize: 18 * AppTextStyles.scaleFactor,
-                  color: Colors.black54)),
+          const Text(
+            'or',
+            style: TextStyle(
+              fontSize: 18 * AppTextStyles.scaleFactor,
+              color: Colors.black54,
+            ),
+          ),
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
@@ -172,19 +196,25 @@ class _LoginScreenMockup extends StatelessWidget {
               border: Border.all(color: const Color(0xFF304B5D), width: 1.5),
             ),
             child: const Center(
-                child: Text('Create a New Account',
-                    style: TextStyle(
-                        color: Color(0xFF1D3C4F),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18 * AppTextStyles.scaleFactor))),
+              child: Text(
+                'Create a New Account',
+                style: TextStyle(
+                  color: Color(0xFF1D3C4F),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+            ),
           ),
           const Spacer(),
           const Text(
-              'By continuing, you agree to our Terms of Service and Privacy Policy',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 11 * AppTextStyles.scaleFactor,
-                  color: Color(0xFF536D7A))),
+            'By continuing, you agree to our Terms of Service and Privacy Policy',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 11 * AppTextStyles.scaleFactor,
+              color: Color(0xFF536D7A),
+            ),
+          ),
           const SizedBox(height: 10),
         ],
       ),
@@ -204,8 +234,9 @@ class _LoginScreenMockup extends StatelessWidget {
       child: TextField(
         obscureText: obscure,
         decoration: InputDecoration.collapsed(
-            hintText: label,
-            hintStyle: const TextStyle(color: Color(0xFF496679))),
+          hintText: label,
+          hintStyle: const TextStyle(color: Color(0xFF496679)),
+        ),
       ),
     );
   }
@@ -221,31 +252,39 @@ class _HomeScreenMockup extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('9:41',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20 * AppTextStyles.scaleFactor)),
-              Row(children: [
-                Icon(Icons.signal_cellular_4_bar, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.wifi, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.battery_5_bar, size: 16)
-              ]),
+            children: [
+              Text(
+                '9:41',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20 * AppTextStyles.scaleFactor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.signal_cellular_4_bar, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.wifi, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.battery_5_bar, size: 16),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Hi, Jethro,',
-                  style: TextStyle(
-                      fontSize: 24 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF234052))),
+              const Text(
+                'Hi, Jethro,',
+                style: TextStyle(
+                  fontSize: 24 * AppTextStyles.scaleFactor,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF234052),
+                ),
+              ),
               Container(
                 width: 38,
                 height: 38,
@@ -253,18 +292,23 @@ class _HomeScreenMockup extends StatelessWidget {
                   color: const Color(0xFFDFE9ED),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child:
-                    const Icon(Icons.person_outline, color: Color(0xFF25465D)),
+                child: const Icon(
+                  Icons.person_outline,
+                  color: Color(0xFF25465D),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 6),
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
-            child: const Text('Good things are baking!',
-                style: TextStyle(
-                    color: Color(0xFF4A6677),
-                    fontSize: 15 * AppTextStyles.scaleFactor)),
+            child: Text(
+              'Good things are baking!',
+              style: TextStyle(
+                color: Color(0xFF4A6677),
+                fontSize: 15 * AppTextStyles.scaleFactor,
+              ),
+            ),
           ),
           const SizedBox(height: 20),
           Container(
@@ -276,23 +320,32 @@ class _HomeScreenMockup extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Today\'s Batch',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18 * AppTextStyles.scaleFactor,
-                        fontWeight: FontWeight.w700)),
+                const Text(
+                  'Today\'s Batch',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18 * AppTextStyles.scaleFactor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 const SizedBox(height: 12),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('191 cookies left',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16 * AppTextStyles.scaleFactor)),
-                    Text('3/ 4',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14 * AppTextStyles.scaleFactor)),
+                  children: [
+                    Text(
+                      '191 cookies left',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16 * AppTextStyles.scaleFactor,
+                      ),
+                    ),
+                    Text(
+                      '3/ 4',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14 * AppTextStyles.scaleFactor,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -304,44 +357,53 @@ class _HomeScreenMockup extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
-                      child: Text('Orders still open',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700))),
+                    child: Text(
+                      'Orders still open',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: const [
+          const Row(
+            children: [
               _MiniCard(title: 'Tomorrow\'s Delivery', subtitle: 'pre-order'),
               SizedBox(width: 12),
               _MiniCard(title: 'Today\'s Specials', subtitle: 'fresh batch'),
             ],
           ),
           const SizedBox(height: 18),
-          const Text('Today\'s Specials',
-              style: TextStyle(
-                  fontSize: 17 * AppTextStyles.scaleFactor,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF243C4A))),
+          const Text(
+            'Today\'s Specials',
+            style: TextStyle(
+              fontSize: 17 * AppTextStyles.scaleFactor,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF243C4A),
+            ),
+          ),
           const SizedBox(height: 12),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(
-                  child: _CookieItemCard(label: 'Cinnamon', price: '₱180')),
+                child: _CookieItemCard(label: 'Cinnamon', price: '₱180'),
+              ),
               SizedBox(width: 10),
               Expanded(
-                  child: _CookieItemCard(label: 'Dark Choco', price: '₱120')),
+                child: _CookieItemCard(label: 'Dark Choco', price: '₱120'),
+              ),
             ],
           ),
           const Spacer(),
           Container(
             margin: const EdgeInsets.only(bottom: 12),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 Icon(Icons.home, color: Color(0xFF2C4557)),
                 Icon(Icons.menu_book, color: Color(0xFF2C4557)),
                 Icon(Icons.shopping_bag, color: Color(0xFF2C4557)),
@@ -377,14 +439,21 @@ class _MiniCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w700, color: Color(0xFF1F3B4B))),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF1F3B4B),
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(subtitle,
-                style: const TextStyle(
-                    color: Color(0xFF5B7180),
-                    fontSize: 11 * AppTextStyles.scaleFactor)),
+            Text(
+              subtitle,
+              style: const TextStyle(
+                color: Color(0xFF5B7180),
+                fontSize: 11 * AppTextStyles.scaleFactor,
+              ),
+            ),
           ],
         ),
       ),
@@ -419,9 +488,13 @@ class _CookieItemCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Text(label,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w700, color: Color(0xFF1D3A4A))),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1D3A4A),
+            ),
+          ),
           Text(price, style: const TextStyle(color: Color(0xFF416172))),
         ],
       ),
@@ -439,34 +512,42 @@ class _ProductScreenMockup extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('9:41',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20 * AppTextStyles.scaleFactor)),
-              Row(children: [
-                Icon(Icons.signal_cellular_4_bar, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.wifi, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.battery_5_bar, size: 16)
-              ]),
+            children: [
+              Text(
+                '9:41',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20 * AppTextStyles.scaleFactor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.signal_cellular_4_bar, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.wifi, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.battery_5_bar, size: 16),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 16),
-          Row(
+          const Row(
             children: [
-              const Icon(Icons.arrow_back_ios_new, size: 18),
-              const SizedBox(width: 8),
-              const Text('Order Details',
-                  style: TextStyle(
-                      fontSize: 22 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF1F3D4F))),
-              const Spacer(),
-              const Icon(Icons.shopping_cart_outlined)
+              Icon(Icons.arrow_back_ios_new, size: 18),
+              SizedBox(width: 8),
+              Text(
+                'Order Details',
+                style: TextStyle(
+                  fontSize: 22 * AppTextStyles.scaleFactor,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF1F3D4F),
+                ),
+              ),
+              Spacer(),
+              Icon(Icons.shopping_cart_outlined),
             ],
           ),
           const SizedBox(height: 22),
@@ -493,17 +574,22 @@ class _ProductScreenMockup extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Oatmeal Chocolate Chip',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 18 * AppTextStyles.scaleFactor,
-                              color: Color(0xFF1F3D4F))),
+                      Text(
+                        'Oatmeal Chocolate Chip',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18 * AppTextStyles.scaleFactor,
+                          color: Color(0xFF1F3D4F),
+                        ),
+                      ),
                       SizedBox(height: 8),
                       Text(
-                          'Soft, chewy, and packed with chunks of chocolate and oats.',
-                          style: TextStyle(
-                              color: Color(0xFF5C7280),
-                              fontSize: 12 * AppTextStyles.scaleFactor)),
+                        'Soft, chewy, and packed with chunks of chocolate and oats.',
+                        style: TextStyle(
+                          color: Color(0xFF5C7280),
+                          fontSize: 12 * AppTextStyles.scaleFactor,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -512,36 +598,56 @@ class _ProductScreenMockup extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Choose Box Size',
-                  style: TextStyle(
-                      fontSize: 18 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF21405C)))),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Choose Box Size',
+              style: TextStyle(
+                fontSize: 18 * AppTextStyles.scaleFactor,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF21405C),
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(
-                  child: _SizeOption(
-                      label: 'Box of 5', price: '₱220', selected: true)),
+                child: _SizeOption(
+                  label: 'Box of 5',
+                  price: '₱220',
+                  selected: true,
+                ),
+              ),
               SizedBox(width: 12),
               Expanded(
-                  child: _SizeOption(
-                      label: 'Box of 6', price: '₱260', selected: false)),
+                child: _SizeOption(
+                  label: 'Box of 6',
+                  price: '₱260',
+                  selected: false,
+                ),
+              ),
               SizedBox(width: 12),
               Expanded(
-                  child: _SizeOption(
-                      label: 'Box of 12', price: '₱440', selected: false)),
+                child: _SizeOption(
+                  label: 'Box of 12',
+                  price: '₱440',
+                  selected: false,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 22),
           const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Quantity',
-                  style: TextStyle(
-                      fontSize: 18 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF21405C)))),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Quantity',
+              style: TextStyle(
+                fontSize: 18 * AppTextStyles.scaleFactor,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF21405C),
+              ),
+            ),
+          ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
@@ -553,21 +659,26 @@ class _ProductScreenMockup extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(Icons.remove, color: Color(0xFF23425A)),
-                Text('1',
-                    style: TextStyle(
-                        fontSize: 24 * AppTextStyles.scaleFactor,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF1F3D4F))),
+                Text(
+                  '1',
+                  style: TextStyle(
+                    fontSize: 24 * AppTextStyles.scaleFactor,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1F3D4F),
+                  ),
+                ),
                 Icon(Icons.add, color: Color(0xFF23425A)),
               ],
             ),
           ),
           const SizedBox(height: 18),
           const Text(
-              'This item is included in the daily preorder limit (500 cookies).',
-              style: TextStyle(
-                  fontSize: 12 * AppTextStyles.scaleFactor,
-                  color: Color(0xFF5C7280))),
+            'This item is included in the daily preorder limit (500 cookies).',
+            style: TextStyle(
+              fontSize: 12 * AppTextStyles.scaleFactor,
+              color: Color(0xFF5C7280),
+            ),
+          ),
           const Spacer(),
           Container(
             width: double.infinity,
@@ -577,11 +688,15 @@ class _ProductScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-                child: Text('Add to Cart | ₱110',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18 * AppTextStyles.scaleFactor))),
+              child: Text(
+                'Add to Cart | ₱110',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 12),
         ],
@@ -595,8 +710,11 @@ class _SizeOption extends StatelessWidget {
   final String price;
   final bool selected;
 
-  const _SizeOption(
-      {required this.label, required this.price, required this.selected});
+  const _SizeOption({
+    required this.label,
+    required this.price,
+    required this.selected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -607,28 +725,36 @@ class _SizeOption extends StatelessWidget {
         color: selected ? const Color(0xFFEAFAF9) : const Color(0xFFE9EFF3),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color:
-                selected ? const Color(0xFF2F485E) : const Color(0xFFB8CDD8)),
+          color: selected ? const Color(0xFF2F485E) : const Color(0xFFB8CDD8),
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                  color: const Color(0xFFD7A871),
-                  borderRadius: BorderRadius.circular(12))),
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: const Color(0xFFD7A871),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
           const SizedBox(height: 8),
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 12 * AppTextStyles.scaleFactor,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1F3D4F))),
-          Text(price,
-              style: const TextStyle(
-                  fontSize: 11 * AppTextStyles.scaleFactor,
-                  color: Color(0xFF5C7280))),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12 * AppTextStyles.scaleFactor,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1F3D4F),
+            ),
+          ),
+          Text(
+            price,
+            style: const TextStyle(
+              fontSize: 11 * AppTextStyles.scaleFactor,
+              color: Color(0xFF5C7280),
+            ),
+          ),
         ],
       ),
     );
@@ -645,32 +771,40 @@ class _SummaryScreenMockup extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('9:41',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20 * AppTextStyles.scaleFactor)),
-              Row(children: [
-                Icon(Icons.signal_cellular_4_bar, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.wifi, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.battery_5_bar, size: 16)
-              ]),
+            children: [
+              Text(
+                '9:41',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20 * AppTextStyles.scaleFactor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.signal_cellular_4_bar, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.wifi, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.battery_5_bar, size: 16),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(Icons.arrow_back_ios_new, size: 18),
               SizedBox(width: 8),
-              Text('Payment',
-                  style: TextStyle(
-                      fontSize: 22 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF1F3D4F))),
+              Text(
+                'Payment',
+                style: TextStyle(
+                  fontSize: 22 * AppTextStyles.scaleFactor,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF1F3D4F),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 18),
@@ -681,62 +815,84 @@ class _SummaryScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: const Color(0xFFB7CBD5)),
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Order Summary',
-                    style: TextStyle(
-                        fontSize: 20 * AppTextStyles.scaleFactor,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF1F3D4F))),
-                const SizedBox(height: 12),
+                Text(
+                  'Order Summary',
+                  style: TextStyle(
+                    fontSize: 20 * AppTextStyles.scaleFactor,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF1F3D4F),
+                  ),
+                ),
+                SizedBox(height: 12),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
-                        child: Text('Oatmeal Chocolate Chip',
-                            style: TextStyle(fontWeight: FontWeight.w600))),
+                      child: Text(
+                        'Oatmeal Chocolate Chip',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
                     Text('₱220'),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
-                        child: Text('Mins-in',
-                            style: TextStyle(color: Color(0xFF4B6778)))),
+                      child: Text(
+                        'Mins-in',
+                        style: TextStyle(color: Color(0xFF4B6778)),
+                      ),
+                    ),
                     Text('₱220'),
                   ],
                 ),
-                const Divider(height: 24),
+                Divider(height: 24),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
-                        child: Text('Subtotal',
-                            style: TextStyle(color: Color(0xFF4B6778)))),
+                      child: Text(
+                        'Subtotal',
+                        style: TextStyle(color: Color(0xFF4B6778)),
+                      ),
+                    ),
                     Text('₱220'),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
-                        child: Text('Delivery Fee',
-                            style: TextStyle(color: Color(0xFF4B6778)))),
+                      child: Text(
+                        'Delivery Fee',
+                        style: TextStyle(color: Color(0xFF4B6778)),
+                      ),
+                    ),
                     Text('₱0'),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
-                        child: Text('Total',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF1F3D4F)))),
-                    Text('₱220',
+                      child: Text(
+                        'Total',
                         style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF1F3D4F))),
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1F3D4F),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '₱220',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1F3D4F),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -744,12 +900,16 @@ class _SummaryScreenMockup extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Payment Method',
-                  style: TextStyle(
-                      fontSize: 18 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF21405C)))),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Payment Method',
+              style: TextStyle(
+                fontSize: 18 * AppTextStyles.scaleFactor,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF21405C),
+              ),
+            ),
+          ),
           const SizedBox(height: 10),
           const PaymentOption(label: 'GCash', selected: true),
           const SizedBox(height: 8),
@@ -765,11 +925,15 @@ class _SummaryScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-                child: Text('Confirm Payment',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18 * AppTextStyles.scaleFactor))),
+              child: Text(
+                'Confirm Payment',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 12),
         ],
@@ -782,7 +946,7 @@ class PaymentOption extends StatelessWidget {
   final String label;
   final bool selected;
 
-  const PaymentOption({required this.label, required this.selected});
+  const PaymentOption({super.key, required this.label, required this.selected});
 
   @override
   Widget build(BuildContext context) {
@@ -792,22 +956,28 @@ class PaymentOption extends StatelessWidget {
         color: const Color(0xFFEAF3F5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-            color:
-                selected ? const Color(0xFF2F485E) : const Color(0xFFBAD0DB)),
+          color: selected ? const Color(0xFF2F485E) : const Color(0xFFBAD0DB),
+        ),
       ),
       child: Row(
         children: [
           Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                  color: selected ? const Color(0xFF2F485E) : Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFF2F485E)))),
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              color: selected ? const Color(0xFF2F485E) : Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFF2F485E)),
+            ),
+          ),
           const SizedBox(width: 12),
-          Text(label,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600, color: Color(0xFF21405C))),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF21405C),
+            ),
+          ),
           const Spacer(),
           if (selected) const Icon(Icons.check, color: Color(0xFF2F485E)),
         ],
@@ -826,20 +996,25 @@ class _ConfirmationScreenMockup extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('9:41',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20 * AppTextStyles.scaleFactor)),
-              Row(children: [
-                Icon(Icons.signal_cellular_4_bar, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.wifi, size: 16),
-                SizedBox(width: 4),
-                Icon(Icons.battery_5_bar, size: 16)
-              ]),
+            children: [
+              Text(
+                '9:41',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20 * AppTextStyles.scaleFactor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.signal_cellular_4_bar, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.wifi, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.battery_5_bar, size: 16),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 18),
@@ -847,20 +1022,28 @@ class _ConfirmationScreenMockup extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: const BoxDecoration(
-                color: Color(0xFF2F485E), shape: BoxShape.circle),
+              color: Color(0xFF2F485E),
+              shape: BoxShape.circle,
+            ),
             child: const Icon(Icons.check, color: Colors.white, size: 30),
           ),
           const SizedBox(height: 18),
-          const Text('Order Confirmed!',
-              style: TextStyle(
-                  fontSize: 26 * AppTextStyles.scaleFactor,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF1F3D4F))),
+          const Text(
+            'Order Confirmed!',
+            style: TextStyle(
+              fontSize: 26 * AppTextStyles.scaleFactor,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF1F3D4F),
+            ),
+          ),
           const SizedBox(height: 8),
-          const Text('Thank you for supporting our small business!',
-              style: TextStyle(
-                  color: Color(0xFF587184),
-                  fontSize: 14 * AppTextStyles.scaleFactor)),
+          const Text(
+            'Thank you for supporting our small business!',
+            style: TextStyle(
+              color: Color(0xFF587184),
+              fontSize: 14 * AppTextStyles.scaleFactor,
+            ),
+          ),
           const SizedBox(height: 18),
           Container(
             padding: const EdgeInsets.all(16),
@@ -869,43 +1052,59 @@ class _ConfirmationScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: const Color(0xFFB7CDD8)),
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Order #NMS-1026',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Color(0xFF1F3D4F))),
+              children: [
+                Text(
+                  'Order #NMS-1026',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1F3D4F),
+                  ),
+                ),
                 SizedBox(height: 18),
-                Row(children: [
-                  Expanded(child: Text('Total Amount')),
-                  Text('₱220')
-                ]),
+                Row(
+                  children: [
+                    Expanded(child: Text('Total Amount')),
+                    Text('₱220'),
+                  ],
+                ),
                 SizedBox(height: 10),
-                Row(children: [
-                  Expanded(child: Text('Payment Method')),
-                  Text('GCash')
-                ]),
+                Row(
+                  children: [
+                    Expanded(child: Text('Payment Method')),
+                    Text('GCash'),
+                  ],
+                ),
                 SizedBox(height: 10),
-                Row(children: [
-                  Expanded(child: Text('Order Date')),
-                  Text('September 21, 2026')
-                ]),
+                Row(
+                  children: [
+                    Expanded(child: Text('Order Date')),
+                    Text('September 21, 2026'),
+                  ],
+                ),
                 SizedBox(height: 10),
-                Row(children: [
-                  Expanded(child: Text('Delivery Date')),
-                  Text('Tomorrow')
-                ]),
+                Row(
+                  children: [
+                    Expanded(child: Text('Delivery Date')),
+                    Text('Tomorrow'),
+                  ],
+                ),
               ],
             ),
           ),
           const SizedBox(height: 18),
           const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Order Status',
-                  style: TextStyle(
-                      fontSize: 18 * AppTextStyles.scaleFactor,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF21405C)))),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Order Status',
+              style: TextStyle(
+                fontSize: 18 * AppTextStyles.scaleFactor,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF21405C),
+              ),
+            ),
+          ),
           const SizedBox(height: 10),
           const _StatusTimeline(),
           const Spacer(),
@@ -917,11 +1116,15 @@ class _ConfirmationScreenMockup extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-                child: Text('Back to Home',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18 * AppTextStyles.scaleFactor))),
+              child: Text(
+                'Back to Home',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18 * AppTextStyles.scaleFactor,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 12),
         ],
@@ -935,15 +1138,19 @@ class _StatusTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Row(
           children: [
             Icon(Icons.check_circle, color: Color(0xFF2F485E), size: 18),
             SizedBox(width: 10),
-            Text('Ordered Place',
-                style: TextStyle(
-                    color: Color(0xFF23465F), fontWeight: FontWeight.w600)),
+            Text(
+              'Ordered Place',
+              style: TextStyle(
+                color: Color(0xFF23465F),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 8),
@@ -951,31 +1158,49 @@ class _StatusTimeline extends StatelessWidget {
           children: [
             Icon(Icons.timelapse, color: Color(0xFF2F485E), size: 18),
             SizedBox(width: 10),
-            Text('Baking',
-                style: TextStyle(
-                    color: Color(0xFF23465F), fontWeight: FontWeight.w600)),
+            Text(
+              'Baking',
+              style: TextStyle(
+                color: Color(0xFF23465F),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 8),
         Row(
           children: [
-            Icon(Icons.check_circle_outline,
-                color: Color(0xFF93A9B5), size: 18),
+            Icon(
+              Icons.check_circle_outline,
+              color: Color(0xFF93A9B5),
+              size: 18,
+            ),
             SizedBox(width: 10),
-            Text('Out for Delivery',
-                style: TextStyle(
-                    color: Color(0xFF93A9B5), fontWeight: FontWeight.w600)),
+            Text(
+              'Out for Delivery',
+              style: TextStyle(
+                color: Color(0xFF93A9B5),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 8),
         Row(
           children: [
-            Icon(Icons.check_circle_outline,
-                color: Color(0xFF93A9B5), size: 18),
+            Icon(
+              Icons.check_circle_outline,
+              color: Color(0xFF93A9B5),
+              size: 18,
+            ),
             SizedBox(width: 10),
-            Text('Delivered',
-                style: TextStyle(
-                    color: Color(0xFF93A9B5), fontWeight: FontWeight.w600)),
+            Text(
+              'Delivered',
+              style: TextStyle(
+                color: Color(0xFF93A9B5),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
       ],

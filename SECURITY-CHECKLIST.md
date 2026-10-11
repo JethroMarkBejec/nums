@@ -1,5 +1,7 @@
 # Security Checklist
 
+**Last reviewed: October 11, 2026.**
+
 **Status: local demo / prototype stage.** NUMS is a Flutter cookie ordering
 prototype published as a browser demo on GitHub Pages. The repository has Git
 history and a GitHub Actions deployment workflow, but the app has no backend.

@@ -38,11 +38,13 @@ class _AppButtonState extends State<AppButton> {
         onEnter: enabled ? (_) => setState(() => _hovered = true) : null,
         onExit: enabled ? (_) => setState(() => _hovered = false) : null,
         child: Listener(
-          onPointerDown:
-              enabled ? (_) => setState(() => _pressed = true) : null,
+          onPointerDown: enabled
+              ? (_) => setState(() => _pressed = true)
+              : null,
           onPointerUp: enabled ? (_) => setState(() => _pressed = false) : null,
-          onPointerCancel:
-              enabled ? (_) => setState(() => _pressed = false) : null,
+          onPointerCancel: enabled
+              ? (_) => setState(() => _pressed = false)
+              : null,
           child: AnimatedScale(
             scale: _pressed ? 0.975 : (_hovered ? 1.015 : 1),
             duration: Duration(milliseconds: reduceMotion ? 1 : 150),
@@ -53,10 +55,12 @@ class _AppButtonState extends State<AppButton> {
                 backgroundColor: widget.isPrimary
                     ? AppColors.primary
                     : Colors.white.withValues(alpha: 0.86),
-                foregroundColor:
-                    widget.isPrimary ? Colors.white : AppColors.primary,
-                disabledBackgroundColor:
-                    AppColors.primary.withValues(alpha: 0.4),
+                foregroundColor: widget.isPrimary
+                    ? Colors.white
+                    : AppColors.primary,
+                disabledBackgroundColor: AppColors.primary.withValues(
+                  alpha: 0.4,
+                ),
                 disabledForegroundColor: Colors.white70,
                 elevation: widget.isPrimary ? 5 : 2,
                 shadowColor: AppColors.primary.withValues(alpha: 0.32),

@@ -5,7 +5,8 @@ class AllergyProfileProvider extends ChangeNotifier {
   final Map<String, String> _notes = {};
 
   Set<String> forEmail(String email) => Set.unmodifiable(
-      _allergies[email.trim().toLowerCase()] ?? const <String>{});
+    _allergies[email.trim().toLowerCase()] ?? const <String>{},
+  );
   String noteFor(String email) => _notes[email.trim().toLowerCase()] ?? '';
 
   void save(String email, Set<String> allergies, String note) {

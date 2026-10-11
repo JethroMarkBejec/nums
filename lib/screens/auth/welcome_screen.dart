@@ -24,17 +24,26 @@ class WelcomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
-                      Image.asset('assets/images/logo.png',
-                          width: 220, fit: BoxFit.contain),
+                      Image.asset(
+                        'assets/images/logo.png',
+                        width: 220,
+                        fit: BoxFit.contain,
+                      ),
                       const SizedBox(height: 5),
-                      Text('Cookie’s, Baked for You',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.display1(22)),
+                      Text(
+                        'Cookie’s, Baked for You',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.display1(22),
+                      ),
                       const SizedBox(height: 8),
-                      Text('Small batches. A little joy in every box.',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.q(10,
-                              color: AppColors.textSecondary)),
+                      Text(
+                        'Small batches. A little joy in every box.',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.q(
+                          10,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 34),
                       AppButton(
                         label: 'Log in',

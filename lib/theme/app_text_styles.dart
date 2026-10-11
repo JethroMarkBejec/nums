@@ -53,11 +53,17 @@ class AppTextStyles {
   }
 
   // Kept for backwards compatibility with the older screens.
-  static final TextStyle headline1 =
-      q(32, weight: FontWeight.w700, letterSpacing: -0.5);
+  static final TextStyle headline1 = q(
+    32,
+    weight: FontWeight.w700,
+    letterSpacing: -0.5,
+  );
   static final TextStyle headline2 = q(24, weight: FontWeight.w700);
   static final TextStyle bodyLarge = q(16, weight: FontWeight.w500);
   static final TextStyle bodyMedium = q(14, weight: FontWeight.w400);
-  static final TextStyle label =
-      q(12, weight: FontWeight.w600, letterSpacing: 0.5);
+  static final TextStyle label = q(
+    12,
+    weight: FontWeight.w600,
+    letterSpacing: 0.5,
+  );
 }

@@ -17,11 +17,17 @@ class VerificationScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.mark_email_unread_outlined,
-                size: 64, color: AppColors.primary),
+            const Icon(
+              Icons.mark_email_unread_outlined,
+              size: 64,
+              color: AppColors.primary,
+            ),
             const SizedBox(height: 20),
-            Text('Email verification is unavailable',
-                textAlign: TextAlign.center, style: AppTextStyles.display1(26)),
+            Text(
+              'Email verification is unavailable',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.display1(26),
+            ),
             const SizedBox(height: 10),
             Text(
               'This local version has no email service. Create an account from the sign-up screen to continue.',
@@ -32,7 +38,10 @@ class VerificationScreen extends StatelessWidget {
             AppButton(
               label: 'Back to Sign In',
               onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/login', (route) => false),
+                context,
+                '/login',
+                (route) => false,
+              ),
             ),
           ],
         ),

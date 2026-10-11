@@ -14,10 +14,10 @@ class AppUser {
   });
 
   AppUser copyWith({int? points}) => AppUser(
-        id: id,
-        name: name,
-        email: email,
-        role: role,
-        points: points ?? this.points,
-      );
+    id: id,
+    name: name,
+    email: email,
+    role: role,
+    points: points ?? this.points,
+  );
 }

@@ -37,12 +37,14 @@ class _AppCardState extends State<AppCard> {
         decoration: BoxDecoration(
           color: widget.color ?? AppColors.card,
           borderRadius: BorderRadius.circular(20),
-          border:
-              Border.all(color: AppColors.cardBorder.withValues(alpha: 0.68)),
+          border: Border.all(
+            color: AppColors.cardBorder.withValues(alpha: 0.68),
+          ),
           boxShadow: [
             BoxShadow(
-              color:
-                  AppColors.primary.withValues(alpha: _hovered ? 0.16 : 0.10),
+              color: AppColors.primary.withValues(
+                alpha: _hovered ? 0.16 : 0.10,
+              ),
               blurRadius: _hovered ? 27 : 22,
               offset: Offset(0, _hovered ? 12 : 9),
             ),
@@ -73,7 +75,7 @@ class AppCardHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(title, style: AppTextStyles.q(18, weight: FontWeight.w700)),
-            if (trailing != null) trailing!,
+            ?trailing,
           ],
         ),
         const SizedBox(height: 12),
@@ -88,20 +90,28 @@ class InfoRow extends StatelessWidget {
   final String label;
   final String value;
   final bool bold;
-  const InfoRow(
-      {super.key, required this.label, required this.value, this.bold = false});
+  const InfoRow({
+    super.key,
+    required this.label,
+    required this.value,
+    this.bold = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        AppTextStyles.q(15, weight: bold ? FontWeight.w700 : FontWeight.w500);
+    final style = AppTextStyles.q(
+      15,
+      weight: bold ? FontWeight.w700 : FontWeight.w500,
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: style),
         const SizedBox(width: 12),
-        Flexible(child: Text(value, style: style, textAlign: TextAlign.right)),
+        Flexible(
+          child: Text(value, style: style, textAlign: TextAlign.right),
+        ),
       ],
     );
   }

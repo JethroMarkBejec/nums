@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 
 class OrderProvider with ChangeNotifier {
@@ -69,8 +67,9 @@ class OrderProvider with ChangeNotifier {
 
   bool approveForPayment(String id, {String? message}) {
     final index = _orders.indexWhere((item) => item['id'] == id);
-    if (index < 0 || _orders[index]['status'] != 'Pending admin review')
+    if (index < 0 || _orders[index]['status'] != 'Pending admin review') {
       return false;
+    }
     final order = _orders[index];
     order['status'] = statuses.first;
     order['adminMessage'] =
@@ -82,8 +81,9 @@ class OrderProvider with ChangeNotifier {
 
   bool declineReview(String id, String message) {
     final index = _orders.indexWhere((item) => item['id'] == id);
-    if (index < 0 || _orders[index]['status'] != 'Pending admin review')
+    if (index < 0 || _orders[index]['status'] != 'Pending admin review') {
       return false;
+    }
     final order = _orders[index];
     order['status'] = 'Declined';
     order['adminMessage'] = message;
@@ -95,7 +95,9 @@ class OrderProvider with ChangeNotifier {
     final index = _orders.indexWhere((item) => item['id'] == id);
     if (index < 0 ||
         _orders[index]['status'] == 'Pending admin review' ||
-        _orders[index]['status'] == 'Declined') return false;
+        _orders[index]['status'] == 'Declined') {
+      return false;
+    }
     _orders[index]['paymentMethod'] = method;
     _orders[index]['paymentStatus'] = 'Paid (demo)';
     notifyListeners();
@@ -104,27 +106,32 @@ class OrderProvider with ChangeNotifier {
 
   bool refundOrder(String id) {
     final index = _orders.indexWhere((item) => item['id'] == id);
-    if (index < 0 || _orders[index]['paymentStatus'] != 'Paid (demo)')
+    if (index < 0 || _orders[index]['paymentStatus'] != 'Paid (demo)') {
       return false;
+    }
     _orders[index]['paymentStatus'] = 'Refunded (demo)';
     notifyListeners();
     return true;
   }
 
-  bool saveFeedback(String id,
-      {required int rating,
-      required String comment,
-      String? photoName,
-      Uint8List? photoBytes}) {
+  bool saveFeedback(
+    String id, {
+    required int rating,
+    required String comment,
+    String? photoName,
+    Uint8List? photoBytes,
+  }) {
     final index = _orders.indexWhere((item) => item['id'] == id);
     if (index < 0 ||
         _orders[index]['status'] != 'Received' ||
         rating < 1 ||
-        rating > 5) return false;
+        rating > 5) {
+      return false;
+    }
     _orders[index]['feedback'] = {
       'rating': rating,
       'comment': comment.trim(),
-      if (photoName != null) 'photoName': photoName,
+      'photoName': ?photoName,
       if (photoBytes != null) 'photoBytes': Uint8List.fromList(photoBytes),
     };
     notifyListeners();

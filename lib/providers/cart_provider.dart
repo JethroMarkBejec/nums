@@ -37,8 +37,8 @@ class CartProvider with ChangeNotifier {
   }
 
   double get total => _items.fold<double>(
-        0,
-        (sum, item) =>
-            sum + (item['price'] as num).toDouble() * (item['quantity'] as int),
-      );
+    0,
+    (sum, item) =>
+        sum + (item['price'] as num).toDouble() * (item['quantity'] as int),
+  );
 }

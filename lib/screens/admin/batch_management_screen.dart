@@ -22,92 +22,113 @@ class BatchManagementScreen extends StatelessWidget {
         children: [
           Text('Production batches', style: AppTextStyles.display1(30)),
           const SizedBox(height: 5),
-          Text('Batches and production tracking.',
-              style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+          Text(
+            'Batches and production tracking.',
+            style: AppTextStyles.q(14, color: AppColors.textSecondary),
+          ),
           const SizedBox(height: 18),
           for (final batch in batches) ...[
-            Builder(builder: (context) {
-              final id = batch['id'] as String;
-              final name = batch['name'] as String;
-              final quantity = batch['quantity'] as int;
-              final status = batch['status'] as String;
-              final progress = (batch['progress'] as num).toDouble();
-              return AppCard(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 46,
-                          height: 46,
-                          decoration: BoxDecoration(
-                            color: AppColors.accentSoft,
-                            borderRadius: BorderRadius.circular(14),
+            Builder(
+              builder: (context) {
+                final id = batch['id'] as String;
+                final name = batch['name'] as String;
+                final quantity = batch['quantity'] as int;
+                final status = batch['status'] as String;
+                final progress = (batch['progress'] as num).toDouble();
+                return AppCard(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 46,
+                            height: 46,
+                            decoration: BoxDecoration(
+                              color: AppColors.accentSoft,
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Icon(
+                              Icons.cookie_outlined,
+                              color: AppColors.primary,
+                            ),
                           ),
-                          child: const Icon(Icons.cookie_outlined,
-                              color: AppColors.primary),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(name,
-                                  style: AppTextStyles.q(16,
-                                      weight: FontWeight.w700)),
-                              Text('$quantity cookies',
-                                  style: AppTextStyles.q(13,
-                                      color: AppColors.textSecondary)),
-                            ],
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name,
+                                  style: AppTextStyles.q(
+                                    16,
+                                    weight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  '$quantity cookies',
+                                  style: AppTextStyles.q(
+                                    13,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        StatusBadge(
-                          text: status,
-                          color: status == 'Complete'
-                              ? AppColors.success
-                              : status == 'In progress'
-                                  ? AppColors.warning
-                                  : AppColors.primary,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        minHeight: 8,
-                        backgroundColor: AppColors.divider,
-                        valueColor:
-                            const AlwaysStoppedAnimation(AppColors.accent),
+                          StatusBadge(
+                            text: status,
+                            color: status == 'Complete'
+                                ? AppColors.success
+                                : status == 'In progress'
+                                ? AppColors.warning
+                                : AppColors.primary,
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('${(progress * 100).round()}% complete',
-                              style: AppTextStyles.q(12,
-                                  color: AppColors.textSecondary)),
+                      const SizedBox(height: 18),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          minHeight: 8,
+                          backgroundColor: AppColors.divider,
+                          valueColor: const AlwaysStoppedAnimation(
+                            AppColors.accent,
+                          ),
                         ),
-                        if (status != 'Complete')
-                          TextButton.icon(
-                            onPressed: () =>
-                                context.read<BatchProvider>().advance(id),
-                            icon: const Icon(Icons.arrow_forward_rounded),
-                            label: const Text('Advance batch'),
-                          )
-                        else
-                          const Icon(Icons.check_circle_rounded,
-                              color: AppColors.success),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${(progress * 100).round()}% complete',
+                              style: AppTextStyles.q(
+                                12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                          if (status != 'Complete')
+                            TextButton.icon(
+                              onPressed: () =>
+                                  context.read<BatchProvider>().advance(id),
+                              icon: const Icon(Icons.arrow_forward_rounded),
+                              label: const Text('Advance batch'),
+                            )
+                          else
+                            const Icon(
+                              Icons.check_circle_rounded,
+                              color: AppColors.success,
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 12),
           ],
         ],

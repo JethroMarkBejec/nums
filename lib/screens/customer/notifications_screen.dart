@@ -49,17 +49,26 @@ class NotificationsScreen extends StatelessWidget {
                               color: Colors.white.withValues(alpha: 0.62),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.notifications_none_rounded,
-                                color: AppColors.primary, size: 46),
+                            child: const Icon(
+                              Icons.notifications_none_rounded,
+                              color: AppColors.primary,
+                              size: 46,
+                            ),
                           ),
                           const SizedBox(height: 20),
-                          Text('All caught up',
-                              style: AppTextStyles.display1(30)),
+                          Text(
+                            'All caught up',
+                            style: AppTextStyles.display1(30),
+                          ),
                           const SizedBox(height: 8),
-                          Text('Order updates will show up here.',
-                              style: AppTextStyles.q(15,
-                                  color: AppColors.textSecondary),
-                              textAlign: TextAlign.center),
+                          Text(
+                            'Order updates will show up here.',
+                            style: AppTextStyles.q(
+                              15,
+                              color: AppColors.textSecondary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ),
@@ -67,7 +76,7 @@ class NotificationsScreen extends StatelessWidget {
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                     itemCount: notifications.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    separatorBuilder: (_, _) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
                       final item = notifications[index];
                       final unread = item['isRead'] != true;
@@ -95,25 +104,40 @@ class NotificationsScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item['title'] as String,
-                                        style: AppTextStyles.q(16,
-                                            weight: FontWeight.w700)),
+                                    Text(
+                                      item['title'] as String,
+                                      style: AppTextStyles.q(
+                                        16,
+                                        weight: FontWeight.w700,
+                                      ),
+                                    ),
                                     const SizedBox(height: 4),
-                                    Text(item['message'] as String,
-                                        style: AppTextStyles.q(14,
-                                            color: AppColors.textSecondary)),
+                                    Text(
+                                      item['message'] as String,
+                                      style: AppTextStyles.q(
+                                        14,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
                                     const SizedBox(height: 6),
-                                    Text(AppFormatters.longDate(createdAt),
-                                        style: AppTextStyles.q(11,
-                                            color: AppColors.textMuted)),
+                                    Text(
+                                      AppFormatters.longDate(createdAt),
+                                      style: AppTextStyles.q(
+                                        11,
+                                        color: AppColors.textMuted,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                               if (unread)
                                 const Padding(
                                   padding: EdgeInsets.only(top: 5),
-                                  child: Icon(Icons.circle,
-                                      color: AppColors.primary, size: 9),
+                                  child: Icon(
+                                    Icons.circle,
+                                    color: AppColors.primary,
+                                    size: 9,
+                                  ),
                                 ),
                             ],
                           ),

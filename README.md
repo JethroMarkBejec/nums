@@ -1,114 +1,176 @@
-# nums
+# NUMS — Cookie Ordering App
 
-## 1. Overview
+A Flutter ordering app for a small home-based cookie bakery. Customers can browse and customize orders, while bakery staff can manage orders, inventory, and baking batches.
 
-`nums` is a Flutter cookie ordering app for customers and bakery staff. Customers can browse and customize cookie orders and follow their progress, while staff can manage orders, inventory, and baking batches.
+## Project Repository
 
-## 2. Setup and installation
+- **GitHub Repository:** [JethroMarkBejec/nums](https://github.com/JethroMarkBejec/nums)
+- **Live App:** [Open the deployed NUMS app](https://jethromarkbejec.github.io/nums/)
 
-The app was verified locally with Flutter 3.47.5 and Dart 3.13.4. `pubspec.yaml` requires Dart 3.6 or later.
+## Overview
 
-1. Install the [Flutter SDK](https://docs.flutter.dev/get-started/install) with its bundled Dart SDK, and configure a device, emulator, or desktop/browser target.
-2. Clone the repository and enter its directory:
+NUMS brings cookie browsing, custom box building, checkout, and order tracking into one mobile-friendly app. It is intended for cookie customers and bakery staff; its accounts, state, and payment flow are local demonstrations that reset when the app restarts.
 
-   ```sh
+## Setup and Installation
+
+### Prerequisites
+
+- Flutter **3.47.5** (stable; version used for this project)
+- Dart **3.13.4** (bundled with Flutter)
+- Minimum supported versions in `pubspec.yaml`: Flutter **3.44.0** and Dart **3.12.0**
+- Git
+- Google Chrome for the web run command below, or a configured Flutter device/emulator
+- Visual Studio Code is optional
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
    git clone https://github.com/JethroMarkBejec/nums.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
    cd nums
    ```
 
-   Want to preview it without installing Flutter? [Open the deployed app](https://jethromarkbejec.github.io/nums/).
+3. Install the dependencies:
 
-3. Fetch the packages:
-
-   ```sh
+   ```bash
    flutter pub get
    ```
 
-No API keys, backend URL, or environment file is required. The app uses local demo data. Never add real credentials to source control.
+4. No API keys, Firebase configuration, backend URL, or environment variables are required. The app uses local demo data. Do not reuse its demo passwords for real accounts.
 
-## 3. How to run it
+## How to Run the App
 
-With a device or emulator connected, run:
+Run the web app in Chrome:
 
-```sh
-flutter run
+```bash
+flutter run -d chrome
 ```
 
-To choose a specific device, see the available targets with `flutter devices`, then run `flutter run -d <device-id>`. A successful launch opens the nums welcome screen. In debug mode, DevicePreview is enabled so the layout can be previewed at different device sizes.
+Flutter opens the NUMS welcome screen. DevicePreview provides the mobile device preview in web builds and during development. The project keeps DevicePreview in its 1.x line to retain the embedded toolbar; version 3.x moves its controls to Flutter DevTools. To use another configured device, check the available targets with `flutter devices` and replace `chrome` with its device ID.
 
-## 4. Features and usage
+## Features and Usage
 
-### Customer flow
+### Main Features
 
-1. **Welcome, sign in, and sign up:** Start at Welcome, then sign in or create a local account. For a quick walkthrough, use `welcome@nums.com` with password `cookies123`.
-2. **Home and Menu:** Browse the home specials or open Menu to choose cookie boxes. The home notification icon opens Notifications.
-3. **Customize and cart:** Choose a cookie item, set the box size, quantity, and mix-ins, then review or edit quantities in Cart.
-4. **Checkout:** Review the total and pickup/delivery date, choose GCash, Maya, or GoTyme, and confirm the payment prompt. A successful demo payment creates the order and records it as **Paid (demo)**.
-5. **Confirmation and order tracking:** Review the confirmation, then follow the order in Orders. Delivered orders appear in History. Order updates create in-app notifications, which can be marked read.
-6. **Profile:** View the signed-in account and access account actions.
+- **Customer ordering:** Browse cookie flavors, create a cookie box, customize an order, and manage cart quantities.
+- **Checkout and order tracking:** Review an order, choose a payment method, confirm the local payment simulation, and follow its progress.
+- **Notifications and profile:** Review order updates, manage customer preferences, and view the active demo account.
+- **Chip assistant:** Use the local, rule-based assistant for ordering prompts and in-app navigation. Chip does not use a cloud AI service.
+- **Bakery staff tools:** Review customer orders and requests, update order progress, adjust inventory, and manage baking batches.
+- **Responsive preview:** Use DevicePreview during development to inspect the mobile layout at different device sizes.
 
-### Staff flow
+### User Flow
 
-The staff screens provide a dashboard, an order queue and order details, inventory editing, batch management, and a staff profile. In debug builds, open **Profile** and tap **Open demo staff dashboard**. Staff can advance orders through Placed, Preparing, Out for delivery, and Delivered, adjust inventory, and progress baking batches.
+#### Customer
 
-## 5. Project structure
+1. **Welcome / Sign in / Sign up:** Start at Welcome and sign in or create a local demo account. Customer demo: `welcome@nums.com` / `cookies123`.
+2. **Home / Menu:** View bakery updates and specials, then browse the cookie menu. The Home notification button opens order notifications.
+3. **Build-a-Box / Customize:** Choose a box size, add flavors, and set optional customization details.
+4. **Cart:** Review selected products and quantities before checkout.
+5. **Payment:** Review the order total and pickup/delivery details, select GCash, Maya, or GoTyme, then confirm the demo payment. No money is charged or transferred.
+6. **Confirmation / Orders / History:** View the order confirmation and track its status. Delivered orders can be reviewed in History.
+7. **Profile / Chip:** View account preferences or open Chip for local guided help and navigation.
 
-- `lib/main.dart`, `lib/app.dart`: app entry point, DevicePreview, providers, and theme setup.
-- `lib/routes/app_routes.dart`: named screen routes.
-- `lib/screens/auth/`: welcome, login, sign-up, and verification screens.
-- `lib/screens/customer/`: home, menu, cart, orders, history, notifications, profile, and checkout screens.
-- `lib/screens/admin/`: staff dashboard, order, inventory, batch, and profile screens.
-- `lib/models/`: app data types.
-- `lib/providers/`: in-memory authentication, cart, inventory, batch, order, and notification state.
-- `lib/services/`: local service stubs for authentication, payment, orders, batches, inventory, and suggestions.
-- `lib/theme/`, `lib/widgets/`, `lib/utils/`: visual styling, reusable UI, formatting, constants, and validation.
-- `assets/`: app illustrations, payment marks, and fonts.
+#### Bakery staff
 
-## 6. Screenshots
+Sign in with the local staff demo account `staff@nums.com` / `staff123`. Use the staff dashboard to open the order queue, inspect an order, progress its status, review customer requests, update stock, or manage bake batches. These demo credentials and staff checks are part of the client app and are not production security.
 
-Add your app screenshots here using the screen names shown in the app (for example, Welcome, Login, Home, Menu, Cart, Orders, and Profile). Keep the original image filenames and link each capture under its matching screen name. The screenshot files have not been added to this repository yet.
+## Project Structure
 
-## 7. Known issues and next steps
+```text
+nums/
+├── README.md
+├── AI-USAGE.md
+├── SECURITY-CHECKLIST.md
+├── screenshots/                # Original screen captures supplied for the README
+├── presentation/               # Presentation PDF and the square logo image
+├── assets/                     # App images, payment marks, and fonts
+├── lib/
+│   ├── main.dart, app.dart      # App entry point, providers, theme, DevicePreview
+│   ├── routes/                  # Named app routes and staff route gate
+│   ├── screens/
+│   │   ├── auth/                # Welcome, sign-in, sign-up, verification
+│   │   ├── customer/            # Customer tabs, ordering, profile, notifications
+│   │   └── admin/               # Staff dashboard, order, inventory, and batch screens
+│   ├── models/                  # User, cookie, order, payment, and other data types
+│   ├── providers/               # In-memory app state
+│   ├── repositories/            # Local payment and points rules
+│   ├── services/                # Local demo service implementations
+│   ├── theme/, widgets/, utils/ # Shared styling, widgets, and helpers
+├── web/                         # Web entry point, manifest, icons, and favicon
+├── .github/workflows/           # GitHub Pages web deployment workflow
+├── pubspec.yaml                 # Package constraints and Flutter assets
+└── pubspec.lock                 # Resolved dependency versions
+```
 
-### Known issues
+## Screenshots
 
-- Accounts, cart contents, orders, notifications, inventory, and batch progress reset when the app restarts.
-- Sign-in is local, and staff screens are not protected by role-based authorization.
-- Wallet payment is simulated; no money is charged or transferred.
-- Daily cookie counts and some shop content use sample values.
-- The app is not deployed.
+These are the original captures currently supplied for the README, using their screen names:
 
-### Next steps
+### Home
 
-- Add persistent storage if data should survive app restarts.
-- Add secure authentication and staff authorization if the app is used with real accounts.
-- Integrate a payment provider if real payments are required.
-- Replace sample cookie counts and shop content with live data if needed.
+![NUMS Home screen](screenshots/Home.png)
 
-## Final Project
+*Customer home with bakery updates, specials, notifications, and navigation.*
 
-### My project repository
+### Menu
 
-Public repository: [nums](https://github.com/JethroMarkBejec/nums)
+![NUMS Menu screen](screenshots/Menu.png)
 
-Live app: [Open the deployed preview](https://jethromarkbejec.github.io/nums/)
+*Cookie menu with product descriptions, box sizes, and prices.*
 
-### What it is
+### Build-a-Box
 
-See [Overview](#1-overview).
+![NUMS Build-a-Box screen](screenshots/Build-a-Box.png)
 
-### How to run it
+*Choose a box size and fill it with selected cookie flavors.*
 
-Follow [Setup and installation](#setup-and-installation) and [How to run it](#how-to-run-it) above.
+### Payment
 
-### Presentation
+![NUMS Payment screen](screenshots/Payment.png)
 
-- Video (public Google Drive link): [Watch the presentation](https://drive.google.com/file/d/1c8ja0-bsB7ThlaaLmiGVSCP5rLiJsx2e/view?usp=sharing)
-- Slides (PDF): [NUMS presentation](presentation/NUMS-Presentation.pdf)
-- Square image (logo): [NUMS logo](presentation/nums_logo.png)
+*Review an order and select a payment method for the local simulation.*
 
-## AI usage
+### Orders
+
+![NUMS Orders screen](screenshots/Orders.png)
+
+*Track an order's current status and progress.*
+
+The screenshots supplied so far do not cover every route. Add original captures for the remaining customer, authentication, Chip, and staff screens to meet the requirement of one screenshot per screen. The images here were supplied by the project author; no screenshots were captured or generated for this README.
+
+## Known Issues and Limitations
+
+- The app is intentionally a local demo. Accounts, cart contents, orders, notifications, inventory, and batch progress are stored in memory and reset when the app restarts.
+- Sign-in and staff role checks run in the client app; they are not secure authentication or server-side authorization.
+- GCash, Maya, and GoTyme are payment choices in a local simulation. The app does not charge or transfer money.
+- Daily batch counts and some bakery content use sample values.
+- Chip uses local rules and preset actions; it does not connect to a remote AI service.
+
+### Next Steps
+
+- Capture and add the remaining screens from the running app.
+- If the app is later used beyond a classroom demo, consider persistent shared data, secure authentication and authorization, and a real payment-provider integration.
+- Replace sample bakery values with managed live values if needed.
+
+## Presentation
+
+- **Presentation Video:** [Watch the public Google Drive video](https://drive.google.com/file/d/1c8ja0-bsB7ThlaaLmiGVSCP5rLiJsx2e/view?usp=sharing)
+- **Presentation Slides:** [Download the updated PDF](presentation/NUMS-Presentation.pdf)
+- **Square Image:** [NUMS logo](presentation/nums_logo.png)
+
+## AI Usage Disclosure
 
 [![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
 
-AI credit: From September 20 to October 4, I used Claude and OpenAI Codex extensively for implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement.
+AI credit: During the original implementation from September 20 to October 4, I used Claude and OpenAI Codex extensively for Flutter/Dart implementation help. I estimate AI contributed about 80% and I contributed about 20%, including writing the initial welcome, login, and sign-up screens and making the app's visual design and layout decisions. This is a retrospective estimate, not a line-by-line measurement. I also used OpenAI Codex for Flutter/Dart compatibility maintenance on October 11. See [`AI-USAGE.md`](AI-USAGE.md) for the code-focused usage record.
+
+## Security
+
+Security considerations and checklist responses are documented in [`SECURITY-CHECKLIST.md`](SECURITY-CHECKLIST.md).

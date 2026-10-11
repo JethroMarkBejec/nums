@@ -25,8 +25,9 @@ class AdminDashboardScreen extends StatelessWidget {
       0,
       (sum, item) => sum + (item['quantity'] as int),
     );
-    final activeBatches =
-        batches.where((batch) => batch['status'] != 'Complete').length;
+    final activeBatches = batches
+        .where((batch) => batch['status'] != 'Complete')
+        .length;
     final requestCount = context
         .watch<RequestsProvider>()
         .requests
@@ -40,8 +41,10 @@ class AdminDashboardScreen extends StatelessWidget {
         children: [
           Text('Bakery overview', style: AppTextStyles.display1(30)),
           const SizedBox(height: 5),
-          Text('A quick look at today’s shop operations.',
-              style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+          Text(
+            'A quick look at today’s shop operations.',
+            style: AppTextStyles.q(14, color: AppColors.textSecondary),
+          ),
           const SizedBox(height: 18),
           Container(
             padding: const EdgeInsets.all(18),
@@ -51,20 +54,29 @@ class AdminDashboardScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.wb_sunny_outlined,
-                    color: Colors.white, size: 30),
+                const Icon(
+                  Icons.wb_sunny_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Today’s production',
-                          style: AppTextStyles.q(17,
-                              weight: FontWeight.w700, color: Colors.white)),
+                      Text(
+                        'Today’s production',
+                        style: AppTextStyles.q(
+                          17,
+                          weight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
                       const SizedBox(height: 3),
                       Text(
-                          '$activeOrders open orders · $boxesInStock boxes · $activeBatches active batches',
-                          style: AppTextStyles.q(13, color: Colors.white)),
+                        '$activeOrders open orders · $boxesInStock boxes · $activeBatches active batches',
+                        style: AppTextStyles.q(13, color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
@@ -73,35 +85,40 @@ class AdminDashboardScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const _DashboardTile(
-              icon: Icons.receipt_long_outlined,
-              title: 'Orders',
-              detail: 'Review incoming orders and update their status.',
-              route: '/admin-orders'),
+            icon: Icons.receipt_long_outlined,
+            title: 'Orders',
+            detail: 'Review incoming orders and update their status.',
+            route: '/admin-orders',
+          ),
           const SizedBox(height: 10),
           _DashboardTile(
-              icon: Icons.chat_bubble_outline_rounded,
-              title: 'Customer requests',
-              detail:
-                  '$requestCount open · Reply to customers who asked for staff help.',
-              route: '/admin-requests'),
+            icon: Icons.chat_bubble_outline_rounded,
+            title: 'Customer requests',
+            detail:
+                '$requestCount open · Reply to customers who asked for staff help.',
+            route: '/admin-requests',
+          ),
           const SizedBox(height: 10),
           const _DashboardTile(
-              icon: Icons.inventory_2_outlined,
-              title: 'Inventory',
-              detail: 'Keep track of ingredients and finished cookie boxes.',
-              route: '/admin-inventory'),
+            icon: Icons.inventory_2_outlined,
+            title: 'Inventory',
+            detail: 'Keep track of ingredients and finished cookie boxes.',
+            route: '/admin-inventory',
+          ),
           const SizedBox(height: 10),
           const _DashboardTile(
-              icon: Icons.cookie_outlined,
-              title: 'Production batches',
-              detail: 'Follow each bake from preparation to ready stock.',
-              route: '/admin-batch'),
+            icon: Icons.cookie_outlined,
+            title: 'Production batches',
+            detail: 'Follow each bake from preparation to ready stock.',
+            route: '/admin-batch',
+          ),
           const SizedBox(height: 10),
           const _DashboardTile(
-              icon: Icons.person_outline_rounded,
-              title: 'Staff profile',
-              detail: 'View the local bakery staff profile.',
-              route: '/admin-profile'),
+            icon: Icons.person_outline_rounded,
+            title: 'Staff profile',
+            detail: 'View the local bakery staff profile.',
+            route: '/admin-profile',
+          ),
         ],
       ),
     );
@@ -114,11 +131,12 @@ class _DashboardTile extends StatelessWidget {
   final String detail;
   final String route;
 
-  const _DashboardTile(
-      {required this.icon,
-      required this.title,
-      required this.detail,
-      required this.route});
+  const _DashboardTile({
+    required this.icon,
+    required this.title,
+    required this.detail,
+    required this.route,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +163,18 @@ class _DashboardTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
-                        style: AppTextStyles.q(16, weight: FontWeight.w700)),
+                    Text(
+                      title,
+                      style: AppTextStyles.q(16, weight: FontWeight.w700),
+                    ),
                     const SizedBox(height: 3),
-                    Text(detail,
-                        style: AppTextStyles.q(12,
-                            color: AppColors.textSecondary)),
+                    Text(
+                      detail,
+                      style: AppTextStyles.q(
+                        12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),

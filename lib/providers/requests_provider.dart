@@ -6,11 +6,12 @@ class RequestsProvider extends ChangeNotifier {
       .map((request) => Map<String, dynamic>.unmodifiable(request))
       .toList(growable: false);
 
-  void create(
-      {required String email,
-      required String message,
-      String type = 'chat',
-      Map<String, dynamic> data = const {}}) {
+  void create({
+    required String email,
+    required String message,
+    String type = 'chat',
+    Map<String, dynamic> data = const {},
+  }) {
     _requests.insert(0, {
       'id': DateTime.now().microsecondsSinceEpoch.toString(),
       'email': email,
@@ -27,17 +28,20 @@ class RequestsProvider extends ChangeNotifier {
   List<Map<String, dynamic>> get flavorRequests =>
       requests.where((item) => item['type'] == 'flavor').toList();
   String? get flavorOfTheMonth {
-    final ideas =
-        flavorRequests.where((item) => item['status'] != 'Declined').toList();
+    final ideas = flavorRequests
+        .where((item) => item['status'] != 'Declined')
+        .toList();
     if (ideas.isEmpty) return null;
     ideas.sort(
-        (a, b) => (b['votes'] as int? ?? 0).compareTo(a['votes'] as int? ?? 0));
+      (a, b) => (b['votes'] as int? ?? 0).compareTo(a['votes'] as int? ?? 0),
+    );
     return ideas.first['flavor'] as String?;
   }
 
   bool upvoteFlavor(String id, String email) {
-    final index = _requests
-        .indexWhere((item) => item['id'] == id && item['type'] == 'flavor');
+    final index = _requests.indexWhere(
+      (item) => item['id'] == id && item['type'] == 'flavor',
+    );
     if (index < 0) return false;
     final voters = (_requests[index]['voters'] as Set<String>?) ?? <String>{};
     final key = email.trim().toLowerCase();

@@ -8,7 +8,8 @@ abstract class ChatRepository {
 class LocalChatRepository implements ChatRepository {
   final AssistantService _rules = AssistantService();
   @override
-  Future<AssistantReply> replyTo(String message,
-          {bool preferTagalog = false}) =>
-      _rules.getReply(message, preferTagalog: preferTagalog);
+  Future<AssistantReply> replyTo(
+    String message, {
+    bool preferTagalog = false,
+  }) => _rules.getReply(message, preferTagalog: preferTagalog);
 }

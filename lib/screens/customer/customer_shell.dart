@@ -79,7 +79,8 @@ class _CustomerShellState extends State<CustomerShell> {
             color: Colors.white.withValues(alpha: 0.88),
             border: Border(
               top: BorderSide(
-                  color: AppColors.cardBorder.withValues(alpha: 0.8)),
+                color: AppColors.cardBorder.withValues(alpha: 0.8),
+              ),
             ),
             boxShadow: [
               BoxShadow(
@@ -110,7 +111,9 @@ class _CustomerShellState extends State<CustomerShell> {
                                 duration: const Duration(milliseconds: 180),
                                 curve: Curves.easeOut,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 7, vertical: 5),
+                                  horizontal: 7,
+                                  vertical: 5,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(16),
@@ -133,14 +136,21 @@ class _CustomerShellState extends State<CustomerShell> {
                                         top: -6,
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 2),
+                                            horizontal: 5,
+                                            vertical: 2,
+                                          ),
                                           decoration: const BoxDecoration(
-                                              color: AppColors.error,
-                                              shape: BoxShape.circle),
-                                          child: Text('$cartCount',
-                                              style: AppTextStyles.q(9,
-                                                  weight: FontWeight.w700,
-                                                  color: Colors.white)),
+                                            color: AppColors.error,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Text(
+                                            '$cartCount',
+                                            style: AppTextStyles.q(
+                                              9,
+                                              weight: FontWeight.w700,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                   ],

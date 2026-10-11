@@ -28,7 +28,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
   final _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [
     const _ChatMessage(
-      text: 'Hi! Kumusta! I can help you choose cookies or find a screen. '
+      text:
+          'Hi! Kumusta! I can help you choose cookies or find a screen. '
           'Choose a labeled destination or ask me where to go.',
       fromAssistant: true,
       actions: AssistantService.destinations,
@@ -65,14 +66,18 @@ class _AssistantScreenState extends State<AssistantScreen> {
           normalized.contains('kausap')) {
         context.read<RequestsProvider>().create(email: email, message: text);
         _appendAssistant(
-            'I sent this to the local staff Requests inbox. Staff can open Dashboard → Customer requests to reply.',
-            'Ipinadala ko ito sa local Requests inbox ng staff. Makikita nila ito sa Dashboard → Customer requests.');
+          'I sent this to the local staff Requests inbox. Staff can open Dashboard → Customer requests to reply.',
+          'Ipinadala ko ito sa local Requests inbox ng staff. Makikita nila ito sa Dashboard → Customer requests.',
+        );
         return;
       }
       if (normalized.contains('redeem') && normalized.contains('cookie')) {
         final repository = context.read<PointsRepository>();
-        final redeemed =
-            repository.redeemPoints(auth, email: email, points: 20);
+        final redeemed = repository.redeemPoints(
+          auth,
+          email: email,
+          points: 20,
+        );
         if (redeemed) {
           final flavor = CookieCatalog.flavors.first;
           context.read<CartProvider>().addItem({
@@ -84,29 +89,35 @@ class _AssistantScreenState extends State<AssistantScreen> {
             'items_summary': '1x ${flavor.name} (20-point reward)',
           });
           _appendAssistant(
-              'Done! I used 20 points and added one Butter Cookie reward to your cart. Your balance is now ${repository.balance(auth, email)} points.',
-              'Nagamit ko ang 20 points at idinagdag ang Butter Cookie reward sa cart mo. May ${repository.balance(auth, email)} points ka na.');
+            'Done! I used 20 points and added one Butter Cookie reward to your cart. Your balance is now ${repository.balance(auth, email)} points.',
+            'Nagamit ko ang 20 points at idinagdag ang Butter Cookie reward sa cart mo. May ${repository.balance(auth, email)} points ka na.',
+          );
         } else {
           _appendAssistant(
-              'A free cookie costs 20 points. Your current balance is ${repository.balance(auth, email)} points, so I have not changed it.',
-              'Kailangan ng 20 points para sa libreng cookie. May ${repository.balance(auth, email)} points ka, kaya walang binago sa balance mo.');
+            'A free cookie costs 20 points. Your current balance is ${repository.balance(auth, email)} points, so I have not changed it.',
+            'Kailangan ng 20 points para sa libreng cookie. May ${repository.balance(auth, email)} points ka, kaya walang binago sa balance mo.',
+          );
         }
         return;
       }
       final cookie = CookieCatalog.find(text);
-      final quantity = int.tryParse(RegExp(r'\b(\d+)\s*(?:boxes?|box|kahon)')
-                  .firstMatch(normalized)
-                  ?.group(1) ??
-              '') ??
+      final quantity =
+          int.tryParse(
+            RegExp(
+                  r'\b(\d+)\s*(?:boxes?|box|kahon)',
+                ).firstMatch(normalized)?.group(1) ??
+                '',
+          ) ??
           0;
       if (quantity > 0 &&
           cookie != null &&
           cookie.isAvailable &&
           (normalized.contains('box') || normalized.contains('kahon'))) {
-        final requestedSize = int.tryParse(RegExp(r'box\s+of\s+(4|6|12)')
-                    .firstMatch(normalized)
-                    ?.group(1) ??
-                '') ??
+        final requestedSize =
+            int.tryParse(
+              RegExp(r'box\s+of\s+(4|6|12)').firstMatch(normalized)?.group(1) ??
+                  '',
+            ) ??
             6;
         final size = [4, 6, 12].contains(requestedSize) ? requestedSize : 6;
         context.read<CartProvider>().addItem({
@@ -119,12 +130,12 @@ class _AssistantScreenState extends State<AssistantScreen> {
               '$quantity box${quantity == 1 ? '' : 'es'} of $size · ${cookie.name}',
         });
         final day = RegExp(
-                r'\b(on|for)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b')
-            .firstMatch(normalized)
-            ?.group(2);
+          r'\b(on|for)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b',
+        ).firstMatch(normalized)?.group(2);
         _appendAssistant(
-            'Added $quantity box${quantity == 1 ? '' : 'es'} of ${cookie.name} to your cart. The local demo checkout currently uses tomorrow’s pickup/delivery date${day == null ? '' : ', so “$day” is noted here but cannot be scheduled in this demo'}.',
-            'Idinagdag ko sa cart ang $quantity kahon ng ${cookie.name}. Bukas lang ang petsa sa checkout ng demo na ito${day == null ? '' : ', kaya hindi ma-iiskedyul ang “$day”'}.');
+          'Added $quantity box${quantity == 1 ? '' : 'es'} of ${cookie.name} to your cart. The local demo checkout currently uses tomorrow’s pickup/delivery date${day == null ? '' : ', so “$day” is noted here but cannot be scheduled in this demo'}.',
+          'Idinagdag ko sa cart ang $quantity kahon ng ${cookie.name}. Bukas lang ang petsa sa checkout ng demo na ito${day == null ? '' : ', kaya hindi ma-iiskedyul ang “$day”'}.',
+        );
         return;
       }
       if (normalized.contains('batch') ||
@@ -132,16 +143,18 @@ class _AssistantScreenState extends State<AssistantScreen> {
           normalized.contains('remaining')) {
         final batch = context.read<DailyBatchProvider>();
         _appendAssistant(
-            'Today’s local demo batch has ${batch.remaining} cookies remaining out of ${batch.dailyLimit}.',
-            'May ${batch.remaining} cookies pang kapasidad ang batch ngayon sa local demo.');
+          'Today’s local demo batch has ${batch.remaining} cookies remaining out of ${batch.dailyLimit}.',
+          'May ${batch.remaining} cookies pang kapasidad ang batch ngayon sa local demo.',
+        );
         return;
       }
       if (normalized.contains('balance') ||
           normalized.contains('how many points')) {
         final balance = context.read<PointsRepository>().balance(auth, email);
         _appendAssistant(
-            'You have $balance points. A free cookie reward costs 20 points; say “redeem free cookie” to use it.',
-            'May $balance points ka. Kailangan ng 20 points para sa libreng cookie; sabihin ang “redeem free cookie” para gamitin ito.');
+          'You have $balance points. A free cookie reward costs 20 points; say “redeem free cookie” to use it.',
+          'May $balance points ka. Kailangan ng 20 points para sa libreng cookie; sabihin ang “redeem free cookie” para gamitin ito.',
+        );
         return;
       }
       if (normalized.contains('allerg') ||
@@ -151,10 +164,11 @@ class _AssistantScreenState extends State<AssistantScreen> {
         final flavor = CookieCatalog.find(text);
         final listed = flavor?.listedIngredients.join(', ');
         _appendAssistant(
-            flavor == null || listed == null || listed.isEmpty
-                ? 'I do not have verified ingredient details for that item. Please confirm directly with bakery staff before ordering if you have an allergy.'
-                : '${flavor.name} lists these ingredients: $listed. This demo cannot verify preparation or cross-contact, so please confirm with bakery staff before ordering if you have an allergy.',
-            'Wala akong beripikadong impormasyon tungkol sa sangkap o cross-contact. Kumpirmahin muna sa staff bago umorder kung may allergy ka.');
+          flavor == null || listed == null || listed.isEmpty
+              ? 'I do not have verified ingredient details for that item. Please confirm directly with bakery staff before ordering if you have an allergy.'
+              : '${flavor.name} lists these ingredients: $listed. This demo cannot verify preparation or cross-contact, so please confirm with bakery staff before ordering if you have an allergy.',
+          'Wala akong beripikadong impormasyon tungkol sa sangkap o cross-contact. Kumpirmahin muna sa staff bago umorder kung may allergy ka.',
+        );
         return;
       }
       if (normalized.contains('my orders') ||
@@ -164,31 +178,39 @@ class _AssistantScreenState extends State<AssistantScreen> {
         final orders = context.read<OrderProvider>().ordersFor(email);
         if (orders.isNotEmpty) {
           _appendAssistant(
-              'Your latest order ${orders.first['id']} is ${orders.first['status']}. Open Orders for its full progress.',
-              'Ang pinakabagong order mo na ${orders.first['id']} ay ${orders.first['status']}. Buksan ang Orders para makita ang buong progress.');
+            'Your latest order ${orders.first['id']} is ${orders.first['status']}. Open Orders for its full progress.',
+            'Ang pinakabagong order mo na ${orders.first['id']} ay ${orders.first['status']}. Buksan ang Orders para makita ang buong progress.',
+          );
           return;
         }
       }
-      final reply = await _assistant.replyTo(text,
-          preferTagalog: context.read<LanguageProvider>().isTagalog);
+      final reply = await _assistant.replyTo(
+        text,
+        preferTagalog: context.read<LanguageProvider>().isTagalog,
+      );
       if (!mounted) return;
       setState(() {
-        _messages.add(_ChatMessage(
-          text: reply.text,
-          fromAssistant: true,
-          actions: reply.actions,
-        ));
+        _messages.add(
+          _ChatMessage(
+            text: reply.text,
+            fromAssistant: true,
+            actions: reply.actions,
+          ),
+        );
         _isReplying = false;
       });
       _scrollToBottom();
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _messages.add(const _ChatMessage(
-          text: 'Sorry, I could not prepare a reply. Please try asking in a '
-              'different way.',
-          fromAssistant: true,
-        ));
+        _messages.add(
+          const _ChatMessage(
+            text:
+                'Sorry, I could not prepare a reply. Please try asking in a '
+                'different way.',
+            fromAssistant: true,
+          ),
+        );
         _isReplying = false;
       });
       _scrollToBottom();
@@ -197,8 +219,9 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
   void _appendAssistant(String text, [String? filipino]) {
     if (!mounted) return;
-    final localized =
-        context.read<LanguageProvider>().isTagalog ? (filipino ?? text) : text;
+    final localized = context.read<LanguageProvider>().isTagalog
+        ? (filipino ?? text)
+        : text;
     setState(() {
       _messages.add(_ChatMessage(text: localized, fromAssistant: true));
       _isReplying = false;
@@ -238,17 +261,24 @@ class _AssistantScreenState extends State<AssistantScreen> {
           const _LocalAssistantBanner(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-            child: Wrap(spacing: 7, runSpacing: 3, children: [
-              _QuickPrompt(
+            child: Wrap(
+              spacing: 7,
+              runSpacing: 3,
+              children: [
+                _QuickPrompt(
                   label: 'Build a box',
-                  onTap: () => _sendMessage('Build a box')),
-              _QuickPrompt(
+                  onTap: () => _sendMessage('Build a box'),
+                ),
+                _QuickPrompt(
                   label: 'My points',
-                  onTap: () => _sendMessage('How many points do I have?')),
-              _QuickPrompt(
+                  onTap: () => _sendMessage('How many points do I have?'),
+                ),
+                _QuickPrompt(
                   label: 'Talk to staff',
-                  onTap: () => _sendMessage('I want to talk to staff')),
-            ]),
+                  onTap: () => _sendMessage('I want to talk to staff'),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView.builder(
@@ -304,20 +334,27 @@ class _LocalAssistantBanner extends StatelessWidget {
       child: Row(
         children: [
           const ExcludeSemantics(
-            child: Icon(Icons.offline_bolt_rounded,
-                color: AppColors.primary, size: 19),
+            child: Icon(
+              Icons.offline_bolt_rounded,
+              color: AppColors.primary,
+              size: 19,
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Semantics(
-              label: 'Chip is a local screen-reader-friendly guide with guided '
+              label:
+                  'Chip is a local screen-reader-friendly guide with guided '
                   'navigation. Type in English or Tagalog. Replies stay on '
                   'this device.',
               child: ExcludeSemantics(
                 child: Text(
                   'Chip · Screen-reader guide · English and Tagalog',
-                  style: AppTextStyles.q(12,
-                      weight: FontWeight.w600, color: AppColors.textSecondary),
+                  style: AppTextStyles.q(
+                    12,
+                    weight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ),
             ),
@@ -366,8 +403,10 @@ class _MessageComposer extends StatelessWidget {
                 hintStyle: AppTextStyles.q(13, color: AppColors.textSecondary),
                 filled: true,
                 fillColor: Colors.white.withValues(alpha: 0.88),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(22),
                   borderSide: const BorderSide(color: AppColors.inputBorder),
@@ -378,8 +417,10 @@ class _MessageComposer extends StatelessWidget {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(22),
-                  borderSide:
-                      const BorderSide(color: AppColors.primary, width: 1.5),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -453,9 +494,11 @@ class _MessageBubble extends StatelessWidget {
         child: ExcludeSemantics(
           child: Text(
             message.text,
-            style: AppTextStyles.q(13,
-                color: isAssistant ? AppColors.textPrimary : Colors.white,
-                height: 1.35),
+            style: AppTextStyles.q(
+              13,
+              color: isAssistant ? AppColors.textPrimary : Colors.white,
+              height: 1.35,
+            ),
           ),
         ),
       ),
@@ -475,12 +518,14 @@ class _MessageBubble extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: Column(
-          crossAxisAlignment:
-              isAssistant ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+          crossAxisAlignment: isAssistant
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
           children: [
             Row(
-              mainAxisAlignment:
-                  isAssistant ? MainAxisAlignment.start : MainAxisAlignment.end,
+              mainAxisAlignment: isAssistant
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (isAssistant) ...[
@@ -490,8 +535,11 @@ class _MessageBubble extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 14,
                         backgroundColor: AppColors.accentSoft,
-                        child: Icon(Icons.cookie_rounded,
-                            color: AppColors.primary, size: 16),
+                        child: Icon(
+                          Icons.cookie_rounded,
+                          color: AppColors.primary,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ),
@@ -510,9 +558,11 @@ class _MessageBubble extends StatelessWidget {
                     for (final action in message.actions)
                       ActionChip(
                         label: Text(action.label),
-                        labelStyle: AppTextStyles.q(11,
-                            weight: FontWeight.w700,
-                            color: AppColors.textPrimary),
+                        labelStyle: AppTextStyles.q(
+                          11,
+                          weight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
                         avatar: Icon(_routeIcon(action.route), size: 15),
                         backgroundColor: AppColors.accentSoft,
                         side: const BorderSide(color: AppColors.cardBorder),
@@ -544,11 +594,7 @@ class _TypingIndicator extends StatelessWidget {
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: AppColors.cardBorder),
           ),
-          child: const SizedBox(
-            width: 36,
-            height: 12,
-            child: _TypingDots(),
-          ),
+          child: const SizedBox(width: 36, height: 12, child: _TypingDots()),
         ),
       ),
     );
@@ -611,11 +657,11 @@ class _ChatMessage {
 }
 
 IconData _routeIcon(String route) => switch (route) {
-      '/home' => Icons.home_rounded,
-      '/menu' => Icons.menu_book_rounded,
-      '/customization' => Icons.tune_rounded,
-      '/cart' => Icons.shopping_cart_rounded,
-      '/orders' => Icons.receipt_long_rounded,
-      '/notifications' => Icons.notifications_rounded,
-      _ => Icons.person_rounded,
-    };
+  '/home' => Icons.home_rounded,
+  '/menu' => Icons.menu_book_rounded,
+  '/customization' => Icons.tune_rounded,
+  '/cart' => Icons.shopping_cart_rounded,
+  '/orders' => Icons.receipt_long_rounded,
+  '/notifications' => Icons.notifications_rounded,
+  _ => Icons.person_rounded,
+};

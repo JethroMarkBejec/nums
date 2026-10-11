@@ -17,8 +17,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final username = auth.username ?? 'Customer';
-    final roleLabel =
-        auth.role == 'admin' ? 'Admin account' : 'Customer account';
+    final roleLabel = auth.role == 'admin'
+        ? 'Admin account'
+        : 'Customer account';
 
     return AppScreenScaffold(
       title: 'My Profile',
@@ -32,15 +33,22 @@ class ProfileScreen extends StatelessWidget {
                   width: 96,
                   height: 96,
                   decoration: const BoxDecoration(
-                      color: AppColors.primary, shape: BoxShape.circle),
-                  child: const Icon(Icons.person_rounded,
-                      color: Colors.white, size: 52),
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                    size: 52,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(username, style: AppTextStyles.display1(30)),
                 const SizedBox(height: 4),
-                Text(roleLabel,
-                    style: AppTextStyles.q(14, color: AppColors.textSecondary)),
+                Text(
+                  roleLabel,
+                  style: AppTextStyles.q(14, color: AppColors.textSecondary),
+                ),
               ],
             ),
           ),
@@ -51,23 +59,28 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Account details',
-                    style: AppTextStyles.q(19, weight: FontWeight.w700)),
+                Text(
+                  'Account details',
+                  style: AppTextStyles.q(19, weight: FontWeight.w700),
+                ),
                 const SizedBox(height: 16),
                 _ProfileDetail(
-                    icon: Icons.person_outline_rounded,
-                    label: 'Username',
-                    value: username),
+                  icon: Icons.person_outline_rounded,
+                  label: 'Username',
+                  value: username,
+                ),
                 const Divider(height: 24, color: AppColors.divider),
                 _ProfileDetail(
-                    icon: Icons.mail_outline_rounded,
-                    label: 'Email',
-                    value: auth.email ?? 'Not signed in'),
+                  icon: Icons.mail_outline_rounded,
+                  label: 'Email',
+                  value: auth.email ?? 'Not signed in',
+                ),
                 const Divider(height: 24, color: AppColors.divider),
                 _ProfileDetail(
-                    icon: Icons.badge_outlined,
-                    label: 'Role',
-                    value: auth.role == 'admin' ? 'Admin' : 'Customer'),
+                  icon: Icons.badge_outlined,
+                  label: 'Role',
+                  value: auth.role == 'admin' ? 'Admin' : 'Customer',
+                ),
               ],
             ),
           ),
@@ -86,8 +99,9 @@ class ProfileScreen extends StatelessWidget {
                 context: context,
                 builder: (dialogContext) => AlertDialog(
                   title: const Text('Sign out?'),
-                  content:
-                      const Text('Your cart will be cleared on this device.'),
+                  content: const Text(
+                    'Your cart will be cleared on this device.',
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(dialogContext, false),
@@ -104,7 +118,10 @@ class ProfileScreen extends StatelessWidget {
               context.read<CartProvider>().clear();
               context.read<AuthProvider>().logout();
               Navigator.pushNamedAndRemoveUntil(
-                  context, '/welcome', (route) => false);
+                context,
+                '/welcome',
+                (route) => false,
+              );
             },
             icon: const Icon(Icons.logout_rounded),
             label: const Text('Sign out'),
@@ -120,8 +137,11 @@ class _ProfileDetail extends StatelessWidget {
   final String label;
   final String value;
 
-  const _ProfileDetail(
-      {required this.icon, required this.label, required this.value});
+  const _ProfileDetail({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +153,10 @@ class _ProfileDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label,
-                  style: AppTextStyles.q(12, color: AppColors.textSecondary)),
+              Text(
+                label,
+                style: AppTextStyles.q(12, color: AppColors.textSecondary),
+              ),
               const SizedBox(height: 2),
               Text(value, style: AppTextStyles.q(15, weight: FontWeight.w600)),
             ],

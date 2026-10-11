@@ -4,7 +4,7 @@ import '../models/user.dart';
 
 class AuthProvider with ChangeNotifier {
   final Map<String, ({String name, String password, String role, int points})>
-      _accounts = {
+  _accounts = {
     'welcome@nums.com': (
       name: 'Cookie Lover',
       password: 'cookies123',
@@ -37,8 +37,11 @@ class AuthProvider with ChangeNotifier {
     return true;
   }
 
-  bool signUp(
-      {required String name, required String email, required String password}) {
+  bool signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) {
     final normalizedEmail = email.trim().toLowerCase();
     if (_accounts.containsKey(normalizedEmail)) return false;
     final trimmedName = name.trim();
