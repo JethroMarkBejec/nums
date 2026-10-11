@@ -7,7 +7,7 @@ import 'app.dart';
 void main() {
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: kIsWeb || !kReleaseMode,
       builder: (context) => const NumSApp(),
     ),
   );
