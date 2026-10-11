@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 onPressed: () =>
                                     Navigator.pushNamed(context, '/signup'),
                               ),
-                              const SizedBox(height: 70),
+                              const SizedBox(height: 32),
                               Image.asset('assets/images/cats_login.png',
                                   width: 180),
                               const SizedBox(height: 12),

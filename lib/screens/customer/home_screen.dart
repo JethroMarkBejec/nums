@@ -344,8 +344,11 @@ class HomeScreen extends StatelessWidget {
                           BorderRadius.vertical(top: Radius.circular(8)),
                     ),
                     child: Text('In Stock',
-                        style: AppTextStyles.q(7.5,
-                            weight: FontWeight.w600, color: Colors.white)),
+                        style: const TextStyle(
+                            fontFamily: AppTextStyles.body,
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white)),
                   ),
                 ),
               ],

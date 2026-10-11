@@ -435,13 +435,14 @@ class _BuildBoxScreenState extends State<BuildBoxScreen> {
         },
         builder: (context, candidates, rejected) {
           final flavor = _slots[index];
+          final reduceMotion = MediaQuery.disableAnimationsOf(context);
           return InkWell(
             onTap: flavor == null
                 ? null
                 : () => setState(() => _slots[index] = null),
             borderRadius: BorderRadius.circular(16),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: Duration(milliseconds: reduceMotion ? 1 : 180),
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: candidates.isNotEmpty
@@ -464,7 +465,7 @@ class _BuildBoxScreenState extends State<BuildBoxScreen> {
               ),
               child: Center(
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 240),
+                  duration: Duration(milliseconds: reduceMotion ? 1 : 240),
                   switchInCurve: Curves.easeOutBack,
                   transitionBuilder: (child, animation) => ScaleTransition(
                     scale: animation,

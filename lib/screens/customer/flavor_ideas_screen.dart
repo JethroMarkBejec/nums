@@ -38,6 +38,7 @@ class _FlavorIdeasScreenState extends State<FlavorIdeasScreen> {
               controller: _idea,
               maxLength: 60,
               decoration: const InputDecoration(labelText: 'Flavor idea')),
+          const SizedBox(height: 10),
           Align(
               alignment: Alignment.centerRight,
               child: FilledButton(

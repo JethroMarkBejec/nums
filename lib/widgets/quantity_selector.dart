@@ -19,7 +19,7 @@ class QuantitySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 196,
+      width: 164,
       height: 44,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
@@ -45,7 +45,7 @@ class QuantitySelector extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 43,
+        width: 36,
         height: double.infinity,
         color: fill,
         alignment: Alignment.center,

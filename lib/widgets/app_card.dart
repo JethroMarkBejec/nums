@@ -36,7 +36,7 @@ class _AppCardState extends State<AppCard> {
         padding: widget.padding,
         decoration: BoxDecoration(
           color: widget.color ?? AppColors.card,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(20),
           border:
               Border.all(color: AppColors.cardBorder.withValues(alpha: 0.68)),
           boxShadow: [
@@ -72,7 +72,7 @@ class AppCardHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: AppTextStyles.q(20, weight: FontWeight.w700)),
+            Text(title, style: AppTextStyles.q(18, weight: FontWeight.w700)),
             if (trailing != null) trailing!,
           ],
         ),

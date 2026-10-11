@@ -23,12 +23,15 @@ class NotificationsScreen extends StatelessWidget {
       body: Column(
         children: [
           if (unreadCount > 0)
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: () => provider.markAllAsRead(email),
-                icon: const Icon(Icons.done_all_rounded),
-                label: const Text('Mark all read'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: () => provider.markAllAsRead(email),
+                  icon: const Icon(Icons.done_all_rounded),
+                  label: const Text('Mark all read'),
+                ),
               ),
             ),
           Expanded(

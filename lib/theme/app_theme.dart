@@ -68,13 +68,13 @@ class AppTheme {
         shadowColor: Color(0x30263B4F),
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
       dialogTheme: DialogThemeData(
         elevation: 8,
         shadowColor: AppColors.primary.withValues(alpha: 0.22),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -89,7 +89,23 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 4,
+          shadowColor: AppColors.primary.withValues(alpha: 0.28),
+          animationDuration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          textStyle: const TextStyle(
+            fontFamily: 'Quicksand',
+            fontWeight: FontWeight.w700,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -104,7 +120,29 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          overlayColor: AppColors.accent.withValues(alpha: 0.10),
+          animationDuration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+          textStyle: const TextStyle(
+            fontFamily: 'Quicksand',
+            fontWeight: FontWeight.w700,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          hoverColor: AppColors.accentSoft.withValues(alpha: 0.72),
+          highlightColor: AppColors.accent.withValues(alpha: 0.10),
+          shape: const CircleBorder(),
         ),
       ),
       snackBarTheme: SnackBarThemeData(

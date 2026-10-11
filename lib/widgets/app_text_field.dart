@@ -29,7 +29,7 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(18),
       borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
     );
     return TextFormField(
@@ -44,7 +44,7 @@ class AppTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.25),
         contentPadding: EdgeInsets.symmetric(
-          horizontal: 20,
+          horizontal: 16,
           vertical: verticalPadding,
         ),
         border: border,

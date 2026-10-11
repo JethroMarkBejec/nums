@@ -31,9 +31,9 @@ class AppColors {
   static const Color warning = Color(0xFFF9A825);
 
   static const BoxShadow cardShadow = BoxShadow(
-    color: Color(0x17263B4F),
-    blurRadius: 18,
-    offset: Offset(0, 7),
+    color: Color(0x1A263B4F),
+    blurRadius: 22,
+    offset: Offset(0, 9),
   );
   static const BoxShadow heroShadow = BoxShadow(
     color: Color(0x33263B4F),
